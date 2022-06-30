@@ -53,7 +53,7 @@
                 <div class="user-snapshot__wrap"><span class="username">Faisal Nurmansyah</span><span
                         class="title">Admin</span></div>
             </div>
-            <div class="dropdown-menu"><a class="dropdown-item" href="#">Logout</a></div>
+            <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></div>
         </div>
     </div>
 </nav>
