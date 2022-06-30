@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Pasien extends Model
+class Pasien extends Authenticatable
 {
     protected $table = "pasien";
     protected $primaryKey = 'id';
@@ -23,6 +24,11 @@ class Pasien extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function getAuthPassword()
+    {
+        return bcrypt($this->tanggal_lahir);
+    }
 
     protected $cast = [
         'tanggal_lahir' => 'date:d/m/Y',

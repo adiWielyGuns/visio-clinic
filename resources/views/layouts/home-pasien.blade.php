@@ -1,6 +1,7 @@
 @extends('../layouts/base')
 
 @section('body')
+
     <body class="py-5">
         <div id="wrap">
             <div class="web-wrapper" id="page">
@@ -36,20 +37,21 @@
                                     <div class="box">
                                         <h1 class="logo">Visio Mandiri Medika</h1>
                                         <p>Masuk Untuk Melanjutkan</p>
-                                        <form class="login" action="">
+                                        <form class="login" action="{{ route('login-pasien') }}" method="post">
+                                            @csrf
                                             <div class="form-group empw">
-                                                <input class="form-control top" id="inpt_norm" type="text" name="no_rm"
-                                                    placeholder="No. Rekam Medis" />
-                                                <input class="form-control bot" id="inpt_ttl" type="text" name="ttl"
-                                                    placeholder="Tanggal Lahir e.x(15-04-1989)" />
+                                                <input class="form-control top" id="id_pasien" type="text"
+                                                    name="id_pasien" placeholder="No. Rekam Medis" />
+                                                <input class="form-control bot" id="tanggal_lahir" type="text"
+                                                    name="tanggal_lahir" placeholder="tahun-bulan-tanggal" />
                                             </div>
-                                            <div class="login-error">
-                                                <p>Data yang Anda masukan salah.</p>
-                                            </div>
+                                            @if ($errors->has('credential'))
+                                                <p style="color: red">Data yang Anda masukan salah.</p>
+                                            @endif
                                             <div class="form-action">
                                                 <button
                                                     class="btn btn--primary btn--block btn-lgn btn btn-primary btn-block"
-                                                    type="button">Masuk</button>
+                                                    type="submit">Masuk</button>
                                             </div>
                                         </form>
                                     </div>

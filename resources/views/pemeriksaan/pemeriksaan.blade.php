@@ -6,14 +6,14 @@
     <main>
         <div class="page-title">
             <div class="page-title__left">
-                <h1>Staff<span class="total">5</span></h1>
+                <h1>Pemeriksaan<span class="total"></span></h1>
             </div>
-            <div class="page-title__action"><a class="btn btn--primary" href="{{ route('create-staff') }}">Tambah Staff</a>
+            <div class="page-title__action"><a class="btn btn--primary" href="{{ route('create-pemeriksaan') }}">Tambah Pemeriksaan</a>
             </div>
         </div>
         <div class="page-main">
             <div class="table">
-                <table id="table-staff">
+                <table id="table-pemeriksaan">
                     <thead>
                         <tr>
                             <th class="check-all"><span>No.</span></th>
@@ -37,12 +37,12 @@
     <script>
         var table;
         (function() {
-            var table = $('#table-staff').DataTable({
+            var table = $('#table-pemeriksaan').DataTable({
                 // searching: false,
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('datatable-staff') }}",
+                    url: "{{ route('datatable-pemeriksaan') }}",
                 },
                 columns: [{
                     data: 'DT_RowIndex',
@@ -86,7 +86,7 @@
                 if (result.isConfirmed) {
                     window.onkeydown = previousWindowKeyDown;
                     $.ajax({
-                        url: '{{ route('delete-staff') }}',
+                        url: '{{ route('delete-pemeriksaan') }}',
                         data: {
                             id: id,
                             _token: "{{ csrf_token() }}"

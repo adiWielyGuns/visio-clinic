@@ -325,6 +325,14 @@ function convertDayToHari($day)
     return hari()[$index];
 }
 
+
+function convertHariToDay($day)
+{
+    $index = array_search($day, hari());
+
+    return day()[$index];
+}
+
 function convertMonthToBulan($month)
 {
     $date = carbon\carbon::parse($month)->format('d F Y');

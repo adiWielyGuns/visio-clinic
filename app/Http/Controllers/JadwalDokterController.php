@@ -53,12 +53,12 @@ class JadwalDokterController extends Controller
             }
         })->get();
         $data = JadwalDokter::findOrFail($req->id);
-        return view('jadwal_dokter/edit_jadwal_dokter', compact('dokter','data'));
+        return view('jadwal_dokter/edit_jadwal_dokter', compact('dokter', 'data'));
     }
 
     public function create(Request $req)
     {
-        $dokter = JadwalDokter::whereHas('role', function ($q) use ($req) {
+        $dokter = User::whereHas('role', function ($q) use ($req) {
             $q->where('name', 'Terapis');
         })->where(function ($q) {
             if (Auth::user()->role == 'Terapis') {
@@ -87,7 +87,8 @@ class JadwalDokterController extends Controller
                 return Response()->json(['status' => 2, 'message' => 'Data untuk hari ' . $req->hari . ' untuk dokter ini sudah ada.']);
             }
             $input = $req->all();
-            $$input['id'] = JadwalDokter::max('id') + 1;
+            $input['id'] = JadwalDokter::max('id') + 1;
+            $input['status'] = 'true';
             $input['created_by'] = me();
             $input['updated_by'] = me();
 

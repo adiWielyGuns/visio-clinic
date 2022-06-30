@@ -105,14 +105,13 @@ class PasienController extends Controller
     public function show(Request $req)
     {
         $data = Pasien::findOrFail($req->id);
-        $tanggalTerakhirPeriksa = JadwalDokterLog::where('pasien_id', $data->pasien_id)
+        $tanggalTerakhirPeriksa = JadwalDokterLog::where('pasien_id', $data->id)
             ->where('status', 'Done')
             ->first();
-        $tanggalReservasi = JadwalDokterLog::where('pasien_id', $data->pasien_id)
-            ->where('status', 'Released')
+        $tanggalReservasi = JadwalDokterLog::where('pasien_id', $req->id)
+            ->where('status', 'Reserved')
             ->orderBy('tanggal', 'DESC')
             ->first();
-
         return view('pasien/show_pasien', compact('data', 'tanggalReservasi', 'tanggalTerakhirPeriksa'));
     }
 

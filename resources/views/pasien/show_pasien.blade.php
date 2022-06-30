@@ -79,7 +79,7 @@
                                         <label>Terakhir Berkunjung</label>
                                     </div>
                                     <div class="col-7">
-                                        <span>{{ $tanggalTerakhirPeriksa ? CarbonParse($tanggalTerakhirPeriksa, 'd F Y') : '-' }}</span>
+                                        <span>{{ $tanggalTerakhirPeriksa ? CarbonParse($tanggalTerakhirPeriksa->tanggal, 'd F Y') : '-' }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -87,7 +87,7 @@
                                         <label>Reservasi</label>
                                     </div>
                                     <div class="col-7">
-                                        <span>{{ $tanggalReservasi ? CarbonParse($tanggalReservasi, 'd F Y') : '-' }}</span>
+                                        <span>{{ $tanggalReservasi ? CarbonParse($tanggalReservasi->tanggal, 'd F Y') : '-' }}</span>
                                     </div>
                                 </div>
                             </div>

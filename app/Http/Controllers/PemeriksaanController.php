@@ -17,7 +17,7 @@ class PemeriksaanController extends Controller
 {
     public function index()
     {
-        return view('staff/staff');
+        return view('pemeriksaan/pemeriksaan');
     }
 
     public function datatable(Request $req)
@@ -26,7 +26,7 @@ class PemeriksaanController extends Controller
 
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
-                return view('staff/action', compact('data'));
+                return view('pemeriksaan/action', compact('data'));
             })
             ->rawColumns(['aksi'])
             ->addIndexColumn()
@@ -74,19 +74,19 @@ class PemeriksaanController extends Controller
 
     public function create(Request $req)
     {
-        return view('staff/create_staff');
+        return view('pemeriksaan/create_pemeriksaan');
     }
 
     public function edit(Request $req)
     {
         $data = User::findOrFail($req->id);
-        return view('staff/edit_staff', compact('data'));
+        return view('pemeriksaan/edit_pemeriksaan', compact('data'));
     }
 
     public function show(Request $req)
     {
         $data = User::findOrFail($req->id);
-        return view('staff/show_staff', compact('data'));
+        return view('pemeriksaan/show_pemeriksaan', compact('data'));
     }
 
     public function store(Request $req)
