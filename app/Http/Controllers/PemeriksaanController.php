@@ -139,10 +139,13 @@ class PemeriksaanController extends Controller
 
             $input['created_by'] = me();
             $input['updated_by'] = me();
+            $input['tanggal'] = dateStore();
+            $input['dokter_id'] = $check->jadwal_dokter->users_id;
+            $input['pasien_id'] = $check->pasien_id;
             $input['id'] = PasienRekamMedis::where('pasien_id', $check->pasien_id)->max('id') + 1;
 
             PasienRekamMedis::create($input);
-            return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
+            return Response()->json(['status' => 1, 'message' => 'Berhasil melakukan pemeriksaan']);
         });
     }
 
