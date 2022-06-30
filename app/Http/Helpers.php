@@ -257,7 +257,7 @@ function terbilang($x, $style = 4)
     return $hasil;
 }
 
-function CarbonParse($date = null, $format)
+function CarbonParse($date = null, $format = 'Y-m-d')
 {
     return \carbon\carbon::parse($date)->format($format);
 }
@@ -327,7 +327,7 @@ function convertDayToHari($day)
 
 function diffdate($start, $end)
 {
-    return ((strtotime($end) - strtotime($start)) / 86400) ;
+    return ((strtotime($end) - strtotime($start)) / 86400);
 }
 
 function convertHariToDay($day)
