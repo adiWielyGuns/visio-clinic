@@ -102,11 +102,11 @@ class PemeriksaanController extends Controller
 
     public function create(Request $req)
     {
-        $onSite = JadwalDokterLog::where('status', 'Reserved')
+        $data = JadwalDokterLog::where('status', 'Reserved')
             ->where('id', $req->id)
             ->where('jadwal_dokter_id', $req->jadwal_dokter_id)
             ->first();
-        return view('pemeriksaan/create_pemeriksaan', compact('onSite'));
+        return view('pemeriksaan/create_pemeriksaan', compact('data'));
     }
 
     public function edit(Request $req)

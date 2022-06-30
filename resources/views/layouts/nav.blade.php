@@ -53,7 +53,9 @@
                 <div class="user-snapshot__wrap"><span class="username">Faisal Nurmansyah</span><span
                         class="title">Admin</span></div>
             </div>
-            <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></div>
+            <form action="{{ route('logout') }}" method="POST" id="logout">@csrf</form>
+            <div class="dropdown-menu"><a class="dropdown-item" href="javascript:;"
+                    onclick="$('#logout').submit()">Logout</a></div>
         </div>
     </div>
 </nav>

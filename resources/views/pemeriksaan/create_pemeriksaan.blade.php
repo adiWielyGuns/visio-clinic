@@ -21,12 +21,14 @@
                         </div>
                         <div class="form-group">
                             <label>Id Rekam Medis</label>
-                            <input class="form-control" type="text" value="505071" readonly id="id_rekam_medis" name="id_rekam_medis" />
+                            <input class="form-control" type="text" value="505071" readonly id="id_rekam_medis"
+                                name="id_rekam_medis" />
                         </div>
                         <div class="form-group dp">
                             <label>Tgl Berobat</label>
                             <div class="datepicker">
-                                <input class="form-control tanggal" id="tgl_lahir" name="tgl_awal" type="text" value="{{ $data->tanggal }}" />
+                                <input class="form-control tanggal" id="tgl_lahir" name="tgl_awal" type="text"
+                                    value="{{ CarbonParse($data->tanggal, 'd/m/Y') }}" disabled />
                             </div>
                             <div class="inpt-apend"></div>
                         </div>
