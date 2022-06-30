@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Visio Mandiri Medika</title>
+    <meta name="description" content=""/>
+    <meta name="theme-color" content=""/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="stylesheet" href="styles/plugins.css"/>
+    <link rel="stylesheet" href="styles/main.css?v=3"/>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="web-wrapper" id="page">
+        <header class="header" id="page_header">
+          <div class="header__wrap"><a class="header__logo" href="dashboard.html"><img src="images/logo-vmm.png" alt="Mekari Design" width="147" height="48"/></a></div>
+        </header>
+        <nav class="sidebar">
+          <div class="sidebar__wrap">
+            <ul class="main-menu">
+              <li class="main-menu__item"><a class="main-menu__link" href="dashboard.html">
+                  <div class="icon"><img src="images/ic-dashboard.svg"/></div><span>Dashboard</span></a></li>
+              <li class="main-menu__item"><a class="main-menu__link" href="staff.html">
+                  <div class="icon"><img src="images/ic-subscribers.svg"/></div><span>Staff</span></a></li>
+              <li class="main-menu__item"><a class="main-menu__link" href="pasien.html">
+                  <div class="icon"><img src="images/ic-contact.svg"/></div><span>Pasien</span></a></li>
+              <li class="main-menu__item"><a class="main-menu__link" href="pembayaran.html">
+                  <div class="icon"><img src="images/ic-payment.svg"/></div><span>Pembayaran</span></a></li>
+              <li class="main-menu__item"><a class="main-menu__link" href="#">
+                  <div class="icon"><img src="images/ic-settings.svg"/></div><span>Pengaturan</span></a></li>
+            </ul>
+            <div class="user-snapshot dropdown">
+              <div class="user-snapshot__toggle" data-toggle="dropdown">
+                <div class="user-snapshot__avatar"><img src="images/img-avatar.png" alt="Avatar" width="32" height="32"/></div>
+                <div class="user-snapshot__wrap"><span class="username">Faisal Nurmansyah</span><span class="title">Admin</span></div>
+              </div>
+              <div class="dropdown-menu"><a class="dropdown-item" href="#">Logout</a></div>
+            </div>
+          </div>
+        </nav>
+        <main>
+          <div class="page-title">
+            <div class="page-title__left"><a class="btn btn--icon btn--back" href="emails.html"> 
+                <div class="btn--wrap">
+                  <div class="icon"><img class="svg" src="images/ic-left.svg"/></div><span>Back to emails</span>
+                </div></a></div>
+          </div>
+          <div class="page-main">
+            <div class="emails">
+              <div class="stepper" id="email_stepper" data-anchor="true">
+                <div class="stepper__item active" data-step="1"><span class="no">1</span><span>Campaign Setup</span></div>
+                <div class="stepper__item" data-step="2"><span class="no">2</span><span>Recipients</span></div>
+                <div class="stepper__item" data-step="3"><span class="no">3</span><span>Content</span></div>
+              </div>
+              <div class="container--small">
+                <div class="form--email form-steps" data-nav="#email_stepper">
+                  <div class="form-steps__item active" data-step="1">
+                    <div class="emails__title">
+                      <h1 class="title--primary">Mandatory message in live attendance</h1>
+                    </div>
+                    <div class="form-group">
+                      <label>Email Subject</label>
+                      <p>Survei Internal Fitur Live Attendance di Talenta</p>
+                    </div>
+                    <div class="form-group">
+                      <label>Preview Text</label>
+                      <p>--</p>
+                    </div>
+                    <div class="form-group">
+                      <label>Typeform Link</label>
+                      <p> <a href="https://mekari-ux.typeform.com/to/am9SzFfB" target="_blank">https://mekari-ux.typeform.com/to/am9SzFfB</a></p>
+                    </div>
+                  </div>
+                  <div class="form-steps__item" data-step="2">
+                    <div class="emails__title">
+                      <h1 class="title--primary">Mandatory message in live attendance</h1>
+                    </div>
+                    <div class="form-group contact-group show" id="contactGroup">
+                      <label>Live Attendance</label>
+                      <div class="contact-group__wrap">
+                        <div class="item"><span class="name">Abdul Kodir</span>
+                          <div class="meta"><span class="title">Multimedia Designer</span>,&nbsp;<span class="dept">Mekari University                  </span></div>
+                        </div>
+                        <div class="item"><span class="name">Abdul Manan Rangkuti</span>
+                          <div class="meta"><span class="title">Senior SDET</span>,&nbsp;<span class="dept">Technology - QA                  </span></div>
+                        </div>
+                        <div class="item"><span class="name">Abdullah</span>
+                          <div class="meta"><span class="title">Telesales Lead - Outbound</span>,&nbsp;<span class="dept">Leads Management - HR                  </span></div>
+                        </div>
+                        <div class="item"><span class="name">Abdurrachman Mappuji</span>
+                          <div class="meta"><span class="title">Lead Software Engineer</span>,&nbsp;<span class="dept">Technology - Engineering                  </span></div>
+                        </div>
+                        <div class="item"><span class="name">Acantya Manekung Budi</span>
+                          <div class="meta"><span class="title">People Development Intern</span>,&nbsp;<span class="dept">People                            </span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-steps__item" data-step="3">
+                    <div class="emails__title">
+                      <h1 class="title--primary">Mandatory message in live attendance</h1>
+                    </div>
+                    <div class="form-group field-email field-email--preview">
+                      <div class="field-email__logo"><img src="images/logo-mekari-design.svg" alt="Logo Mekari Design"/></div>
+                      <div class="field-email__content"><p>Halo Mekarian!</p>
+<p>Sehubungan dengan pengembangan fitur Live Attendance di Talenta, kami membutuhkan partisipasi teman-teman untuk meluangkan waktu sekitar 1 menit untuk mengisi survei di bawah ini.</p>
+<p>Link survei:<br><a href="https://mekari-ux.typeform.com/to/am9SzFfB" target="_blank">https://mekari-ux.typeform.com/to/am9SzFfB</a></p>
+<p>Jika ada yang ingin ditanyakan terkait survei ini, silahkan menghubungi Aldo Prasmara dari UX Team. </p>
+<p>Terima kasih untuk partisipasinya</p>
+<p>Salam,<br>UX Team</p>
+                      </div>
+                      <div class="field-email__icons"><a href="#"> <img class="svg" src="images/ic-facebook.svg"/></a><a href="#"> <img class="svg" src="images/ic-instagram.svg"/></a><a href="#"> <img class="svg" src="images/ic-medium.svg"/></a></div><span class="copy">Copyright &copy; 2021 Mekari Design, All rights reserved.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <div class="back-to-top"></div>
+      </div>
+    </div>
+    <div class="modal" id="modalAddContact" tabindex="-1">
+      <div class="modal-dialog modal-dialog--centered modal-dialog--sm">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h2>Add More Contact</h2>
+            <form>
+              <div class="form-group">
+                <label>Select Contact</label>
+                <select class="select" title="Select contact" data-live-search="true" data-live-search-placeholder="Search ..." multiple="multiple" data-multiple-placeholder="Contact selected">
+                  <option>Abdul Kodir</option>
+                  <option>Abdul Manan Rangkuti</option>
+                  <option>Abdullah</option>
+                  <option>Abdurrachman Mappuji</option>
+                  <option>Acantya Manekung Budi</option>
+                  <option>Achmad Abu Zazid</option>
+                  <option>Achmad Zainal Arief</option>
+                  <option>Adani Arisy</option>
+                </select>
+              </div>
+              <div class="form-action text-right"><button class="btn btn--white" type="button" data-dismiss="modal">Cancel</button><button class="btn btn--primary" type="submit" data-dismiss="modal">Submit</button></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="scripts/plugins.js?v=2"></script>
+  <script src="plugins/summernote/summernote-lite.min.js"></script>
+  <script src="plugins/marquee/js/marquee.js"></script>
+  <script src="scripts/main.js?v=2"></script>
+</html>

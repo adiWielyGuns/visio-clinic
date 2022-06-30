@@ -1,0 +1,96 @@
+<?php
+
+use App\Http\Controllers\JadwalDokterController;
+use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\StaffController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('layouts/home-pasien');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+
+Route::middleware('auth')->group(function () {
+    Route::controller(StaffController::class)->group(function () {
+        Route::group(['prefix' => 'staff'], function () {
+            Route::get('/index', 'index')->name('staff');
+            Route::get('/create', 'create')->name('create-staff');
+            Route::get('/show', 'show')->name('show-staff');
+            Route::get('/datatable', 'datatable')->name('datatable-staff');
+            Route::get('/edit', 'edit')->name('edit-staff');
+            Route::post('/store', 'store')->name('store-staff');
+            Route::post('/update', 'update')->name('update-staff');
+            Route::post('/delete', 'delete')->name('delete-staff');
+            Route::get('/generate-kode', 'generateKode')->name('generate-kode-staff');
+        });
+    });
+
+    Route::controller(JadwalDokterController::class)->group(function () {
+        Route::group(['prefix' => 'jadwal-dokter'], function () {
+            Route::get('/index', 'index')->name('jadwal-dokter');
+            Route::get('/create', 'create')->name('create-jadwal-dokter');
+            Route::get('/show', 'show')->name('show-jadwal-dokter');
+            Route::get('/datatable', 'datatable')->name('datatable-jadwal-dokter');
+            Route::get('/edit', 'edit')->name('edit-jadwal-dokter');
+            Route::post('/store', 'store')->name('store-jadwal-dokter');
+            Route::post('/update', 'update')->name('update-jadwal-dokter');
+            Route::post('/delete', 'delete')->name('delete-jadwal-dokter');
+            Route::get('/generate-kode', 'generateKode')->name('generate-kode-jadwal-dokter');
+            Route::get('/status', 'status')->name('status-jadwal-dokter');
+        });
+    });
+
+    Route::controller(PasienController::class)->group(function () {
+        Route::group(['prefix' => 'pasien'], function () {
+            Route::get('/index', 'index')->name('pasien');
+            Route::get('/create', 'create')->name('create-pasien');
+            Route::get('/show', 'show')->name('show-pasien');
+            Route::get('/datatable', 'datatable')->name('datatable-pasien');
+            Route::get('/edit', 'edit')->name('edit-pasien');
+            Route::post('/store', 'store')->name('store-pasien');
+            Route::post('/update', 'update')->name('update-pasien');
+            Route::post('/delete', 'delete')->name('delete-pasien');
+            Route::get('/generate-kode', 'generateKode')->name('generate-kode-pasien');
+        });
+    });
+
+    Route::controller(PembayaranController::class)->group(function () {
+        Route::group(['prefix' => 'pembayaran'], function () {
+            Route::get('/index', 'index')->name('pembayaran');
+            Route::get('/datatable', 'datatable')->name('datatable-pembayaran');
+            Route::get('/edit', 'edit')->name('edit-pembayaran');
+            Route::get('/status', 'status')->name('status-pembayaran');
+            Route::post('/store', 'store')->name('store-pembayaran');
+            Route::post('/delete', 'delete')->name('delete-pembayaran');
+        });
+    });
+
+    Route::controller(SettingController::class)->group(function () {
+        Route::group(['prefix' => 'setting'], function () {
+            Route::get('/index', 'index')->name('setting');
+            Route::get('/datatable', 'datatable')->name('datatable-setting');
+            Route::get('/edit', 'edit')->name('edit-setting');
+            Route::get('/status', 'status')->name('status-setting');
+            Route::post('/store', 'store')->name('store-setting');
+            Route::post('/delete', 'delete')->name('delete-setting');
+        });
+    });
+});
+require __DIR__ . '/auth.php';

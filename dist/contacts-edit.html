@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Visio Mandiri Medika</title>
+    <meta name="description" content=""/>
+    <meta name="theme-color" content=""/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="stylesheet" href="styles/plugins.css"/>
+    <link rel="stylesheet" href="styles/main.css?v=3"/>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="web-wrapper" id="page">
+        <header class="header" id="page_header">
+          <div class="header__wrap"><a class="header__logo" href="dashboard.html"><img src="images/logo-vmm.png" alt="Mekari Design" width="147" height="48"/></a></div>
+        </header>
+        <nav class="sidebar">
+          <div class="sidebar__wrap">
+            <ul class="main-menu">
+              <li class="main-menu__item"><a class="main-menu__link" href="dashboard.html">
+                  <div class="icon"><img src="images/ic-dashboard.svg"/></div><span>Dashboard</span></a></li>
+              <li class="main-menu__item"><a class="main-menu__link" href="staff.html">
+                  <div class="icon"><img src="images/ic-subscribers.svg"/></div><span>Staff</span></a></li>
+              <li class="main-menu__item"><a class="main-menu__link" href="pasien.html">
+                  <div class="icon"><img src="images/ic-contact.svg"/></div><span>Pasien</span></a></li>
+              <li class="main-menu__item"><a class="main-menu__link" href="pembayaran.html">
+                  <div class="icon"><img src="images/ic-payment.svg"/></div><span>Pembayaran</span></a></li>
+              <li class="main-menu__item"><a class="main-menu__link" href="#">
+                  <div class="icon"><img src="images/ic-settings.svg"/></div><span>Pengaturan</span></a></li>
+            </ul>
+            <div class="user-snapshot dropdown">
+              <div class="user-snapshot__toggle" data-toggle="dropdown">
+                <div class="user-snapshot__avatar"><img src="images/img-avatar.png" alt="Avatar" width="32" height="32"/></div>
+                <div class="user-snapshot__wrap"><span class="username">Faisal Nurmansyah</span><span class="title">Admin</span></div>
+              </div>
+              <div class="dropdown-menu"><a class="dropdown-item" href="#">Logout</a></div>
+            </div>
+          </div>
+        </nav>
+        <main>
+          <div class="page-title">
+            <div class="page-title__left"><a class="btn btn--icon btn--back" href="contacts.html"> 
+                <div class="btn--wrap">
+                  <div class="icon"><img class="svg" src="images/ic-left.svg"/></div><span>Back to all contacts</span>
+                </div></a></div>
+          </div>
+          <div class="page-main">
+            <div class="add-contact">
+              <div class="container--small">
+                <form class="form--add-contact">
+                  <div class="add-contact__title">
+                    <h1 class="title--primary">Edit Contact</h1><a class="btn btn--link btn--nopadding btn--del" href="#modalDelete" data-toggle="modal">Delete</a>
+                  </div>
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" id="cb00" type="checkbox" data-toggle="collapse" data-target="#isMekarian" checked="checked"/>
+                      <label class="custom-control-label" for="cb00">Contact is Mekarian</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Full name</label>
+                    <input class="form-control" type="text" value="Abdul Kodir"/>
+                  </div>
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input class="form-control" type="text" value="abdul.kodir@mekari.com"/>
+                  </div>
+                  <div class="form-group">
+                    <label>Mobile No.</label>
+                    <input class="form-control number" type="text" value="081296249425"/>
+                  </div>
+                  <div class="form-group collapse" id="isMekarian">
+                    <label>Company</label>
+                    <input class="form-control" type="text" value=""/>
+                  </div>
+                  <div class="form-group">
+                    <label>Job Title</label>
+                    <input class="form-control" type="text" value="Multimedia Designer"/>
+                  </div>
+                  <div class="form-group">
+                    <label>Department</label>
+                    <input class="form-control" type="text" value="Mekari University"/>
+                  </div>
+                  <div class="form-action text-right">
+                    <button class="btn btn--primary btn--next btn--submit" type="submit">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+        <div class="back-to-top"></div>
+      </div>
+    </div>
+    <div class="modal" id="modalDelete" tabindex="-1">
+      <div class="modal-dialog modal-dialog--centered modal-dialog--sm">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h2>Delete Contact</h2>
+            <form>
+              <div class="form-group">
+                <p>Want to delete contact?</p>
+              </div>
+              <div class="form-action text-right"><button class="btn btn--white" type="button" data-dismiss="modal">Cancel</button><button class="btn btn--danger" type="submit" data-dismiss="modal">Delete</button></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="scripts/plugins.js?v=2"></script>
+  <script src="plugins/summernote/summernote-lite.min.js"></script>
+  <script src="plugins/marquee/js/marquee.js"></script>
+  <script src="scripts/main.js?v=2"></script>
+</html>

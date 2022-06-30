@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 59.1 (101010) - https://sketch.com -->
+    <title>B5B3CBCA-6F33-4BD3-856D-8801D77A84E7svg/</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Website" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="menu---solutions" transform="translate(-989.000000, -30.000000)">
+            <rect fill="#FFFFFF" x="0" y="0" width="1920" height="1024"></rect>
+            <g id="header">
+                <rect id="base" fill="#FFFFFF" x="0" y="0" width="1920" height="72"></rect>
+                <g id="menu" transform="translate(747.000000, 24.000000)" fill="#777777" fill-rule="nonzero">
+                    <g id="Icons/-Small/-Utilities/-Dropdown" transform="translate(242.000000, 6.000000)">
+                        <polygon id="Color" points="4 6.4 8 10.4 12 6.4"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
