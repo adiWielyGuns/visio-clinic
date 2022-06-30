@@ -22,6 +22,7 @@
                             <th width="17%"><span>Dokter</span></th>
                             <th width="17%"><span>Hari</span></th>
                             <th width="17%"><span>Kuota</span></th>
+                            <th width="17%"><span>Jenis Jadwal</span></th>
                             <th width="17%"><span>Status</span></th>
                             <th class="has-edit">Aksi</th>
                         </tr>
@@ -58,6 +59,9 @@
                 }, {
                     data: 'kuota',
                     name: 'kuota'
+                }, {
+                    data: 'jenis',
+                    name: 'jenis'
                 }, {
                     data: 'status',
                     name: 'status'

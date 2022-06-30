@@ -27,6 +27,6 @@ class JadwalDokterLog extends Model
 
     public function jadwal_dokter()
     {
-        return $this->belongsTo(JadwalDokterLog::class);
+        return $this->belongsTo(JadwalDokter::class);
     }
 }

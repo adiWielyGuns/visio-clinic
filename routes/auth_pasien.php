@@ -14,10 +14,10 @@ Route::middleware('pasien')->group(function () {
         Route::get('/get-jadwal-dokter', 'getJadwalDokter')->name('get-jadwal-dokter');
         Route::get('/antrian', 'antrian')->name('antrian');
         Route::post('/store', 'store')->name('store-reservasi');
+        Route::post('/delete', 'delete')->name('delete-reservasi');
     });
 
     Route::controller(LoginPasienController::class)->group(function () {
-        Route::post('/logout-pasien', 'destroy')->name('logout-pasien');
         Route::post('/logout-pasien', 'destroy')->name('logout-pasien');
     });
 });

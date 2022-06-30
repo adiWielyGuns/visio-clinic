@@ -14,6 +14,7 @@ class JadwalDokter extends Model
         'id',
         'hari',
         'kuota',
+        'jenis',
         'users_id',
         'status',
         'created_by',
@@ -22,12 +23,18 @@ class JadwalDokter extends Model
         'updated_at'
     ];
 
+    public static $enumJenis = [
+        'On Site',
+        'Panggilan',
+    ];
+
+
     public function jadwal_dokter_log()
     {
         return $this->hasMany(JadwalDokterLog::class);
     }
 
-    public function user()
+    public function dokter()
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }

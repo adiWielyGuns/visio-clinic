@@ -1,194 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Visio Mandiri Medika</title>
-    <meta name="description" content=""/>
-    <meta name="theme-color" content=""/>
-    <link rel="shortcut icon" href="favicon.ico"/>
-    <link rel="stylesheet" href="styles/plugins.css"/>
-    <link rel="stylesheet" href="styles/main.css?v=3"/>
-  </head>
-  <body>
+    <meta name="description" content="" />
+    <meta name="theme-color" content="" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="styles/plugins.css" />
+    <link rel="stylesheet" href="styles/main.css?v=3" />
+</head>
+
+<body>
     <div id="wrap">
-      <div class="web-wrapper" id="page">
-        <header class="header" id="page_header">
-          <div class="header__wrap"><a class="header__logo" href="dashboard.html"><img src="images/logo-vmm.png" alt="Mekari Design" width="147" height="48"/></a></div>
-        </header>
-        <nav class="sidebar">
-          <div class="sidebar__wrap">
-            <ul class="main-menu">
-              <li class="main-menu__item"><a class="main-menu__link" href="dashboard.html">
-                  <div class="icon"><img src="images/ic-dashboard.svg"/></div><span>Dashboard</span></a></li>
-              <li class="main-menu__item"><a class="main-menu__link" href="staff.html">
-                  <div class="icon"><img src="images/ic-subscribers.svg"/></div><span>Staff</span></a></li>
-              <li class="main-menu__item"><a class="main-menu__link" href="pasien.html">
-                  <div class="icon"><img src="images/ic-contact.svg"/></div><span>Pasien</span></a></li>
-              <li class="main-menu__item active"><a class="main-menu__link" href="pembayaran.html">
-                  <div class="icon"><img src="images/ic-payment.svg"/></div><span>Pembayaran</span></a></li>
-              <li class="main-menu__item"><a class="main-menu__link" href="#">
-                  <div class="icon"><img src="images/ic-settings.svg"/></div><span>Pengaturan</span></a></li>
-            </ul>
-            <div class="user-snapshot dropdown">
-              <div class="user-snapshot__toggle" data-toggle="dropdown">
-                <div class="user-snapshot__avatar"><img src="images/img-avatar.png" alt="Avatar" width="32" height="32"/></div>
-                <div class="user-snapshot__wrap"><span class="username">Faisal Nurmansyah</span><span class="title">Admin</span></div>
-              </div>
-              <div class="dropdown-menu"><a class="dropdown-item" href="#">Logout</a></div>
-            </div>
-          </div>
-        </nav>
-        <main>
-          <div class="page-title">
-            <div class="page-title__left">
-              <h1>Pembayaran</h1>
-            </div>
-            <div class="page-title__action"><a class="btn btn--primary" href="pembayaran-add.html">Tambah Pembayaran</a></div>
-          </div>
-          <div class="page-main">
-            <div class="tab-content">
-              <div class="tab-pane fade active show" id="dokters">
-                <div class="page-filter">
-                  <div class="item bulk-false collapse show">
-                    <div class="row">
-                      <div class="col-1">
-                        <label>Jenis Pembayaran</label>
-                        <select class="select" title="Jenis Pembayaran">
-                          <option>Semua Jenis</option>
-                          <option>Tunai</option>
-                          <option>Non Tunai</option>
-                        </select>
-                      </div>
-                      <div class="col-1">
-                        <div class="form-group dp">
-                          <label>Tanggal Awal</label>
-                          <div class="datepicker">
-                            <input class="form-control tanggal" id="tgl_awal" name="tgl_awal" type="text"/>
-                          </div>
-                          <div class="inpt-apend"></div>
+        <div class="web-wrapper" id="page">
+            <header class="header" id="page_header">
+                <div class="header__wrap"><a class="header__logo" href="dashboard.html"><img src="images/logo-vmm.png"
+                            alt="Mekari Design" width="147" height="48" /></a></div>
+            </header>
+            <nav class="sidebar">
+                <div class="sidebar__wrap">
+                    <ul class="main-menu">
+                        <li class="main-menu__item"><a class="main-menu__link" href="dashboard.html">
+                                <div class="icon"><img src="images/ic-dashboard.svg" /></div><span>Dashboard</span>
+                            </a></li>
+                        <li class="main-menu__item"><a class="main-menu__link" href="staff.html">
+                                <div class="icon"><img src="images/ic-subscribers.svg" /></div><span>Staff</span>
+                            </a></li>
+                        <li class="main-menu__item"><a class="main-menu__link" href="pasien.html">
+                                <div class="icon"><img src="images/ic-contact.svg" /></div><span>Pasien</span>
+                            </a></li>
+                        <li class="main-menu__item active"><a class="main-menu__link" href="pembayaran.html">
+                                <div class="icon"><img src="images/ic-payment.svg" /></div><span>Pembayaran</span>
+                            </a></li>
+                        <li class="main-menu__item"><a class="main-menu__link" href="#">
+                                <div class="icon"><img src="images/ic-settings.svg" /></div><span>Pengaturan</span>
+                            </a></li>
+                    </ul>
+                    <div class="user-snapshot dropdown">
+                        <div class="user-snapshot__toggle" data-toggle="dropdown">
+                            <div class="user-snapshot__avatar"><img src="images/img-avatar.png" alt="Avatar" width="32"
+                                    height="32" /></div>
+                            <div class="user-snapshot__wrap"><span class="username">Faisal Nurmansyah</span><span
+                                    class="title">Admin</span></div>
                         </div>
-                      </div>
-                      <div class="col-1">
-                        <div class="form-group dp">
-                          <label>Tanggal Akhir</label>
-                          <div class="datepicker">
-                            <input class="form-control tanggal" id="tgl_akhir" name="tgl_akhir" type="text"/>
-                          </div>
-                          <div class="inpt-apend"></div>
-                        </div>
-                      </div>
-                      <div class="col-1">
-                        <label>&nbsp;</label><a class="btn btn--primary" href="#">Cetak Laporan</a>
-                      </div>
-                      <div class="col text-right">
-                        <label>&nbsp;</label>
-                        <form class="search">
-                          <div class="search__wrap">
-                            <div class="search__icon"><img class="svg" src="images/ic-search.svg"/></div>
-                            <input class="form-control" type="text" placeholder="Cari"/>
-                          </div>
-                        </form>
-                      </div>
+                        <div class="dropdown-menu"><a class="dropdown-item" href="#">Logout</a></div>
                     </div>
-                  </div>
                 </div>
-                <div class="table">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th class="check-all"><span>No.</span></th>
-                        <th width="10%"><span>No. Invoice</span></th>
-                        <th width="12%"><span>Jenis Pembayaran</span></th>
-                        <th width="17%"><span>Tgl. Pembayaran</span></th>
-                        <th width="15%"><span>Terima Dari</span></th>
-                        <th class="text-right"><span>Jumlah Uang (Rp)</span></th>
-                        <th><span>Status</span></th>
-                        <th class="has-edit"><span class="sr-only"></span></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>202012-00023</td>
-                        <td>Tunai</td>
-                        <td>12 Dec 2020</td>
-                        <td>Maya Andriani</td>
-                        <td class="text-right">200.000</td>
-                        <td>
-                          <div class="tag tag--green">Belum Bayar</div>
-                        </td>
-                        <td class="has-action"><a class="btn-edit" href="#modalVerif" data-toggle="modal"><img class="svg" src="images/ic-check.svg"/></a><a class="btn-edit" href="#modalDelete" data-toggle="modal"><img class="svg" src="images/ic-delete.svg"/></a></td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>202102-00024</td>
-                        <td>Non - Tunai</td>
-                        <td>02 Jan 2021</td>
-                        <td>Lidya Ayu</td>
-                        <td class="text-right">150.000</td>
-                        <td>
-                          <div class="tag tag--green">Lunas</div>
-                        </td>
-                        <td class="has-action"><a class="btn-edit" href="#"><img class="svg" src="images/ic-printer.svg"/></a><a class="btn-edit" href="pembayaran-edit.html"><img class="svg" src="images/ic-edit.svg"/></a><a class="btn-edit" href="#modalDelete" data-toggle="modal"><img class="svg" src="images/ic-delete.svg"/></a></td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>202103-00025</td>
-                        <td>Tunai</td>
-                        <td>03 Jan 2021</td>
-                        <td>Haryo Agung</td>
-                        <td class="text-right">200.000</td>
-                        <td>
-                          <div class="tag tag--green">Lunas</div>
-                        </td>
-                        <td class="has-action"><a class="btn-edit" href="#"><img class="svg" src="images/ic-printer.svg"/></a><a class="btn-edit" href="pembayaran-edit.html"><img class="svg" src="images/ic-edit.svg"/></a><a class="btn-edit" href="#modalDelete" data-toggle="modal"><img class="svg" src="images/ic-delete.svg"/></a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="table__footer"><a class="prev disabled" href="#"><img class="svg" src="images/ic-left.svg"/></a><span>1 - 10 of 10</span><a class="next" href="#"><img class="svg" src="images/ic-right.svg"/></a></div>
+            </nav>
+            <main>
+                <div class="page-title">
+                    <div class="page-title__left">
+                        <h1>Pembayaran</h1>
+                    </div>
+                    <div class="page-title__action"><a class="btn btn--primary" href="pembayaran-add.html">Tambah
+                            Pembayaran</a></div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </main>
-        <div class="back-to-top"></div>
-      </div>
+                <div class="page-main">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="dokters">
+                            <div class="page-filter">
+                                <div class="item bulk-false collapse show">
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <label>Jenis Pembayaran</label>
+                                            <select class="select" title="Jenis Pembayaran">
+                                                <option>Semua Jenis</option>
+                                                <option>Tunai</option>
+                                                <option>Non Tunai</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-1">
+                                            <div class="form-group dp">
+                                                <label>Tanggal Awal</label>
+                                                <div class="datepicker">
+                                                    <input class="form-control tanggal" id="tgl_awal" name="tgl_awal"
+                                                        type="text" />
+                                                </div>
+                                                <div class="inpt-apend"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1">
+                                            <div class="form-group dp">
+                                                <label>Tanggal Akhir</label>
+                                                <div class="datepicker">
+                                                    <input class="form-control tanggal" id="tgl_akhir" name="tgl_akhir"
+                                                        type="text" />
+                                                </div>
+                                                <div class="inpt-apend"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1">
+                                            <label>&nbsp;</label><a class="btn btn--primary" href="#">Cetak Laporan</a>
+                                        </div>
+                                        <div class="col text-right">
+                                            <label>&nbsp;</label>
+                                            <form class="search">
+                                                <div class="search__wrap">
+                                                    <div class="search__icon"><img class="svg"
+                                                            src="images/ic-search.svg" /></div>
+                                                    <input class="form-control" type="text" placeholder="Cari" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="check-all"><span>No.</span></th>
+                                            <th width="10%"><span>No. Invoice</span></th>
+                                            <th width="12%"><span>Jenis Pembayaran</span></th>
+                                            <th width="17%"><span>Tgl. Pembayaran</span></th>
+                                            <th width="15%"><span>Terima Dari</span></th>
+                                            <th class="text-right"><span>Jumlah Uang (Rp)</span></th>
+                                            <th><span>Status</span></th>
+                                            <th class="has-edit"><span class="sr-only"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>202012-00023</td>
+                                            <td>Tunai</td>
+                                            <td>12 Dec 2020</td>
+                                            <td>Maya Andriani</td>
+                                            <td class="text-right">200.000</td>
+                                            <td>
+                                                <div class="tag tag--green">Belum Bayar</div>
+                                            </td>
+                                            <td class="has-action"><a class="btn-edit" href="#modalVerif"
+                                                    data-toggle="modal"><img class="svg"
+                                                        src="images/ic-check.svg" /></a><a class="btn-edit"
+                                                    href="#modalDelete" data-toggle="modal"><img class="svg"
+                                                        src="images/ic-delete.svg" /></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>202102-00024</td>
+                                            <td>Non - Tunai</td>
+                                            <td>02 Jan 2021</td>
+                                            <td>Lidya Ayu</td>
+                                            <td class="text-right">150.000</td>
+                                            <td>
+                                                <div class="tag tag--green">Lunas</div>
+                                            </td>
+                                            <td class="has-action"><a class="btn-edit" href="#"><img class="svg"
+                                                        src="images/ic-printer.svg" /></a><a class="btn-edit"
+                                                    href="pembayaran-edit.html"><img class="svg"
+                                                        src="images/ic-edit.svg" /></a><a class="btn-edit"
+                                                    href="#modalDelete" data-toggle="modal"><img class="svg"
+                                                        src="images/ic-delete.svg" /></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>202103-00025</td>
+                                            <td>Tunai</td>
+                                            <td>03 Jan 2021</td>
+                                            <td>Haryo Agung</td>
+                                            <td class="text-right">200.000</td>
+                                            <td>
+                                                <div class="tag tag--green">Lunas</div>
+                                            </td>
+                                            <td class="has-action"><a class="btn-edit" href="#"><img class="svg"
+                                                        src="images/ic-printer.svg" /></a><a class="btn-edit"
+                                                    href="pembayaran-edit.html"><img class="svg"
+                                                        src="images/ic-edit.svg" /></a><a class="btn-edit"
+                                                    href="#modalDelete" data-toggle="modal"><img class="svg"
+                                                        src="images/ic-delete.svg" /></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="table__footer"><a class="prev disabled" href="#"><img class="svg"
+                                            src="images/ic-left.svg" /></a><span>1 - 10 of 10</span><a class="next"
+                                        href="#"><img class="svg" src="images/ic-right.svg" /></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <div class="back-to-top"></div>
+        </div>
     </div>
     <div class="modal" id="modalDelete" tabindex="-1">
-      <div class="modal-dialog modal-dialog--centered modal-dialog--sm">
-        <div class="modal-content">
-          <div class="modal-body">
-            <h2>Delete Data</h2>
-            <form>
-              <div class="form-group">
-                <p>Want to delete data?</p>
-              </div>
-              <div class="form-action text-right"><button class="btn btn--white" type="button" data-dismiss="modal">Cancel</button><button class="btn btn--danger" type="submit" data-dismiss="modal">Delete</button></div>
-            </form>
-          </div>
+        <div class="modal-dialog modal-dialog--centered modal-dialog--sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h2>Delete Data</h2>
+                    <form>
+                        <div class="form-group">
+                            <p>Want to delete data?</p>
+                        </div>
+                        <div class="form-action text-right"><button class="btn btn--white" type="button"
+                                data-dismiss="modal">Cancel</button><button class="btn btn--danger" type="submit"
+                                data-dismiss="modal">Delete</button></div>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
     <div class="modal" id="modalVerif" tabindex="-1">
-      <div class="modal-dialog modal-dialog--centered modal-dialog--sm">
-        <div class="modal-content">
-          <div class="modal-body">
-            <h2>Verifikasi Pembayaran</h2>
-            <form>
-              <div class="form-group">
-                <p>Apakah Anda yakin melakukan verifikasi pembayaran pada data ini?</p>
-              </div>
-              <div class="form-action text-right"><button class="btn btn--white" type="button" data-dismiss="modal">Cancel</button><button class="btn btn--acc" type="submit" data-dismiss="modal">Verifikasi</button></div>
-            </form>
-          </div>
+        <div class="modal-dialog modal-dialog--centered modal-dialog--sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h2>Verifikasi Pembayaran</h2>
+                    <form>
+                        <div class="form-group">
+                            <p>Apakah Anda yakin melakukan verifikasi pembayaran pada data ini?</p>
+                        </div>
+                        <div class="form-action text-right"><button class="btn btn--white" type="button"
+                                data-dismiss="modal">Cancel</button><button class="btn btn--acc" type="submit"
+                                data-dismiss="modal">Verifikasi</button></div>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </body>
-  <script src="scripts/plugins.js?v=2"></script>
-  <script src="plugins/summernote/summernote-lite.min.js"></script>
-  <script src="plugins/marquee/js/marquee.js"></script>
-  <script src="scripts/main.js?v=2"></script>
+</body>
+<script src="scripts/plugins.js?v=2"></script>
+<script src="plugins/summernote/summernote-lite.min.js"></script>
+<script src="plugins/marquee/js/marquee.js"></script>
+<script src="scripts/main.js?v=2"></script>
+
 </html>

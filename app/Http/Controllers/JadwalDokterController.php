@@ -29,7 +29,7 @@ class JadwalDokterController extends Controller
                 return view('jadwal_dokter/action', compact('data'));
             })
             ->addColumn('dokter', function ($data) {
-                return $data->user->name;
+                return $data->dokter->name;
             })
             ->addColumn('status', function ($data) {
                 if ($data->status == 'true') {
@@ -113,7 +113,7 @@ class JadwalDokterController extends Controller
 
             $input['updated_by'] = me();
             JadwalDokter::find($req->id)->update($input);
-            return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
+            return Response()->json(['status' => 1, 'message' => 'Data berhasil diupdate']);
         });
     }
 

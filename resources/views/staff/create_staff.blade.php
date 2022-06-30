@@ -70,14 +70,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#tanggal_lahir').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-                todayHighlight: true
-            });
-        })
-
         function generateKode() {
             $.ajax({
                 url: '{{ route('generate-kode-staff') }}',

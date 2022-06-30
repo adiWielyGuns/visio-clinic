@@ -8,25 +8,153 @@
             <div class="page-title__left">
                 <h1>Pemeriksaan<span class="total"></span></h1>
             </div>
-            <div class="page-title__action"><a class="btn btn--primary" href="{{ route('create-pemeriksaan') }}">Tambah Pemeriksaan</a>
-            </div>
+            {{-- <div class="page-title__action"><a class="btn btn--primary" href="{{ route('create-pemeriksaan') }}">Tambah Pemeriksaan</a>
+            </div> --}}
+        </div>
+        <div class="page-tabs">
+            <ul class="nav">
+                <li class="nav__item"><a
+                        class="nav__link {{ isset($req->tab) ? ($req->tab == 'on_site' ? 'active' : '') : 'active' }}"
+                        href="#mekarians" data-toggle="tab">On Site
+                        ({{ count($onSite) }})</a></li>
+                <li class="nav__item"><a
+                        class="nav__link {{ isset($req->tab) ? ($req->tab == 'panggilan' ? 'active' : '') : '' }}"
+                        href="#outsiders" data-toggle="tab">Panggilan
+                        ({{ count($panggilan) }})</a></li>
+            </ul>
         </div>
         <div class="page-main">
-            <div class="table">
-                <table id="table-pemeriksaan">
-                    <thead>
-                        <tr>
-                            <th class="check-all"><span>No.</span></th>
-                            <th width="17%"><span>ID Terapis</span></th>
-                            <th width="17%"><span>Nama Terapis</span></th>
-                            <th width="23%"><span>Email</span></th>
-                            <th><span>Mobile No.</span></th>
-                            <th><span>Alamat</span></th>
-                            <th class="has-edit">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="tab-content">
+                <div class="tab-pane fade  {{ isset($req->tab) ? ($req->tab == 'on_site' ? 'show active' : '') : 'show active' }}"
+                    id="mekarians">
+                    <div class="page-filter">
+                        <div
+                            class="item bulk-false collapse {{ isset($req->tab) ? ($req->tab == 'on_site' ? 'show' : '') : 'show' }}">
+                            <div class="row">
+                                <div class="col-1">
+                                    <div class="form-group dp">
+                                        <label>Tanggal Reservasi</label>
+                                        <div class="datepicker">
+                                            <input class="form-control required" type="text" name="tanggal_on_site"
+                                                value="{{ isset($req->tanggal_on_site) ? $req->tanggal_on_site : '' }}"
+                                                id="tanggal_on_site" />
+                                        </div>
+                                        <div class="inpt-apend"></div>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <label>&nbsp;</label> <a class="btn btn--primary"
+                                        href="{{ route('pemeriksaan') }}">Reset
+                                        Tanggal</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="check-all" width="5%"><span>No.</span></th>
+                                    <th><span>Tgl. Antrian</span></th>
+                                    <th><span>Nama Pasien</span></th>
+                                    <th><span>Antrian Saat Ini</span></th>
+                                    <th><span>No. Antrian</span></th>
+                                    <td class="has-action"></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($onSite->sortBy('tanggal') as $i => $item)
+                                    <tr>
+                                        <td class="index-antrian">{{ $i + 1 }}</td>
+                                        <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
+                                        <td>{{ $item->jadwal_dokter->dokter->name }}</td>
+                                        <td>{{ $item->no_reservasi }}</td>
+                                        <td>{{ $item->no_reservasi }}</td>
+                                        <td>
+                                            @if (dateStore() != $item->tanggal)
+                                                <a class="btn btn--primary"
+                                                    href="{{ route('create-pemeriksaan', ['id' => $item->id, 'jadwal_dokter_id' => $item->jadwal_dokter_id]) }}">Periksa
+                                                    Pasien</a>
+                                            @else
+                                                H{{ diffdate($item->tanggal, dateStore()) }}
+                                            @endif
+
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" style="text-align: center">Tidak ada reservasi</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade  {{ isset($req->tab) ? ($req->tab == 'panggilan' ? 'show active' : '') : '' }}"
+                    id="outsiders">
+                    <div class="page-filter">
+                        <div
+                            class="item bulk-false collapse  {{ isset($req->tab) ? ($req->tab == 'panggilan' ? 'show' : '') : '' }}">
+                            <div class="row">
+                                <div class="col-1">
+                                    <div class="form-group dp">
+                                        <label>Tanggal Reservasi</label>
+                                        <div class="datepicker">
+                                            <input class="form-control required" type="text" name="tanggal_panggilan"
+                                                value="{{ isset($req->tanggal_panggilan) ? $req->tanggal_panggilan : '' }}"
+                                                id="tanggal_panggilan" />
+                                        </div>
+                                        <div class="inpt-apend"></div>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <label>&nbsp;</label> <a class="btn btn--primary"
+                                        href="{{ route('pemeriksaan') }}">Reset
+                                        Tanggal</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="check-all" width="5%"><span>No.</span></th>
+                                    <th><span>Tgl. Antrian</span></th>
+                                    <th><span>Nama Pasien</span></th>
+                                    <th><span>Antrian Saat Ini</span></th>
+                                    <th><span>No. Antrian</span></th>
+                                    <td class="has-action"></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($panggilan->sortBy('tanggal') as $i => $item)
+                                    <tr>
+                                        <td class="index-antrian">{{ $i + 1 }}</td>
+                                        <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
+                                        <td>{{ $item->jadwal_dokter->dokter->name }}</td>
+                                        <td>{{ $item->no_reservasi }}</td>
+                                        <td>{{ $item->no_reservasi }}</td>
+                                        <td>
+                                            @if (dateStore() == $item->tanggal)
+                                                <a class="btn btn--primary"
+                                                    href="{{ route('create-pemeriksaan', ['id' => $item->id, 'jadwal_dokter_id' => $item->jadwal_dokter_id]) }}">Periksa
+                                                    Pasien</a>
+                                            @else
+                                                H{{ diffdate($item->tanggal, dateStore()) }}
+                                            @endif
+
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" style="text-align: center">Tidak ada reservasi</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -68,7 +196,30 @@
                     class: 'text-center',
                 }, ]
             });
+
+
         }())
+        $(document).ready(function() {
+            $('#tanggal_on_site').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true
+            }).on('changeDate', function() {
+                location.href = '{{ route('pemeriksaan') }}?tanggal_on_site=' + $('#tanggal_on_site')
+                    .val() + '&tanggal_panggilan=' + $('#tanggal_panggilan')
+                    .val() + '&tab=on_site';
+            });
+
+            $('#tanggal_panggilan').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true
+            }).on('changeDate', function() {
+                location.href = '{{ route('pemeriksaan') }}?tanggal_on_site=' + $('#tanggal_on_site')
+                    .val() + '&tanggal_panggilan=' + $('#tanggal_panggilan')
+                    .val() + '&tab=panggilan';
+            });
+        })
 
         function hapus(id) {
             var previousWindowKeyDown = window.onkeydown;

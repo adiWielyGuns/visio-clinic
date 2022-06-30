@@ -11,7 +11,8 @@
                         <span>Kembali ke Daftar
                             Jadwal Dokter</span>
                     </div>
-                </a></div>
+                </a>
+            </div>
         </div>
         <div class="page-main">
             <div class="add-contact">
@@ -39,10 +40,18 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        <div class="form-group">
+                            <label>Jenis Jadwal</label>
+                            <select class="select select-contact-group" id="jenis" name="jenis"
+                                title="Pilih Jenis Jadwal">
+                                @foreach (\App\Models\JadwalDokter::$enumJenis as $item)
+                                    <option value="{{ $item }}">{{ $item }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label>Kuota</label>
-                            <input class="form-control required number" type="text" name="kuota" id="kuota" />
+                            <input class="form-control required number" type="number" name="kuota" id="kuota" />
                         </div>
                         <div class="form-action text-right">
                             <button class="btn btn--primary btn--next btn--submit" type="button"
@@ -64,6 +73,11 @@
                 autoclose: true,
                 todayHighlight: true
             });
+
+            @if (Auth::user()->role->name == 'Terapis')
+                $('#users_id').val('{{ Auth::user()->id }}');
+                $('#users_id').prop('disabled', true);
+            @endif
         })
 
         function store() {

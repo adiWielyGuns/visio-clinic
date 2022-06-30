@@ -15,9 +15,37 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PemeriksaanController extends Controller
 {
-    public function index()
+    public function index(Request $req)
     {
-        return view('pemeriksaan/pemeriksaan');
+        $onSite = JadwalDokterLog::where('status', 'Reserved')
+            ->whereHas('jadwal_dokter', function ($q) {
+                if (Auth::user()->role->name == 'Terapis') {
+                    $q->where('users_id', Auth::user()->id);
+                }
+                $q->where('jenis', 'On Site');
+            })
+            ->where(function ($q) use ($req) {
+                if (isset($req->tanggal_on_site)  && $req->tanggal_on_site != '') {
+                    $q->where('tanggal', dateStore($req->tanggal_on_site));
+                }
+            })
+            ->get();
+
+        $panggilan = JadwalDokterLog::where('status', 'Reserved')
+            ->whereHas('jadwal_dokter', function ($q) {
+                if (Auth::user()->role->name == 'Terapis') {
+                    $q->where('users_id', Auth::user()->id);
+                }
+                $q->where('jenis', 'Panggilan');
+            })
+            ->where(function ($q) use ($req) {
+                if (isset($req->tanggal_panggilan) && $req->tanggal_panggilan != '') {
+                    $q->where('tanggal', dateStore($req->tanggal_panggilan));
+                }
+            })
+            ->get();
+
+        return view('pemeriksaan/pemeriksaan', compact('onSite', 'panggilan', 'req'));
     }
 
     public function datatable(Request $req)

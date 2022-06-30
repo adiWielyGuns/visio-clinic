@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('jadwal_dokter_log', function (Blueprint $table) {
+        Schema::table('jadwal_dokter', function (Blueprint $table) {
             $table->enum('jenis', ['On Site', 'Panggilan'])->nullable();
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('jadwal_dokter_log', function (Blueprint $table) {
+        Schema::table('jadwal_dokter', function (Blueprint $table) {
             $table->dropColumn(['jenis']);
         });
     }

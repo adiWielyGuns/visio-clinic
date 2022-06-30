@@ -325,6 +325,10 @@ function convertDayToHari($day)
     return hari()[$index];
 }
 
+function diffdate($start, $end)
+{
+    return ((strtotime($end) - strtotime($start)) / 86400) ;
+}
 
 function convertHariToDay($day)
 {

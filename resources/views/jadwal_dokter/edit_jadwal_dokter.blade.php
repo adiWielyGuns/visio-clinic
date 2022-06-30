@@ -42,7 +42,15 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        <div class="form-group">
+                            <label>Jenis Jadwal</label>
+                            <select class="select select-contact-group" id="jenis" name="jenis"
+                                title="Pilih Jenis Jadwal">
+                                @foreach (\App\Models\JadwalDokter::$enumJenis as $item)
+                                    <option value="{{ $item }}">{{ $item }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label>Kuota</label>
                             <input class="form-control required number" type="text" name="kuota" id="kuota"
@@ -69,6 +77,7 @@
                 todayHighlight: true
             });
             $('#users_id').val('{{ $data->users_id }}');
+            $('#jenis').val('{{ $data->jenis }}');
         })
 
         function store() {
