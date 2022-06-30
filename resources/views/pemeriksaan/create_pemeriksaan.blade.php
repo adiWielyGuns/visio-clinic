@@ -5,60 +5,50 @@
 @section('content')
     <main>
         <div class="page-title">
-            <div class="page-title__left"><a class="btn btn--icon btn--back" href="{{ route('staff') }}">
+            <div class="page-title__left"><a class="btn btn--icon btn--back" href="dokter-pasien-detail.html">
                     <div class="btn--wrap">
-                        <div class="icon"><img class="svg" src="{{ asset('images/ic-left.svg') }}" /></div>
-                        <span>Kembali ke Daftar
-                            Staff</span>
+                        <div class="icon"><img class="svg" src="images/ic-left.svg" /></div><span>Kembali ke Detail
+                            Pasiean</span>
                     </div>
                 </a></div>
         </div>
         <div class="page-main">
             <div class="add-contact">
                 <div class="container--small">
-                    <form class="form--add-contact" id="form-data">
-                        @csrf
+                    <form class="form--add-contact" action="dokter-pasien-detail.html">
                         <div class="add-contact__title">
-                            <h1 class="title--primary">Tambah Staff Baru</h1>
+                            <h1 class="title--primary">Tambah Rekam Medis Baru</h1>
                         </div>
                         <div class="form-group">
-                            <label>Role</label>
-                            <select class="select select-contact-group" id="role_id" name="role_id"
-                                title="Pilih Departemen" onchange="generateKode()">
-                                @foreach (\App\Models\Role::where('name', '!=', 'SuperAdmin')->get() as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Id Staff</label>
-                            <input readonly class="form-control required" type="text" name="user_id" id="user_id" />
-                        </div>
-                        <div class="form-group">
-                            <label>Nama</label>
-                            <input class="form-control required" type="text" name="name" id="name" />
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input class="form-control required" type="text" name="email" id="email" />
+                            <label>Id Rekam Medis</label>
+                            <input class="form-control" type="text" value="505071" readonly id="id_rekam_medis" name="id_rekam_medis" />
                         </div>
                         <div class="form-group dp">
-                            <label>Tanggal Lahir</label>
-                            <input class="form-control required" type="text" name="tanggal_lahir" id="tanggal_lahir" />
+                            <label>Tgl Berobat</label>
+                            <div class="datepicker">
+                                <input class="form-control tanggal" id="tgl_lahir" name="tgl_awal" type="text" value="{{ $data->tanggal }}" />
+                            </div>
                             <div class="inpt-apend"></div>
                         </div>
                         <div class="form-group">
-                            <label>Mobile No.</label>
-
-                            <input class="form-control required number" type="text" name="telp" id="telp" />
+                            <label>Nama Dokter</label>
+                            <select class="select select-contact-group" id="selectDokter" title="Pilih Dokter"
+                                required="required">
+                                <option value="1" selected="selected">Dr. Abdul Kodir</option>
+                                <option value="2">Dr. Abdul Manan Rangkuti</option>
+                                <option value="3">Dr. Abdullah</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label>Alamat</label>
-                            <input class="form-control required number" type="text" name="alamat" id="alamat" />
+                            <label>Tindakan / Resep</label>
+                            <textarea class="form-control number" type="text"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <textarea class="form-control number" type="text"></textarea>
                         </div>
                         <div class="form-action text-right">
-                            <button class="btn btn--primary btn--next btn--submit" type="button"
-                                onclick="store()">Simpan</button>
+                            <button class="btn btn--primary btn--next btn--submit" type="submit">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -80,15 +70,11 @@
 
         function generateKode() {
             $.ajax({
-                url: '{{ route('generate-kode-staff') }}',
-                data: {
-                    param: function() {
-                        return $('#role_id').val();
-                    },
-                },
+                url: '{{ route('generate-kode-pemeriksaan') }}',
+
                 type: 'get',
                 success: function(data) {
-                    $('#user_id').val(data.kode);
+                    $('#id_rekam_medis').val(data.kode);
                 },
                 error: function(data) {
                     generateKode();

@@ -63,7 +63,7 @@ class PemeriksaanController extends Controller
 
     public function generatekode(Request $req)
     {
-        $kode =  'PN';
+        $kode =  'PE';
         $sub = strlen($kode) + 1;
         $index = PasienRekamMedis::selectRaw('max(substring(id_rekam_medis,' . $sub . ')) as id')
             ->where('id_rekam_medis', 'like', $kode . '%')
@@ -102,7 +102,11 @@ class PemeriksaanController extends Controller
 
     public function create(Request $req)
     {
-        return view('pemeriksaan/create_pemeriksaan');
+        $onSite = JadwalDokterLog::where('status', 'Reserved')
+            ->where('id', $req->id)
+            ->where('jadwal_dokter_id', $req->jadwal_dokter_id)
+            ->first();
+        return view('pemeriksaan/create_pemeriksaan', compact('onSite'));
     }
 
     public function edit(Request $req)
