@@ -3,6 +3,7 @@
 use App\Http\Controllers\JadwalDokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PemeriksaanController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
@@ -63,11 +64,27 @@ Route::middleware('auth')->group(function () {
             Route::get('/create', 'create')->name('create-pasien');
             Route::get('/show', 'show')->name('show-pasien');
             Route::get('/datatable', 'datatable')->name('datatable-pasien');
+            Route::get('/datatable-rekam-medis', 'datatableRekamMedis')->name('datatable-rekam-medis-pasien');
             Route::get('/edit', 'edit')->name('edit-pasien');
             Route::post('/store', 'store')->name('store-pasien');
             Route::post('/update', 'update')->name('update-pasien');
             Route::post('/delete', 'delete')->name('delete-pasien');
             Route::get('/generate-kode', 'generateKode')->name('generate-kode-pasien');
+        });
+    });
+
+    Route::controller(PemeriksaanController::class)->group(function () {
+        Route::group(['prefix' => 'pemeriksaan'], function () {
+            Route::get('/index', 'index')->name('pemeriksaan');
+            Route::get('/create', 'create')->name('create-pemeriksaan');
+            Route::get('/show', 'show')->name('show-pemeriksaan');
+            Route::get('/datatable', 'datatable')->name('datatable-pemeriksaan');
+            Route::get('/datatable-rekam-medis', 'datatableRekamMedis')->name('datatable-rekam-medis-pemeriksaan');
+            Route::get('/edit', 'edit')->name('edit-pemeriksaan');
+            Route::post('/store', 'store')->name('store-pemeriksaan');
+            Route::post('/update', 'update')->name('update-pemeriksaan');
+            Route::post('/delete', 'delete')->name('delete-pemeriksaan');
+            Route::get('/generate-kode', 'generateKode')->name('generate-kode-pemeriksaan');
         });
     });
 

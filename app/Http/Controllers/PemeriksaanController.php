@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\JadwalDokterLog;
-use App\Models\Pasien;
 use App\Models\PasienRekamMedis;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,37 +13,20 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class PasienController extends Controller
+class PemeriksaanController extends Controller
 {
     public function index()
     {
-        return view('pasien/pasien');
+        return view('staff/staff');
     }
 
     public function datatable(Request $req)
     {
-        $data = Pasien::all();
+        $data = JadwalDokterLog::all();
 
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
-                return view('pasien/action', compact('data'));
-            })
-            ->rawColumns(['aksi'])
-            ->addIndexColumn()
-            ->make(true);
-    }
-
-
-    public function datatableRekamMedis(Request $req)
-    {
-        $data = PasienRekamMedis::where('pasien_id', $req->id)->get();;
-
-        return DataTables::of($data)
-            ->addColumn('aksi', function ($data) {
-                return view('pasien/action', compact('data'));
-            })
-            ->addColumn('dokter', function ($data) {
-                return $data->dokter->name;
+                return view('staff/action', compact('data'));
             })
             ->rawColumns(['aksi'])
             ->addIndexColumn()
@@ -53,13 +35,13 @@ class PasienController extends Controller
 
     public function generatekode(Request $req)
     {
-        $kode =  'RM';
+        $kode =  'PN';
         $sub = strlen($kode) + 1;
-        $index = Pasien::selectRaw('max(substring(id_pasien,' . $sub . ')) as id')
-            ->where('id_pasien', 'like', $kode . '%')
+        $index = PasienRekamMedis::selectRaw('max(substring(id_rekam_medis,' . $sub . ')) as id')
+            ->where('id_rekam_medis', 'like', $kode . '%')
             ->first();
 
-        $collect = Pasien::selectRaw('substring(id_pasien,' . $sub . ') as id')
+        $collect = PasienRekamMedis::selectRaw('substring(id_rekam_medis,' . $sub . ') as id')
             ->get();
 
         $count = (int)$index->id;
@@ -92,28 +74,19 @@ class PasienController extends Controller
 
     public function create(Request $req)
     {
-        $kode = $this->generatekode($req)->getData()->kode;
-        return view('pasien/create_pasien', compact('kode'));
+        return view('staff/create_staff');
     }
 
     public function edit(Request $req)
     {
-        $data = Pasien::findOrFail($req->id);
-        return view('pasien/edit_pasien', compact('data'));
+        $data = User::findOrFail($req->id);
+        return view('staff/edit_staff', compact('data'));
     }
 
     public function show(Request $req)
     {
-        $data = Pasien::findOrFail($req->id);
-        $tanggalTerakhirPeriksa = JadwalDokterLog::where('pasien_id', $data->pasien_id)
-            ->where('status', 'Done')
-            ->first();
-        $tanggalReservasi = JadwalDokterLog::where('pasien_id', $data->pasien_id)
-            ->where('status', 'Released')
-            ->orderBy('tanggal', 'DESC')
-            ->first();
-
-        return view('pasien/show_pasien', compact('data', 'tanggalReservasi', 'tanggalTerakhirPeriksa'));
+        $data = User::findOrFail($req->id);
+        return view('staff/show_staff', compact('data'));
     }
 
     public function store(Request $req)
@@ -121,14 +94,30 @@ class PasienController extends Controller
         return DB::transaction(function () use ($req) {
 
             $input = $req->all();
+            $validator = Validator::make(
+                $input,
+                [
+                    'email'       => 'required|unique:users|email',
+                    'username'       => 'unique:users',
+                ],
+                [
+                    'email.email'        => 'Format Email Salah',
+                    'email.unique'        => 'Email sudah ada',
+                    'username.unique'        => 'Username sudah ada',
+                ]
+            );
 
+            if ($validator->fails()) {
+                return response()->json($validator->getMessageBag(), Response::HTTP_BAD_REQUEST);
+            }
 
-            $input['id'] = Pasien::max('id') + 1;
             $input['created_by'] = me();
             $input['updated_by'] = me();
+            $input['username'] = $req->user_id;
             $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
+            $input['password'] = Hash::make(str_replace('/', '', $req->tanggal_lahir));
 
-            Pasien::create($input);
+            User::create($input);
             return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
         });
     }
@@ -138,18 +127,33 @@ class PasienController extends Controller
         return DB::transaction(function () use ($req) {
 
             $input = $req->all();
+            $validator = Validator::make(
+                $input,
+                [
+                    'email'       => 'required|unique:users' . ($req->id == 'undefined' ? '' : ",email,$req->id"),
+                ],
+                [
+                    'email.email'        => 'Format Email Salah',
+                    'email.unique'        => 'Email sudah ada',
+                ]
+            );
+
+            if ($validator->fails()) {
+                return response()->json($validator->getMessageBag(), Response::HTTP_BAD_REQUEST);
+            }
 
             $input['updated_by'] = me();
             $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
+            $input['password'] = Hash::make(str_replace('/', '', $req->tanggal_lahir));
 
-            Pasien::find($req->id)->update($input);
-            return Response()->json(['status' => 1, 'message' => 'Data berhasil diupdate']);
+            User::find($req->id)->update($input);
+            return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
         });
     }
 
     public function delete(Request $req)
     {
-        Pasien::findOrFail($req->id)->delete();
+        User::findOrFail($req->id)->delete();
         return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
     }
 }

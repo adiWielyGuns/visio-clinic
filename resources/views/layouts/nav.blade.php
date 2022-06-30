@@ -9,25 +9,37 @@
                     class="main-menu__link" href="dashboard.html">
                     <div class="icon"><img src="{{ asset('images/ic-dashboard.svg') }}" /></div>
                     <span>Dashboard</span>
-                </a></li>
+                </a>
+            </li>
             <li class="main-menu__item {{ Request::segment(1) == 'staff' ? 'active' : '' }}"><a
                     class="main-menu__link" href="{{ route('staff') }}">
                     <div class="icon"><img src="{{ asset('images/ic-subscribers.svg') }}" /></div><span>Staff</span>
-                </a></li>
+                </a>
+            </li>
             <li class="main-menu__item {{ Request::segment(1) == 'jadwal-dokter' ? 'active' : '' }}"><a
                     class="main-menu__link" href="{{ route('jadwal-dokter') }}">
                     <div class="icon"><img src="{{ asset('images/ic-reports.svg') }}" /></div><span>Jadwal
                         Dokter</span>
-                </a></li>
+                </a>
+            </li>
             <li class="main-menu__item {{ Request::segment(1) == 'pasien' ? 'active' : '' }}"><a
                     class="main-menu__link" href="{{ route('pasien') }}">
                     <div class="icon"><img src="{{ asset('images/ic-contact.svg') }}" /></div><span>Pasien</span>
-                </a></li>
+                </a>
+            </li>
+
+            <li class="main-menu__item {{ Request::segment(1) == 'pemeriksaan' ? 'active' : '' }}"><a
+                    class="main-menu__link" href="{{ route('pemeriksaan') }}">
+                    <div class="icon"><img src="{{ asset('images/ic-payment.svg') }}" /></div>
+                    <span>Pemeriksaan</span>
+                </a>
+            </li>
             <li class="main-menu__item {{ Request::segment(1) == 'pembayaran' ? 'active' : '' }}"><a
                     class="main-menu__link" href="{{ route('pembayaran') }}">
                     <div class="icon"><img src="{{ asset('images/ic-payment.svg') }}" /></div>
                     <span>Pembayaran</span>
-                </a></li>
+                </a>
+            </li>
             <li class="main-menu__item {{ Request::segment(1) == 'setting' ? 'active' : '' }}"><a
                     class="main-menu__link" href="{{ route('setting') }}">
                     <div class="icon"><img src="{{ asset('images/ic-settings.svg') }}" /></div>

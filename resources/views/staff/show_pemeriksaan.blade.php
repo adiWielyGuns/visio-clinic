@@ -9,61 +9,55 @@
                     <div class="btn--wrap">
                         <div class="icon"><img class="svg" src="{{ asset('images/ic-left.svg') }}" /></div>
                         <span>Kembali ke Daftar
-                            Pasien</span>
+                            Staff</span>
                     </div>
                 </a></div>
         </div>
         <div class="page-main">
-            <div class="add-contact">
-                <div class="container--small">
-                    <form class="form--add-contact" id="form-data">
-                        @csrf
-                        <div class="add-contact__title">
-                            <h1 class="title--primary">Tambah Pasien Baru</h1>
+            <h1>Detail Pasien</h1>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="detail-wrap">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>ID Staff</label>
+                                            </div>
+                                            <div class="col-8"><span>{{ $data->user_id }}</span></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Nama</label>
+                                            </div>
+                                            <div class="col-8"><span>{{ $data->name }}</span></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Tgl. Lahir</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <span>{{ CarbonParse($data->tanggal_lahir, 'd F Y') }}</span></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Mobile No.</label>
+                                            </div>
+                                            <div class="col-8"><span>{{ $data->telp }}</span></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Alamat</label>
+                                            </div>
+                                            <div class="col-8"><span>{{ $data->alamat }}</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Id Pasien</label>
-                            <input value="{{ $data->id_pasien }}" readonly class="form-control required" type="text"
-                                name="id_pasien" id="id_pasien" />
-                        </div>
-                        <div class="form-group">
-                            <label>Nama</label>
-                            <input class="form-control required" value="{{ $data->name }}" type="text" name="name"
-                                id="name" />
-
-                            <input type="hidden" name="id" value="{{ $data->id }}}" id="id">
-                        </div>
-                        <div class="form-group dp">
-                            <label>Tanggal Lahir</label>
-                            <input class="form-control required" value="{{ CarbonParse($data->tanggal_lahir, 'd/m/Y') }}"
-                                type="text" name="tanggal_lahir" id="tanggal_lahir" />
-                            <div class="inpt-apend"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Jenis Kelamin</label>
-                            <select class="select select-contact-group" id="jenis_kelamin" name="jenis_kelamin"
-                                title="Pilih Jenis Kelamin" onchange="generateKode()">
-                                @foreach (\App\Models\Pasien::$enumJenisKelamin as $item)
-                                    <option value="{{ $item }}">{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Mobile No.</label>
-
-                            <input class="form-control required number" value="{{ $data->telp }}" type="text"
-                                name="telp" id="telp" />
-                        </div>
-                        <div class="form-group">
-                            <label>Alamat</label>
-                            <input class="form-control required number" value="{{ $data->alamat }}" maxlength="255"
-                                type="text" name="alamat" id="alamat" />
-                        </div>
-                        <div class="form-action text-right">
-                            <button class="btn btn--primary btn--next btn--submit" type="button"
-                                onclick="store()">Simpan</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,13 +73,11 @@
                 autoclose: true,
                 todayHighlight: true
             });
-
-            $('#jenis_kelamin').val('{{ $data->jenis_kelamin }}')
         })
 
         function generateKode() {
             $.ajax({
-                url: '{{ route('generate-kode-pasien') }}',
+                url: '{{ route('generate-kode-staff') }}',
                 data: {
                     param: function() {
                         return $('#role_id').val();
@@ -103,8 +95,8 @@
 
         function store() {
             var validation = 0;
-            if ($('#jenis_kelamin').val() == null || $('#jenis_kelamin').val() == '') {
-                $('#jenis_kelamin').addClass('is-invalid');
+            if ($('#role_id').val() == null || $('#role_id').val() == '') {
+                $('#role_id').addClass('is-invalid');
                 validation++
             }
 
@@ -151,7 +143,7 @@
                     window.onkeydown = previousWindowKeyDown;
                     overlay(true);
                     $.ajax({
-                        url: '{{ route('update-pasien') }}',
+                        url: '{{ route('store-staff') }}',
                         data: formData,
                         type: 'post',
                         processData: false,
@@ -163,7 +155,7 @@
                                     text: data.message,
                                     icon: "success",
                                 }).then(() => {
-                                    location.href = '{{ route('pasien') }}';
+                                    location.href = '{{ route('staff') }}';
                                 })
                             } else if (data.status == 2) {
                                 Swal.fire({

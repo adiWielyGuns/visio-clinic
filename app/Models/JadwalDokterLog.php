@@ -16,6 +16,7 @@ class JadwalDokterLog extends Model
         'pasien_id',
         'hari',
         'tanggal',
+        'status',
         'created_at',
         'updated_at'
     ];
