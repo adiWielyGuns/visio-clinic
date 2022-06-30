@@ -126,30 +126,22 @@ class PemeriksaanController extends Controller
         return DB::transaction(function () use ($req) {
 
             $input = $req->all();
-            $validator = Validator::make(
-                $input,
-                [
-                    'email'       => 'required|unique:users|email',
-                    'username'       => 'unique:users',
-                ],
-                [
-                    'email.email'        => 'Format Email Salah',
-                    'email.unique'        => 'Email sudah ada',
-                    'username.unique'        => 'Username sudah ada',
-                ]
-            );
-
-            if ($validator->fails()) {
-                return response()->json($validator->getMessageBag(), Response::HTTP_BAD_REQUEST);
-            }
+            $check = JadwalDokterLog::where('status', 'Reserved')
+                ->where('id', $req->id)
+                ->where('jadwal_dokter_id', $req->jadwal_dokter_id)
+                ->first();
+            JadwalDokterLog::where('status', 'Reserved')
+                ->where('id', $req->id)
+                ->where('jadwal_dokter_id', $req->jadwal_dokter_id)
+                ->update([
+                    'status' => 'Done',
+                ]);
 
             $input['created_by'] = me();
             $input['updated_by'] = me();
-            $input['username'] = $req->user_id;
-            $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
-            $input['password'] = Hash::make(str_replace('/', '', $req->tanggal_lahir));
+            $input['id'] = PasienRekamMedis::where('pasien_id', $check->pasien_id)->max('id') + 1;
 
-            User::create($input);
+            PasienRekamMedis::create($input);
             return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
         });
     }

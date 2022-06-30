@@ -7,7 +7,8 @@
         <div class="page-title">
             <div class="page-title__left"><a class="btn btn--icon btn--back" href="dokter-pasien-detail.html">
                     <div class="btn--wrap">
-                        <div class="icon"><img class="svg" src="images/ic-left.svg" /></div><span>Kembali ke Detail
+                        <div class="icon"><img class="svg" src="{{ asset('images/ic-left.svg') }}" /></div>
+                        <span>Kembali ke Detail
                             Pasiean</span>
                     </div>
                 </a></div>
@@ -15,14 +16,22 @@
         <div class="page-main">
             <div class="add-contact">
                 <div class="container--small">
-                    <form class="form--add-contact" action="dokter-pasien-detail.html">
+                    <form class="form--add-contact" id="form-data">
+                        @csrf
                         <div class="add-contact__title">
-                            <h1 class="title--primary">Tambah Rekam Medis Baru</h1>
+                            <h1 class="title--primary">Pemeriksaan</h1>
                         </div>
                         <div class="form-group">
                             <label>Id Rekam Medis</label>
                             <input class="form-control" type="text" value="505071" readonly id="id_rekam_medis"
                                 name="id_rekam_medis" />
+                            <input type="hidden" value="{{ $data->id }}" id="id" name="id" />
+                            <input type="hidden" value="{{ $data->jadwal_dokter_id }}" id="jadwal_dokter_id"
+                                name="jadwal_dokter_id" />
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Reservasi</label>
+                            <input type="text" disabled class="form-control" value="{{ $data->jenis }}">
                         </div>
                         <div class="form-group dp">
                             <label>Tgl Berobat</label>
@@ -34,23 +43,20 @@
                         </div>
                         <div class="form-group">
                             <label>Nama Dokter</label>
-                            <select class="select select-contact-group" id="selectDokter" title="Pilih Dokter"
-                                required="required">
-                                <option value="1" selected="selected">Dr. Abdul Kodir</option>
-                                <option value="2">Dr. Abdul Manan Rangkuti</option>
-                                <option value="3">Dr. Abdullah</option>
-                            </select>
+                            <input type="text" disabled class="form-control"
+                                value="{{ $data->jadwal_dokter->dokter->name }}">
                         </div>
                         <div class="form-group">
                             <label>Tindakan / Resep</label>
-                            <textarea class="form-control number" type="text"></textarea>
+                            <textarea class="form-control number required" type="text" name="tindakan" id="tindakan"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Keterangan</label>
-                            <textarea class="form-control number" type="text"></textarea>
+                            <textarea class="form-control number required" name="keterangan" id="keterangan" type="text"></textarea>
                         </div>
                         <div class="form-action text-right">
-                            <button class="btn btn--primary btn--next btn--submit" type="submit">Simpan</button>
+                            <button class="btn btn--primary btn--next btn--submit" type="button"
+                                onclick="store()">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -68,6 +74,7 @@
                 autoclose: true,
                 todayHighlight: true
             });
+            generateKode();
         })
 
         function generateKode() {
@@ -86,11 +93,6 @@
 
         function store() {
             var validation = 0;
-            if ($('#role_id').val() == null || $('#role_id').val() == '') {
-                $('#role_id').addClass('is-invalid');
-                validation++
-            }
-
             $('#form-data .required').each(function() {
                 var par = $(this).parents('.form-group');
                 if ($(this).val() == '' || $(this).val() == null) {
@@ -134,7 +136,7 @@
                     window.onkeydown = previousWindowKeyDown;
                     overlay(true);
                     $.ajax({
-                        url: '{{ route('store-staff') }}',
+                        url: '{{ route('store-pemeriksaan') }}',
                         data: formData,
                         type: 'post',
                         processData: false,
@@ -146,7 +148,7 @@
                                     text: data.message,
                                     icon: "success",
                                 }).then(() => {
-                                    location.href = '{{ route('staff') }}';
+                                    location.href = '{{ route('pemeriksaan') }}';
                                 })
                             } else if (data.status == 2) {
                                 Swal.fire({
