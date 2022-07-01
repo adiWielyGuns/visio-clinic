@@ -29,7 +29,8 @@
                             </div>
                             <div class="col-lg-4 right-wrap">
                                 <div class="form-wrap">
-                                    <form action="{{ route('logout-pasien') }}" method="POST" id="logout">@csrf</form>
+                                    <form action="{{ route('logout-pasien') }}" method="POST" id="logout">
+                                        {{ csrf_field() }}</form>
                                     <div class="box">
                                         <h1 class="logo">Visio Mandiri Medika</h1>
                                         <div class="akun"><span>Selamat Datang,
@@ -223,11 +224,11 @@
                                                         <tbody>
                                                             @foreach ($rm as $i => $item)
                                                                 <tr>
-                                                                    <td>No</td>
-                                                                    <td>No Rm</td>
-                                                                    <td>Tgl Periksa</td>
-                                                                    <td>Tindakan</td>
-                                                                    <td>Keterangan</td>
+                                                                    <td>{{ $i + 1 }}</td>
+                                                                    <td>{{ $item->id_rekam_medis }}</td>
+                                                                    <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
+                                                                    <td>{{ $item->tindakan }}</td>
+                                                                    <td>{{ $item->keterangan }}</td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>

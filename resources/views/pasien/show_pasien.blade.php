@@ -110,7 +110,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach ($rm as $i => $item)
+                                    <tr>
+                                        <td>{{ $i + 1 }}</td>
+                                        <td>{{ $item->id_rekam_medis }}</td>
+                                        <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
+                                        <td>{{ $item->dokter->name }}</td>
+                                        <td>{{ $item->tindakan }}</td>
+                                        <td>{{ $item->keterangan }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
 

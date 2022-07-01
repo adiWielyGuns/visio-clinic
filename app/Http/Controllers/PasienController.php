@@ -112,7 +112,8 @@ class PasienController extends Controller
             ->where('status', 'Reserved')
             ->orderBy('tanggal', 'DESC')
             ->first();
-        return view('pasien/show_pasien', compact('data', 'tanggalReservasi', 'tanggalTerakhirPeriksa'));
+        $rm = PasienRekamMedis::where('pasien_id', $req->id)->get();
+        return view('pasien/show_pasien', compact('data', 'tanggalReservasi', 'tanggalTerakhirPeriksa','rm'));
     }
 
     public function store(Request $req)
