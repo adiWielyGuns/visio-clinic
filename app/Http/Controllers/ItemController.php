@@ -27,20 +27,30 @@ class ItemController extends Controller
             ->addColumn('aksi', function ($data) {
                 return view('item/action', compact('data'));
             })
-            ->rawColumns(['aksi'])
+            ->addColumn('harga', function ($data) {
+                return number_format($data->harga);
+            })
+            ->addColumn('status', function ($data) {
+                if ($data->status == 'true') {
+                    return '<button class="btn btn--primary" onclick="gantiStatus(false,\'' . $data->id . '\')">Aktif</button>';
+                } else {
+                    return '<button class="btn btn--danger" onclick="gantiStatus(true,\'' . $data->id . '\')">Tidak Aktif</button>';
+                }
+            })
+            ->rawColumns(['aksi', 'status'])
             ->addIndexColumn()
             ->make(true);
     }
 
     public function generatekode(Request $req)
     {
-        $kode =  'RM';
+        $kode =  'I';
         $sub = strlen($kode) + 1;
-        $index = Item::selectRaw('max(substring(id_item,' . $sub . ')) as id')
-            ->where('id_item', 'like', $kode . '%')
+        $index = Item::selectRaw('max(substring(kode,' . $sub . ')) as id')
+            ->where('kode', 'like', $kode . '%')
             ->first();
 
-        $collect = Item::selectRaw('substring(id_item,' . $sub . ') as id')
+        $collect = Item::selectRaw('substring(kode,' . $sub . ') as id')
             ->get();
 
         $count = (int)$index->id;
@@ -98,11 +108,14 @@ class ItemController extends Controller
 
 
             $input['id'] = Item::max('id') + 1;
+            $input['harga'] = convertNumber($req->harga);
+            $input['kode'] = $this->generatekode($req)->getData()->kode;
             $input['created_by'] = me();
             $input['updated_by'] = me();
-            $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
+            $input['status'] = 'true';
 
             Item::create($input);
+
             return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
         });
     }
@@ -114,7 +127,7 @@ class ItemController extends Controller
             $input = $req->all();
 
             $input['updated_by'] = me();
-            $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
+            $input['harga'] = convertNumber($req->harga);
 
             Item::find($req->id)->update($input);
             return Response()->json(['status' => 1, 'message' => 'Data berhasil diupdate']);
@@ -125,5 +138,16 @@ class ItemController extends Controller
     {
         Item::findOrFail($req->id)->delete();
         return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
+    }
+
+    public function status(Request $req)
+    {
+        return DB::transaction(function () use ($req) {
+            \App\Models\Item::where('id', $req->id)
+                ->update([
+                    'status' => $req->param
+                ]);
+            return Response()->json(['status' => 1, 'message' => 'Status berhasil dirubah']);
+        });
     }
 }

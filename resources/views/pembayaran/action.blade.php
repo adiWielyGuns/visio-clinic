@@ -4,7 +4,7 @@
         src="{{ asset('images/ic-edit.svg') }}" /></a>
 
 
-@if ($data->role->name != 'SuperAdmin')
+@if ($data->status == 'Released')
     <a class="btn-edit" onclick="hapus('{{ $data->id }}')" data-toggle="modal"><img class="svg"
             src="{{ asset('images/ic-delete.svg') }}" />
     </a>

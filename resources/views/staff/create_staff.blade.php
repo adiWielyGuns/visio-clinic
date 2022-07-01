@@ -70,6 +70,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
 
     <script>
+        var xhr = [];
         $(document).ready(function() {
             $('#tanggal_lahir').datepicker({
                 format: 'dd/mm/yyyy',

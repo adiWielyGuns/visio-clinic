@@ -29,6 +29,16 @@ class Pembayaran extends Model
         'updated_at'
     ];
 
+    public static $enumMetodePembayaran = [
+        'Tunai',
+        'Non Tunai',
+    ];
+
+    public static $enumBank = [
+        'Bank Transfer (BCA)',
+        'Bank Transfer (Mandiri)',
+        'Bank Transfer (BRI)',
+    ];
 
     public function PembayaranDetail()
     {

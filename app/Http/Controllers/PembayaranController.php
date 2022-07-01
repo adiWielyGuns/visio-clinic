@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
+use App\Models\PasienRekamMedis;
+use App\Models\Pembayaran;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class PembayaranController extends Controller
 {
@@ -13,57 +17,90 @@ class PembayaranController extends Controller
 
     public function datatable(Request $req)
     {
-        $data = JadwalDokter::all();
+        $data = Pembayaran::where(function ($q) use ($req) {
+        })->get();
 
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
-                return view('jadwal_dokter/action', compact('data'));
+                return view('pembayaran/action', compact('data'));
             })
-            ->addColumn('dokter', function ($data) {
-                return $data->dokter->name;
+            ->addColumn('pasien', function ($data) {
+                return $data->pasien->name;
             })
             ->addColumn('status', function ($data) {
-                if ($data->status == 'true') {
-                    return '<button class="btn btn--primary" onclick="gantiStatus(false,\'' . $data->id . '\')">Aktif</button>';
-                } else {
-                    return '<button class="btn btn--danger" onclick="gantiStatus(true,\'' . $data->id . '\')">Tidak Aktif</button>';
-                }
+                return $data->status;
             })
             ->rawColumns(['aksi', 'status'])
             ->addIndexColumn()
             ->make(true);
     }
 
+    public function generatekode(Request $req)
+    {
+        $tanggal = dateStore($req->tanggal);
+        $kode =  'INV/' . CarbonParse($tanggal, 'm') . CarbonParse($tanggal, 'Y') . '/';
+        $sub = strlen($kode) + 1;
+        $index = Pembayaran::selectRaw('max(substring(nomor_invoice,' . $sub . ')) as id')
+            ->where('nomor_invoice', 'like', $kode . '%')
+            ->first();
+
+        $collect = Pembayaran::selectRaw('substring(nomor_invoice,' . $sub . ') as id')
+            ->get();
+
+        $count = (int)$index->id;
+        $collect_id = [];
+        for ($i = 0; $i < count($collect); $i++) {
+            array_push($collect_id, (int)$collect[$i]->id);
+        }
+
+        $flag = 0;
+        for ($i = 0; $i < $count; $i++) {
+            if ($flag == 0) {
+                if (!in_array($i + 1, $collect_id)) {
+                    $index = $i + 1;
+                    $flag = 1;
+                }
+            }
+        }
+
+        if ($flag == 0) {
+            $index = (int)$index->id + 1;
+        }
+
+
+        $index = str_pad($index, 4, '0', STR_PAD_LEFT);
+
+        $kode = $kode . $index;
+
+        return Response()->json(['status' => 1, 'kode' => $kode]);
+    }
+
     public function edit(Request $req)
     {
-        $dokter = User::whereHas('role', function ($q) use ($req) {
-            $q->where('name', 'Terapis');
-        })->where(function ($q) {
-            if (Auth::user()->role == 'Terapis') {
-                $q->where('id', Auth::user()->id);
-            }
-        })->get();
-        $data = JadwalDokter::findOrFail($req->id);
-        return view('jadwal_dokter/edit_jadwal_dokter', compact('dokter', 'data'));
+
+        $data = Pembayaran::findOrFail($req->id);
+        return view('pembayaran/edit_pembayaran', compact('dokter'));
+    }
+
+    public function itemGenerate(Request $req)
+    {
+        $item = Item::whereIn('id', explode(',', $req->item))
+            ->get();
+        return Response()->json(['status' => 1, 'message' => 'Status berhasil dirubah', 'item' => $item]);
     }
 
     public function create(Request $req)
     {
-        $dokter = User::whereHas('role', function ($q) use ($req) {
-            $q->where('name', 'Terapis');
-        })->where(function ($q) {
-            if (Auth::user()->role == 'Terapis') {
-                $q->where('id', Auth::user()->id);
-            }
-        })->get();
-        return view('jadwal_dokter/create_jadwal_dokter', compact('dokter'));
+        $item = Item::where('status', 'true')->get();
+        $rekamMedis = PasienRekamMedis::where('status_pembayaran', 'Released')->get();
+        return view('pembayaran/create_pembayaran', compact('item', 'rekamMedis'));
     }
 
 
     public function show(Request $req)
     {
         $data = JadwalDokter::findOrFail($req->id);
-        return view('jadwal_dokter/show_jadwal_dokter', compact('data'));
+        return view('pembayaran/show_pembayaran', compact('data'));
     }
 
     public function store(Request $req)

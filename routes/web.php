@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JadwalDokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PembayaranController;
@@ -41,6 +42,21 @@ Route::middleware('auth')->group(function () {
             Route::post('/update', 'update')->name('update-staff');
             Route::post('/delete', 'delete')->name('delete-staff');
             Route::get('/generate-kode', 'generateKode')->name('generate-kode-staff');
+        });
+    });
+
+    Route::controller(ItemController::class)->group(function () {
+        Route::group(['prefix' => 'item'], function () {
+            Route::get('/index', 'index')->name('item');
+            Route::get('/create', 'create')->name('create-item');
+            Route::get('/show', 'show')->name('show-item');
+            Route::get('/datatable', 'datatable')->name('datatable-item');
+            Route::get('/edit', 'edit')->name('edit-item');
+            Route::post('/store', 'store')->name('store-item');
+            Route::post('/update', 'update')->name('update-item');
+            Route::post('/delete', 'delete')->name('delete-item');
+            Route::get('/generate-kode', 'generateKode')->name('generate-kode-item');
+            Route::get('/status', 'status')->name('status-item');
         });
     });
 
@@ -92,11 +108,14 @@ Route::middleware('auth')->group(function () {
     Route::controller(PembayaranController::class)->group(function () {
         Route::group(['prefix' => 'pembayaran'], function () {
             Route::get('/index', 'index')->name('pembayaran');
+            Route::get('/create', 'create')->name('create-pembayaran');
             Route::get('/datatable', 'datatable')->name('datatable-pembayaran');
             Route::get('/edit', 'edit')->name('edit-pembayaran');
             Route::get('/status', 'status')->name('status-pembayaran');
+            Route::get('/item-generate', 'itemGenerate')->name('item-generate-pembayaran');
             Route::post('/store', 'store')->name('store-pembayaran');
             Route::post('/delete', 'delete')->name('delete-pembayaran');
+            Route::get('/generate-kode', 'generateKode')->name('generate-kode-pembayaran');
         });
     });
 

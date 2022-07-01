@@ -12,6 +12,7 @@ class Item extends Model
 
     protected $fillable = [
         'id',
+        'kode',
         'name',
         'jenis',
         'harga',
@@ -22,4 +23,13 @@ class Item extends Model
         'created_at',
         'updated_at'
     ];
+
+    public static $enumJenis = [
+        'Tindakan', 'Obat'
+    ];
+
+    public function pembayaran_detail()
+    {
+        return $this->hasMany(PembayaranDetail::class);
+    }
 }

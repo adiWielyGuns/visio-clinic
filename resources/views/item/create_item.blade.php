@@ -5,13 +5,14 @@
 @section('content')
     <main>
         <div class="page-title">
-            <div class="page-title__left"><a class="btn btn--icon btn--back" href="{{ route('staff') }}">
+            <div class="page-title__left"><a class="btn btn--icon btn--back" href="{{ route('item') }}">
                     <div class="btn--wrap">
                         <div class="icon"><img class="svg" src="{{ asset('images/ic-left.svg') }}" /></div>
                         <span>Kembali ke Daftar
-                            Staff</span>
+                            Item</span>
                     </div>
-                </a></div>
+                </a>
+            </div>
         </div>
         <div class="page-main">
             <div class="add-contact">
@@ -19,42 +20,36 @@
                     <form class="form--add-contact" id="form-data">
                         @csrf
                         <div class="add-contact__title">
-                            <h1 class="title--primary">Tambah Staff Baru</h1>
+                            <h1 class="title--primary">Tambah Item</h1>
                         </div>
                         <div class="form-group">
-                            <label>Role</label>
-                            <select class="select select-contact-group" id="role_id" name="role_id"
-                                title="Pilih Departemen" onchange="generateKode()">
-                                @foreach (\App\Models\Role::where('name', '!=', 'SuperAdmin')->get() as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            <label>Kode</label>
+                            <input class="form-control required" maxlength="150" disabled type="text" name="kode"
+                                id="kode" />
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Item</label>
+                            <input class="form-control required" maxlength="150" type="text" name="name"
+                                id="name" />
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Item</label>
+                            <select class="select select-contact-group" id="jenis" name="jenis"
+                                title="Pilih Jenis Item">
+                                @foreach (\App\Models\Item::$enumJenis as $item)
+                                    <option value="{{ $item }}">{{ $item }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Id Staff</label>
-                            <input readonly class="form-control required" type="text" name="user_id" id="user_id" />
+                            <label>Harga</label>
+                            <input class="form-control required mask text-right" maxlength="20" type="text"
+                                name="harga" id="harga" />
                         </div>
                         <div class="form-group">
-                            <label>Nama</label>
-                            <input class="form-control required" type="text" name="name" id="name" />
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input class="form-control required" type="text" name="email" id="email" />
-                        </div>
-                        <div class="form-group dp">
-                            <label>Tanggal Lahir</label>
-                            <input class="form-control required" type="text" name="tanggal_lahir" id="tanggal_lahir" />
-                            <div class="inpt-apend"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Mobile No.</label>
-
-                            <input class="form-control required number" type="text" name="telp" id="telp" />
-                        </div>
-                        <div class="form-group">
-                            <label>Alamat</label>
-                            <input class="form-control required number" type="text" name="alamat" id="alamat" />
+                            <label>Keterangan</label>
+                            <input class="form-control required" type="text" maxlength="255" name="keterangan"
+                                id="keterangan" />
                         </div>
                         <div class="form-action text-right">
                             <button class="btn btn--primary btn--next btn--submit" type="button"
@@ -76,19 +71,23 @@
                 autoclose: true,
                 todayHighlight: true
             });
+
+
+            $('.mask').maskMoney({
+                precision: 0,
+                thousands: ',',
+                allowZero: 0,
+                defaultZero: 0,
+            })
+            generateKode()
         })
 
         function generateKode() {
             $.ajax({
-                url: '{{ route('generate-kode-staff') }}',
-                data: {
-                    param: function() {
-                        return $('#role_id').val();
-                    },
-                },
+                url: '{{ route('generate-kode-item') }}',
                 type: 'get',
                 success: function(data) {
-                    $('#user_id').val(data.kode);
+                    $('#kode').val(data.kode);
                 },
                 error: function(data) {
                     generateKode();
@@ -98,8 +97,8 @@
 
         function store() {
             var validation = 0;
-            if ($('#role_id').val() == null || $('#role_id').val() == '') {
-                $('#role_id').addClass('is-invalid');
+            if ($('#jenis').val() == null || $('#jenis').val() == '') {
+                $('#jenis').addClass('is-invalid');
                 validation++
             }
 
@@ -111,6 +110,7 @@
                     validation++
                 }
             })
+
 
             if (validation != 0) {
                 Swal.fire({
@@ -146,7 +146,7 @@
                     window.onkeydown = previousWindowKeyDown;
                     overlay(true);
                     $.ajax({
-                        url: '{{ route('store-staff') }}',
+                        url: '{{ route('store-item') }}',
                         data: formData,
                         type: 'post',
                         processData: false,
@@ -158,7 +158,7 @@
                                     text: data.message,
                                     icon: "success",
                                 }).then(() => {
-                                    location.href = '{{ route('staff') }}';
+                                    location.href = '{{ route('item') }}';
                                 })
                             } else if (data.status == 2) {
                                 Swal.fire({

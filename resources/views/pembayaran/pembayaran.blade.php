@@ -6,153 +6,72 @@
     <main>
         <div class="page-title">
             <div class="page-title__left">
-                <h1>Pemeriksaan<span class="total"></span></h1>
+                <h1>Pembayaran</h1>
             </div>
-            {{-- <div class="page-title__action"><a class="btn btn--primary" href="{{ route('create-pemeriksaan') }}">Tambah Pemeriksaan</a>
-            </div> --}}
-        </div>
-        <div class="page-tabs">
-            <ul class="nav">
-                <li class="nav__item"><a
-                        class="nav__link {{ isset($req->tab) ? ($req->tab == 'on_site' ? 'active' : '') : 'active' }}"
-                        href="#mekarians" data-toggle="tab">On Site
-                        ({{ count($onSite) }})</a></li>
-                <li class="nav__item"><a
-                        class="nav__link {{ isset($req->tab) ? ($req->tab == 'panggilan' ? 'active' : '') : '' }}"
-                        href="#outsiders" data-toggle="tab">Panggilan
-                        ({{ count($panggilan) }})</a></li>
-            </ul>
+            <div class="page-title__action"><a class="btn btn--primary" href="{{ route('create-pembayaran') }}">
+                    Tambah
+                    Pembayaran</a></div>
         </div>
         <div class="page-main">
             <div class="tab-content">
-                <div class="tab-pane fade  {{ isset($req->tab) ? ($req->tab == 'on_site' ? 'show active' : '') : 'show active' }}"
-                    id="mekarians">
+                <div class="tab-pane fade active show" id="dokters">
                     <div class="page-filter">
-                        <div
-                            class="item bulk-false collapse {{ isset($req->tab) ? ($req->tab == 'on_site' ? 'show' : '') : 'show' }}">
+                        <div class="item bulk-false collapse show">
                             <div class="row">
                                 <div class="col-1">
+                                    <label>Jenis Pembayaran</label>
+                                    <select class="select" title="Jenis Pembayaran">
+                                        <option>Semua Jenis</option>
+                                        <option>Tunai</option>
+                                        <option>Non Tunai</option>
+                                    </select>
+                                </div>
+                                <div class="col-1">
                                     <div class="form-group dp">
-                                        <label>Tanggal Reservasi</label>
+                                        <label>Tanggal Awal</label>
                                         <div class="datepicker">
-                                            <input class="form-control required" type="text" name="tanggal_on_site"
-                                                value="{{ isset($req->tanggal_on_site) ? $req->tanggal_on_site : '' }}"
-                                                id="tanggal_on_site" />
+                                            <input class="form-control tanggal" id="tgl_awal" name="tgl_awal"
+                                                type="text" />
                                         </div>
                                         <div class="inpt-apend"></div>
                                     </div>
                                 </div>
                                 <div class="col-1">
-                                    <label>&nbsp;</label> <a class="btn btn--primary"
-                                        href="{{ route('pemeriksaan') }}">Reset
-                                        Tanggal</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="check-all" width="5%"><span>No.</span></th>
-                                    <th><span>Tgl. Antrian</span></th>
-                                    <th><span>Nama Pasien</span></th>
-                                    <th><span>Antrian Saat Ini</span></th>
-                                    <th><span>No. Antrian</span></th>
-                                    <td class="has-action"></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($onSite->sortBy('tanggal') as $i => $item)
-                                    <tr>
-                                        <td class="index-antrian">{{ $i + 1 }}</td>
-                                        <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
-                                        <td>{{ $item->jadwal_dokter->dokter->name }}</td>
-                                        <td>{{ $item->no_reservasi }}</td>
-                                        <td>{{ $item->no_reservasi }}</td>
-                                        <td>
-                                            @if (dateStore() == $item->tanggal)
-                                                <a class="btn btn--primary"
-                                                    href="{{ route('create-pemeriksaan', ['id' => $item->id, 'jadwal_dokter_id' => $item->jadwal_dokter_id]) }}">Periksa
-                                                    Pasien</a>
-                                            @else
-                                                H{{ diffdate($item->tanggal, dateStore()) }}
-                                            @endif
-
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" style="text-align: center">Tidak ada reservasi</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="tab-pane fade  {{ isset($req->tab) ? ($req->tab == 'panggilan' ? 'show active' : '') : '' }}"
-                    id="outsiders">
-                    <div class="page-filter">
-                        <div
-                            class="item bulk-false collapse  {{ isset($req->tab) ? ($req->tab == 'panggilan' ? 'show' : '') : '' }}">
-                            <div class="row">
-                                <div class="col-1">
                                     <div class="form-group dp">
-                                        <label>Tanggal Reservasi</label>
+                                        <label>Tanggal Akhir</label>
                                         <div class="datepicker">
-                                            <input class="form-control required" type="text" name="tanggal_panggilan"
-                                                value="{{ isset($req->tanggal_panggilan) ? $req->tanggal_panggilan : '' }}"
-                                                id="tanggal_panggilan" />
+                                            <input class="form-control tanggal" id="tgl_akhir" name="tgl_akhir"
+                                                type="text" />
                                         </div>
                                         <div class="inpt-apend"></div>
                                     </div>
                                 </div>
                                 <div class="col-1">
-                                    <label>&nbsp;</label> <a class="btn btn--primary"
-                                        href="{{ route('pemeriksaan') }}">Reset
-                                        Tanggal</a>
+                                    <label>&nbsp;</label><a class="btn btn--primary" href="#">Cetak
+                                        Laporan</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="table">
-                        <table>
+                        <table id="table-pembayaran">
                             <thead>
                                 <tr>
-                                    <th class="check-all" width="5%"><span>No.</span></th>
-                                    <th><span>Tgl. Antrian</span></th>
-                                    <th><span>Nama Pasien</span></th>
-                                    <th><span>Antrian Saat Ini</span></th>
-                                    <th><span>No. Antrian</span></th>
-                                    <td class="has-action"></td>
+                                    <th class="check-all"><span>No.</span></th>
+                                    <th width="10%"><span>Kode Invoice</span></th>
+                                    <th width="12%"><span>Jenis Pembayaran</span></th>
+                                    <th width="17%"><span>Tgl. Pembayaran</span></th>
+                                    <th width="15%"><span>Terima Dari</span></th>
+                                    <th class="text-right"><span>Jumlah Uang (Rp)</span></th>
+                                    <th><span>Status</span></th>
+                                    <th class="has-edit"><span class="sr-only"></span></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($panggilan->sortBy('tanggal') as $i => $item)
-                                    <tr>
-                                        <td class="index-antrian">{{ $i + 1 }}</td>
-                                        <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
-                                        <td>{{ $item->jadwal_dokter->dokter->name }}</td>
-                                        <td>{{ $item->no_reservasi }}</td>
-                                        <td>{{ $item->no_reservasi }}</td>
-                                        <td>
-                                            @if (dateStore() == $item->tanggal)
-                                                <a class="btn btn--primary"
-                                                    href="{{ route('create-pemeriksaan', ['id' => $item->id, 'jadwal_dokter_id' => $item->jadwal_dokter_id]) }}">Periksa
-                                                    Pasien</a>
-                                            @else
-                                                H{{ diffdate($item->tanggal, dateStore()) }}
-                                            @endif
 
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" style="text-align: center">Tidak ada reservasi</td>
-                                    </tr>
-                                @endforelse
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -165,32 +84,32 @@
     <script>
         var table;
         (function() {
-            var table = $('#table-pemeriksaan').DataTable({
+            var table = $('#table-pembayaran').DataTable({
                 // searching: false,
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('datatable-pemeriksaan') }}",
+                    url: "{{ route('datatable-pembayaran') }}",
                 },
                 columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     class: 'text-center'
                 }, {
-                    data: 'user_id',
-                    name: 'user_id',
+                    data: 'nomor_invoice',
+                    name: 'nomor_invoice',
                 }, {
-                    data: 'name',
-                    name: 'name'
+                    data: 'metode_pembayaran',
+                    name: 'metode_pembayaran'
                 }, {
-                    data: 'email',
-                    name: 'email'
+                    data: 'tanggal',
+                    name: 'tanggal'
                 }, {
-                    data: 'telp',
-                    name: 'telp'
+                    data: 'pasien',
+                    name: 'pasien'
                 }, {
-                    data: 'alamat',
-                    name: 'alamat'
+                    data: 'total',
+                    name: 'total'
                 }, {
                     data: 'aksi',
                     class: 'text-center',
@@ -237,7 +156,7 @@
                 if (result.isConfirmed) {
                     window.onkeydown = previousWindowKeyDown;
                     $.ajax({
-                        url: '{{ route('delete-pemeriksaan') }}',
+                        url: '{{ route('delete-pembayaran') }}',
                         data: {
                             id: id,
                             _token: "{{ csrf_token() }}"

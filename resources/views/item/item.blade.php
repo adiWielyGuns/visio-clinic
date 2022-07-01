@@ -6,22 +6,23 @@
     <main>
         <div class="page-title">
             <div class="page-title__left">
-                <h1>Staff<span class="total">5</span></h1>
+                <h1>Item<span class="total"></span></h1>
             </div>
-            <div class="page-title__action"><a class="btn btn--primary" href="{{ route('create-staff') }}">Tambah Staff</a>
+            <div class="page-title__action"><a class="btn btn--primary" href="{{ route('create-item') }}">Tambah
+                    Item</a>
             </div>
         </div>
         <div class="page-main">
             <div class="table">
-                <table id="table-staff">
+                <table id="table-item">
                     <thead>
                         <tr>
                             <th class="check-all"><span>No.</span></th>
-                            <th width="17%"><span>ID Terapis</span></th>
-                            <th width="17%"><span>Nama Terapis</span></th>
-                            <th width="23%"><span>Email</span></th>
-                            <th><span>Mobile No.</span></th>
-                            <th><span>Alamat</span></th>
+                            <th width="17%"><span>Item</span></th>
+                            <th width="17%"><span>Jenis</span></th>
+                            <th width="17%"><span>Harga</span></th>
+                            <th width="17%"><span>Keterangan</span></th>
+                            <th width="17%"><span>Status</span></th>
                             <th class="has-edit">Aksi</th>
                         </tr>
                     </thead>
@@ -37,32 +38,32 @@
     <script>
         var table;
         (function() {
-            var table = $('#table-staff').DataTable({
+            table = $('#table-item').DataTable({
                 // searching: false,
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('datatable-staff') }}",
+                    url: "{{ route('datatable-item') }}",
                 },
                 columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     class: 'text-center'
                 }, {
-                    data: 'user_id',
-                    name: 'user_id',
-                }, {
                     data: 'name',
-                    name: 'name'
+                    name: 'name',
                 }, {
-                    data: 'email',
-                    name: 'email'
+                    data: 'jenis',
+                    name: 'jenis',
                 }, {
-                    data: 'telp',
-                    name: 'telp'
+                    data: 'harga',
+                    name: 'harga',
                 }, {
-                    data: 'alamat',
-                    name: 'alamat'
+                    data: 'keterangan',
+                    name: 'keterangan'
+                }, {
+                    data: 'status',
+                    name: 'status'
                 }, {
                     data: 'aksi',
                     class: 'text-center',
@@ -86,7 +87,7 @@
                 if (result.isConfirmed) {
                     window.onkeydown = previousWindowKeyDown;
                     $.ajax({
-                        url: '{{ route('delete-staff') }}',
+                        url: '{{ route('delete-item') }}',
                         data: {
                             id: id,
                             _token: "{{ csrf_token() }}"
@@ -121,6 +122,38 @@
                     });
                 }
             })
+        }
+
+        function gantiStatus(param, id) {
+            $.ajax({
+                url: "{{ route('status-item') }}",
+                data: {
+                    id,
+                    param
+                },
+                type: 'get',
+                success: function(data) {
+                    table.ajax.reload(null, false);
+                    Swal.fire({
+                        title: data.message,
+                        icon: "success",
+                    });
+
+                },
+                error: function(data) {
+                    var html = '';
+                    Object.keys(data.responseJSON).forEach(element => {
+                        html += data.responseJSON[element][0] + '<br>';
+                    });
+                    Swal.fire({
+                        title: 'Oops Something Wrong!',
+                        text: data.responseJSON.message == undefined ? html : data
+                            .responseJSON.message,
+                        type: "error",
+                        html: true,
+                    });
+                }
+            });
         }
     </script>
 @endsection
