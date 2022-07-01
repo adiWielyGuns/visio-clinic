@@ -6,7 +6,7 @@
     <div class="sidebar__wrap">
         <ul class="main-menu">
             <li class="main-menu__item {{ Request::segment(1) == 'dashboard' ? 'active' : '' }}"><a
-                    class="main-menu__link" href="dashboard.html">
+                    class="main-menu__link" href="{{ route('dashboard') }}">
                     <div class="icon"><img src="{{ asset('images/ic-dashboard.svg') }}" /></div>
                     <span>Dashboard</span>
                 </a>
