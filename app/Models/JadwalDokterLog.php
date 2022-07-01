@@ -19,6 +19,7 @@ class JadwalDokterLog extends Model
         'no_reservasi',
         'jenis',
         'telp',
+        'ref',
         'alamat',
         'status',
         'status_pembayaran',
@@ -29,5 +30,10 @@ class JadwalDokterLog extends Model
     public function jadwal_dokter()
     {
         return $this->belongsTo(JadwalDokter::class);
+    }
+
+    public function pasien_rekam_medis()
+    {
+        return $this->hasOne(PasienRekamMedis::class, 'id_rekam_medis', 'ref');
     }
 }

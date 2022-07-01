@@ -25,6 +25,7 @@ class User extends Authenticatable
         'telp',
         'alamat',
         'role_id',
+        'password_change_date',
         'user_id',
         'tanggal_lahir',
     ];

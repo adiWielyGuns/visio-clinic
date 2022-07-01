@@ -21,6 +21,10 @@
                         class="nav__link {{ isset($req->tab) ? ($req->tab == 'panggilan' ? 'active' : '') : '' }}"
                         href="#outsiders" data-toggle="tab">Panggilan
                         ({{ count($panggilan) }})</a></li>
+                <li class="nav__item"><a
+                        class="nav__link {{ isset($req->tab) ? ($req->tab == 'history' ? 'active' : '') : '' }}"
+                        href="#history" data-toggle="tab">History
+                        ({{ count($history) }})</a></li>
             </ul>
         </div>
         <div class="page-main">
@@ -155,6 +159,67 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="tab-pane fade  {{ isset($req->tab) ? ($req->tab == 'history' ? 'show active' : '') : '' }}"
+                    id="history">
+                    <div class="page-filter">
+                        <div
+                            class="item bulk-false collapse  {{ isset($req->tab) ? ($req->tab == 'panggilan' ? 'show' : '') : '' }}">
+                            <div class="row">
+                                <div class="col-1">
+                                    <div class="form-group dp">
+                                        <label>Tanggal Reservasi</label>
+                                        <div class="datepicker">
+                                            <input class="form-control required" type="text" name="tanggal_history"
+                                                value="{{ isset($req->tanggal_history) ? $req->tanggal_history : '' }}"
+                                                id="tanggal_history" />
+                                        </div>
+                                        <div class="inpt-apend"></div>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <label>&nbsp;</label> <a class="btn btn--primary"
+                                        href="{{ route('pemeriksaan') }}">Reset
+                                        Tanggal</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table">
+                        <table id="table-pasien">
+                            <thead>
+                                <tr>
+                                    <th class="check-all"><span>No.</span></th>
+                                    <th><span>No. Rekam Medis</span></th>
+                                    <th><span>Tgl. Berobat</span></th>
+                                    @if (Auth::user()->role->id != 1)
+                                        <th><span>Dokter</span></th>
+                                    @endif
+                                    <th><span>Tindakan</span></th>
+                                    <th><span>Keterangan</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($history as $i => $item)
+                                    <tr>
+                                        <td>{{ $i + 1 }}</td>
+                                        <td>{{ $item->pasien_rekam_medis->id_rekam_medis }}</td>
+                                        <td>{{ CarbonParse($item->pasien_rekam_medis->tanggal, 'd/m/Y') }}</td>
+                                        @if (Auth::user()->role->id != 1)
+                                            <td>{{ $item->pasien_rekam_medis->dokter->name }}</td>
+                                        @endif
+                                        <td>{{ $item->pasien_rekam_medis->tindakan }}</td>
+                                        <td>{{ $item->pasien_rekam_medis->keterangan }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" style="text-align: center">Tidak ada history</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -165,7 +230,7 @@
     <script>
         var table;
         (function() {
-           table = $('#table-pemeriksaan').DataTable({
+            table = $('#table-pemeriksaan').DataTable({
                 // searching: false,
                 processing: true,
                 serverSide: true,

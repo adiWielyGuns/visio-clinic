@@ -116,6 +116,7 @@ class StaffController extends Controller
             $input['updated_by'] = me();
             $input['username'] = $req->user_id;
             $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
+            $input['password_change_date'] = now();
             $input['password'] = Hash::make(str_replace('/', '', $req->tanggal_lahir));
 
             User::create($input);
@@ -145,7 +146,6 @@ class StaffController extends Controller
 
             $input['updated_by'] = me();
             $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
-            $input['password'] = Hash::make(str_replace('/', '', $req->tanggal_lahir));
 
             User::find($req->id)->update($input);
             return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);

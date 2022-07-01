@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JadwalDokterController;
 use App\Http\Controllers\PasienController;
@@ -25,12 +26,10 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-
 Route::middleware('auth')->group(function () {
+    Route::controller(HomeController::class)->group(function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+    });
     Route::controller(StaffController::class)->group(function () {
         Route::group(['prefix' => 'staff'], function () {
             Route::get('/index', 'index')->name('staff');
@@ -125,10 +124,11 @@ Route::middleware('auth')->group(function () {
     Route::controller(SettingController::class)->group(function () {
         Route::group(['prefix' => 'setting'], function () {
             Route::get('/index', 'index')->name('setting');
+            Route::get('/preferensi', 'create')->name('create-setting');
+            Route::post('/store', 'store')->name('store-setting');
             Route::get('/datatable', 'datatable')->name('datatable-setting');
             Route::get('/edit', 'edit')->name('edit-setting');
             Route::get('/status', 'status')->name('status-setting');
-            Route::post('/store', 'store')->name('store-setting');
             Route::post('/delete', 'delete')->name('delete-setting');
         });
     });

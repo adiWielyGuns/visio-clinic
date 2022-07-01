@@ -45,7 +45,21 @@ class PemeriksaanController extends Controller
             })
             ->get();
 
-        return view('pemeriksaan/pemeriksaan', compact('onSite', 'panggilan', 'req'));
+        $history = JadwalDokterLog::where('status', 'Done')
+            ->whereHas('jadwal_dokter', function ($q) {
+                if (Auth::user()->role->name == 'Terapis') {
+                    $q->where('users_id', Auth::user()->id);
+                }
+            })
+            ->where(function ($q) use ($req) {
+                if (isset($req->tanggal_history) && $req->tanggal_history != '') {
+                    $q->where('tanggal', dateStore($req->tanggal_history));
+                }
+            })
+            ->get();
+
+
+        return view('pemeriksaan/pemeriksaan', compact('onSite', 'panggilan', 'req', 'history'));
     }
 
     public function datatable(Request $req)
@@ -183,6 +197,4 @@ class PemeriksaanController extends Controller
         User::findOrFail($req->id)->delete();
         return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
     }
-
-
 }

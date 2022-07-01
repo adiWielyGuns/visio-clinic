@@ -30,6 +30,11 @@ class PasienRekamMedis extends Model
         return $this->belongsTo(Pasien::class);
     }
 
+    public function jadwal_dokter_log()
+    {
+        return $this->hasOne(JadwalDokterLog::class, 'ref', 'id_rekam_medis');
+    }
+
     public function dokter()
     {
         return $this->belongsTo(User::class, 'dokter_id', 'id');
