@@ -18,20 +18,22 @@
                     <div class="page-filter">
                         <div class="item bulk-false collapse show">
                             <div class="row">
-                                <div class="col-1">
+                                <div class="col-3">
                                     <label>Jenis Pembayaran</label>
-                                    <select class="select" title="Jenis Pembayaran">
-                                        <option>Semua Jenis</option>
-                                        <option>Tunai</option>
-                                        <option>Non Tunai</option>
+                                    <select class="select select-contact-group" id="metode_pembayaran"
+                                        name="metode_pembayaran" onchange="table.ajax.reload()">
+                                        <option selected value="">Semua Metode Pembayaran</option>
+                                        @foreach (\App\Models\Pembayaran::$enumMetodePembayaran as $item)
+                                            <option value="{{ $item }}">{{ $item }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-1">
                                     <div class="form-group dp">
                                         <label>Tanggal Awal</label>
                                         <div class="datepicker">
-                                            <input class="form-control tanggal" id="tgl_awal" name="tgl_awal"
-                                                type="text" />
+                                            <input class="form-control tanggal_pembayaran" id="tanggal_awal"
+                                                name="tanggal_awal" type="text" />
                                         </div>
                                         <div class="inpt-apend"></div>
                                     </div>
@@ -40,15 +42,18 @@
                                     <div class="form-group dp">
                                         <label>Tanggal Akhir</label>
                                         <div class="datepicker">
-                                            <input class="form-control tanggal" id="tgl_akhir" name="tgl_akhir"
-                                                type="text" />
+                                            <input class="form-control tanggal_pembayaran" id="tanggal_akhir"
+                                                name="tanggal_akhir" type="text" />
                                         </div>
                                         <div class="inpt-apend"></div>
                                     </div>
                                 </div>
                                 <div class="col-1">
-                                    <label>&nbsp;</label><a class="btn btn--primary" href="#">Cetak
-                                        Laporan</a>
+                                    <label>&nbsp;</label>
+                                    <a class="btn btn--primary"
+                                        href="{{ route('laporan-pembayaran') }}">
+                                        Cetak Laporan
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -58,13 +63,13 @@
                             <thead>
                                 <tr>
                                     <th class="check-all"><span>No.</span></th>
-                                    <th width="10%"><span>Kode Invoice</span></th>
-                                    <th width="12%"><span>Jenis Pembayaran</span></th>
-                                    <th width="17%"><span>Tgl. Pembayaran</span></th>
-                                    <th width="15%"><span>Terima Dari</span></th>
-                                    <th class="text-right"><span>Jumlah Uang (Rp)</span></th>
-                                    <th><span>Status</span></th>
-                                    <th class="has-edit"><span class="sr-only"></span></th>
+                                    <th><span>Kode Invoice</span></th>
+                                    <th><span>Jenis Pembayaran</span></th>
+                                    <th><span>Tgl. Pembayaran</span></th>
+                                    <th><span>Terima Dari</span></th>
+                                    <th class="text-right" width><span>Jumlah Uang (Rp)</span></th>
+                                    {{-- <th><span>Status</span></th> --}}
+                                    <th class="has-edit">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,59 +89,67 @@
     <script>
         var table;
         (function() {
-            var table = $('#table-pembayaran').DataTable({
+            table = $('#table-pembayaran').DataTable({
                 // searching: false,
                 processing: true,
                 serverSide: true,
                 ajax: {
                     url: "{{ route('datatable-pembayaran') }}",
+                    data: {
+                        metode_pembayaran: function() {
+                            return $('#metode_pembayaran').val();
+                        },
+                        tanggal_awal: function() {
+                            return $('#tanggal_awal').val();
+                        },
+                        tanggal_akhir: function() {
+                            return $('#tanggal_akhir').val();
+                        }
+                    }
                 },
                 columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    class: 'text-center'
-                }, {
-                    data: 'nomor_invoice',
-                    name: 'nomor_invoice',
-                }, {
-                    data: 'metode_pembayaran',
-                    name: 'metode_pembayaran'
-                }, {
-                    data: 'tanggal',
-                    name: 'tanggal'
-                }, {
-                    data: 'pasien',
-                    name: 'pasien'
-                }, {
-                    data: 'total',
-                    name: 'total'
-                }, {
-                    data: 'aksi',
-                    class: 'text-center',
-                }, ]
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        class: 'text-center'
+                    }, {
+                        data: 'nomor_invoice',
+                        name: 'nomor_invoice',
+                    }, {
+                        data: 'metode_pembayaran',
+                        name: 'metode_pembayaran'
+                    }, {
+                        data: 'tanggal',
+                        name: 'tanggal'
+                    }, {
+                        data: 'pasien',
+                        name: 'pasien'
+                    }, {
+                        data: 'total',
+                        name: 'total',
+                        class: 'text-right'
+                    },
+                    //  {
+                    //     data: 'status',
+                    //     name: 'status',
+                    //     class: 'text-center'
+                    // },
+                    {
+                        data: 'aksi',
+                        class: 'text-center',
+                    },
+                ]
             });
+
 
 
         }())
         $(document).ready(function() {
-            $('#tanggal_on_site').datepicker({
+            $('.tanggal_pembayaran').datepicker({
                 format: 'dd/mm/yyyy',
                 autoclose: true,
                 todayHighlight: true
             }).on('changeDate', function() {
-                location.href = '{{ route('pemeriksaan') }}?tanggal_on_site=' + $('#tanggal_on_site')
-                    .val() + '&tanggal_panggilan=' + $('#tanggal_panggilan')
-                    .val() + '&tab=on_site';
-            });
-
-            $('#tanggal_panggilan').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-                todayHighlight: true
-            }).on('changeDate', function() {
-                location.href = '{{ route('pemeriksaan') }}?tanggal_on_site=' + $('#tanggal_on_site')
-                    .val() + '&tanggal_panggilan=' + $('#tanggal_panggilan')
-                    .val() + '&tab=panggilan';
+                table.ajax.reload();
             });
         })
 

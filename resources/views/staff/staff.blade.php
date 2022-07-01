@@ -37,7 +37,7 @@
     <script>
         var table;
         (function() {
-            var table = $('#table-staff').DataTable({
+           table = $('#table-staff').DataTable({
                 // searching: false,
                 processing: true,
                 serverSide: true,

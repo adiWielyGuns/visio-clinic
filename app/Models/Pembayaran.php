@@ -13,12 +13,11 @@ class Pembayaran extends Model
     protected $fillable = [
         'id',
         'nomor_invoice',
+        'ref',
         'tanggal',
         'pasien_id',
         'metode_pembayaran',
         'total',
-        'diagnosa',
-        'keterangan',
         'bank',
         'no_rekening',
         'no_transaksi',
@@ -40,7 +39,7 @@ class Pembayaran extends Model
         'Bank Transfer (BRI)',
     ];
 
-    public function PembayaranDetail()
+    public function pembayaran_detail()
     {
         return $this->hasMany(PembayaranDetail::class);
     }
@@ -48,5 +47,10 @@ class Pembayaran extends Model
     public function pasien()
     {
         return $this->belongsTo(Pasien::class, 'pasien_id', 'id');
+    }
+
+    public function pasien_rekam_medis()
+    {
+        return $this->hasOne(PasienRekamMedis::class, 'id_rekam_medis', 'ref');
     }
 }

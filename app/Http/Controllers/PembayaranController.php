@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\PasienRekamMedis;
 use App\Models\Pembayaran;
+use App\Models\PembayaranDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
 
 class PembayaranController extends Controller
 {
@@ -18,6 +22,17 @@ class PembayaranController extends Controller
     public function datatable(Request $req)
     {
         $data = Pembayaran::where(function ($q) use ($req) {
+            if ($req->metode_pembayaran != '') {
+                $q->where('metode_pembayaran', $req->metode_pembayaran);
+            }
+
+            if ($req->tanggal_awal != '') {
+                $q->where('tanggal', '>=', dateStore($req->tanggal_awal));
+            }
+
+            if ($req->tanggal_akhir != '') {
+                $q->where('tanggal', '<=', dateStore($req->tanggal_akhir));
+            }
         })->get();
 
         return DataTables::of($data)
@@ -29,6 +44,9 @@ class PembayaranController extends Controller
             })
             ->addColumn('status', function ($data) {
                 return $data->status;
+            })
+            ->addColumn('total', function ($data) {
+                return number_format($data->total);
             })
             ->rawColumns(['aksi', 'status'])
             ->addIndexColumn()
@@ -77,9 +95,11 @@ class PembayaranController extends Controller
 
     public function edit(Request $req)
     {
-
+        $item = Item::where('status', 'true')->get();
+        $rekamMedis = PasienRekamMedis::where('status_pembayaran', 'Released')->get();
         $data = Pembayaran::findOrFail($req->id);
-        return view('pembayaran/edit_pembayaran', compact('dokter'));
+
+        return view('pembayaran/edit_pembayaran', compact('data', 'item', 'rekamMedis'));
     }
 
     public function itemGenerate(Request $req)
@@ -99,7 +119,7 @@ class PembayaranController extends Controller
 
     public function show(Request $req)
     {
-        $data = JadwalDokter::findOrFail($req->id);
+        $data = Pembayaran::findOrFail($req->id);
         return view('pembayaran/show_pembayaran', compact('data'));
     }
 
@@ -107,21 +127,51 @@ class PembayaranController extends Controller
     {
         return DB::transaction(function () use ($req) {
 
-            $check = JadwalDokter::where('hari', $req->hari)
-                ->where('users_id', $req->users_id)
+
+            $rekamMedis = PasienRekamMedis::where('id', $req->rekam_medis_id)
+                ->where('pasien_id', $req->pasien_id)
                 ->first();
 
-            if ($check) {
-                return Response()->json(['status' => 2, 'message' => 'Data untuk hari ' . $req->hari . ' untuk dokter ini sudah ada.']);
+            if (!$rekamMedis) {
+                return Response()->json(['status' => 2, 'message' => 'Pemeriksaan pasien ini tidak ada.']);
             }
-            $input = $req->all();
-            $input['id'] = JadwalDokter::max('id') + 1;
-            $input['status'] = 'true';
-            $input['created_by'] = me();
-            $input['updated_by'] = me();
 
-            JadwalDokter::create($input);
-            return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
+            $idPembayaran = Pembayaran::max('id') + 1;
+            Pembayaran::create([
+                'id'    => $idPembayaran,
+                'nomor_invoice' => $this->generatekode($req)->getData()->kode,
+                'ref' => $rekamMedis->id_rekam_medis,
+                'tanggal'   => dateStore($req->tanggal),
+                'pasien_id' => $req->pasien_id,
+                'metode_pembayaran' => $req->metode_pembayaran,
+                'total' => convertNumber($req->total),
+                'bank'  => $req->bank,
+                'no_rekening'   => $req->no_rekening,
+                'no_transaksi'  => $req->no_transaksi,
+                'status'    => 'Released',
+                'created_by'    => me(),
+                'updated_by'    => me(),
+            ]);
+
+            PembayaranDetail::where('pembayaran_id', $idPembayaran)->delete();
+            foreach ($req->item as $key => $value) {
+                $item = Item::find($value);
+                PembayaranDetail::create([
+                    'pembayaran_id' => $idPembayaran,
+                    'id'    => $key + 1,
+                    'item_id'   => $value,
+                    'qty'   => 1,
+                    'total' => $item->harga,
+                ]);
+            }
+
+            $rekamMedis = PasienRekamMedis::where('id', $req->rekam_medis_id)
+                ->where('pasien_id', $req->pasien_id)
+                ->update([
+                    'status_pembayaran' => 'Done'
+                ]);
+
+            return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan', 'id' => $idPembayaran]);
         });
     }
 
@@ -129,19 +179,30 @@ class PembayaranController extends Controller
     {
         return DB::transaction(function () use ($req) {
 
-            $check = JadwalDokter::where('hari', $req->hari)
-                ->where('users_id', $req->users_id)
-                ->where('id', '!=', $req->id)
-                ->first();
+            $idPembayaran = $req->id;
+            Pembayaran::find($idPembayaran)->update([
+                'metode_pembayaran' => $req->metode_pembayaran,
+                'total' => convertNumber($req->total),
+                'bank'  => $req->bank,
+                'no_rekening'   => $req->no_rekening,
+                'no_transaksi'  => $req->no_transaksi,
+                'status'    => 'Released',
+                'updated_by'    => me(),
+            ]);
 
-            if ($check) {
-                return Response()->json(['status' => 2, 'message' => 'Data untuk hari ' . $req->hari . ' untuk dokter ini sudah ada.']);
+            PembayaranDetail::where('pembayaran_id', $idPembayaran)->delete();
+            foreach ($req->item as $key => $value) {
+                $item = Item::find($value);
+                PembayaranDetail::create([
+                    'pembayaran_id' => $idPembayaran,
+                    'id'    => $key + 1,
+                    'item_id'   => $value,
+                    'qty'   => 1,
+                    'total' => $item->harga,
+                ]);
             }
-            $input = $req->all();
 
-            $input['updated_by'] = me();
-            JadwalDokter::find($req->id)->update($input);
-            return Response()->json(['status' => 1, 'message' => 'Data berhasil diupdate']);
+            return Response()->json(['status' => 1, 'message' => 'Data berhasil diupdate', 'id' => $idPembayaran]);
         });
     }
 
@@ -149,7 +210,7 @@ class PembayaranController extends Controller
     public function status(Request $req)
     {
         return DB::transaction(function () use ($req) {
-            \App\Models\JadwalDokter::where('id', $req->id)
+            \App\Models\Pembayaran::where('id', $req->id)
                 ->update([
                     'status' => $req->param
                 ]);
@@ -157,9 +218,60 @@ class PembayaranController extends Controller
         });
     }
 
+    public function laporan(Request $req)
+    {
+
+        if ($req->tanggal_awal == '' or !isset($req->tanggal_awal)) {
+            $tanggal_awal = carbon::now()->startOfMonth()->format('Y-m-d');
+        } else {
+            $tanggal_awal = $req->tanggal_awal;
+        }
+
+        if ($req->tanggal_akhir == '' or !isset($req->tanggal_akhir)) {
+            $tanggal_akhir = carbon::now()->endOfMonth()->format('Y-m-d');
+        } else {
+            $tanggal_akhir = $req->tanggal_akhir;
+        }
+
+        $data = Pembayaran::where(function ($q) use ($req, $tanggal_awal, $tanggal_akhir) {
+            if ($req->metode_pembayaran != '') {
+                $q->where('metode_pembayaran', $req->metode_pembayaran);
+            }
+
+            if ($tanggal_awal != '') {
+                $q->where('tanggal', '>=', dateStore($tanggal_awal));
+            }
+
+            if ($tanggal_akhir != '') {
+                $q->where('tanggal', '<=', dateStore($tanggal_akhir));
+            }
+        })->get();
+
+        return view('pembayaran/laporan_pembayaran', compact('data', 'tanggal_akhir', 'tanggal_awal'));
+    }
+
     public function delete(Request $req)
     {
-        JadwalDokter::findOrFail($req->id)->delete();
-        return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
+        return DB::transaction(function () use ($req) {
+            $data = Pembayaran::findOrFail($req->id);
+
+            PasienRekamMedis::where('id_rekam_medis', $data->ref)
+                ->update(['status_pembayaran' => 'Released']);
+
+            Pembayaran::findOrFail($req->id)->delete();
+            PembayaranDetail::where('pembayaran_id', $req->id)->delete();
+
+            return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
+        });
+    }
+
+    public function print(Request $req)
+    {
+        $data = Pembayaran::find($req->id);
+        $nama = 'E-INVOICE ' . $data->kode . '-' . Carbon::parse($data->tanggal)->format('Y-m-d') . '.pdf';
+
+        $pdf = PDF::loadView('pembayaran/print_pembayaran', compact('data'))
+            ->setPaper('a4', 'potrait');
+        return $pdf->stream($nama);
     }
 }

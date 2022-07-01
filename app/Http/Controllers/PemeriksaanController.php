@@ -183,4 +183,6 @@ class PemeriksaanController extends Controller
         User::findOrFail($req->id)->delete();
         return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
     }
+
+
 }

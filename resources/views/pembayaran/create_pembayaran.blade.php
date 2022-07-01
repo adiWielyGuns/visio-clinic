@@ -38,10 +38,11 @@
                                 @foreach ($rekamMedis as $d)
                                     <option data-tindakan="{{ $d->tindakan }}" data-keterangan="{{ $d->keterangan }}"
                                         data-pasien_id="{{ $d->pasien_id }}" value="{{ $d->id }}">
-                                        {{ $d->pasien->name }}
+                                        {{ $d->pasien->name }} - {{ $d->id_rekam_medis }}
                                     </option>
                                 @endforeach
                             </select>
+                            <input type="hidden" id="pasien_id" name="pasien_id" class="required">
                         </div>
                         <div class="form-group rekam_medis_id_div collapse">
                             <label>Tindakan/Resep</label>
@@ -53,8 +54,8 @@
                         </div>
                         <div class="form-group rekam_medis_id_div collapse">
                             <label>Item</label>
-                            <select class="select select-contact-group" multiple id="item_id" name="item_id"
-                                title="Pilih Item">
+                            <select class="select select-contact-group" onchange="loadingItem(true)" multiple id="item_id"
+                                name="item_id" title="Pilih Item">
                                 @foreach ($item as $d)
                                     <option value="{{ $d->id }}">
                                         {{ $d->name }}
@@ -73,6 +74,9 @@
                                     <b class="price">100.000</b>
                                 </label>
                             </div>
+                        </div>
+                        <div class="form-group loading-item collapse">
+                            <label style="text-align: center" for="">Loading Item...</label>
                         </div>
                         <div class="form-group rekam_medis_id_div collapse">
                             <label>Metode Pembayaran</label>
@@ -128,10 +132,16 @@
 
             $('#item_id').change(debounce(function() {
                 callApiItem();
-            }, 1000))
-
-
+            }, 1000));
         })
+
+        function loadingItem(loading) {
+            if (loading) {
+                $('.loading-item').addClass('show')
+            } else {
+                $('.loading-item').removeClass('show')
+            }
+        }
 
         function generateKode() {
             $.ajax({
@@ -165,15 +175,18 @@
         function pasienGenerate() {
             $('.rekam_medis_id_div').addClass('show');
 
-            var tindakan = $('#rekam_medis_id').find('option:selected').val();
-            var keterangan = $('#rekam_medis_id').find('option:selected').val();
+            var tindakan = $('#rekam_medis_id').find('option:selected').data('tindakan');
+            var keterangan = $('#rekam_medis_id').find('option:selected').data('keterangan');
+            var pasien_id = $('#rekam_medis_id').find('option:selected').data('pasien_id');
 
             $('#tindakan_rekam_medis').val(tindakan);
             $('#keterangan_rekam_medis').val(keterangan);
+            $('#pasien_id').val(pasien_id);
         }
 
         function debounce(func, wait, immediate) {
             var timeout;
+            console.log('tes')
 
             return function executedFunction() {
                 var context = this;
@@ -192,6 +205,8 @@
 
                 if (callNow) func.apply(context, args);
             };
+
+
         };
 
         function callApiItem() {
@@ -217,24 +232,41 @@
                     } else {
                         $('#data-tagihan').addClass('show');
                     }
+                    var total = 0;
                     data.item.forEach(d => {
                         var item = '<label>' +
                             '<span>' + d.name + '</span>' +
                             '<b class="price">' + accounting.formatNumber(d.harga, {
                                 precision: 0
                             }) + '</b>' +
+
                             '<input type="hidden" name="item[]" class="item" value="' +
                             d.id + '">' +
                             '</label>';
-
+                        total += d.harga;
                         $('#item').append(item);
                     });
 
+
+                    var item = '<hr><label>' +
+                        '<span>Total</span>' +
+                        '<b class="price">' + accounting.formatNumber(total, {
+                            precision: 0
+                        }) + '</b>' +
+                        '<input type="hidden" name="total" class="item" value="' + total + '">' +
+                        '</label>';
+                    $('#item').append(item);
+
+                    $('.loading-item').removeClass('show')
                 },
                 error: function(data) {
                     itemGenerate();
                 }
             });
+        }
+
+        function cetak(id) {
+            window.open('{{ route('print-pembayaran') }}?id=' + id);
         }
 
         function store() {
@@ -284,7 +316,7 @@
                     window.onkeydown = previousWindowKeyDown;
                     overlay(true);
                     $.ajax({
-                        url: '{{ route('store-pemeriksaan') }}',
+                        url: '{{ route('store-pembayaran') }}',
                         data: formData,
                         type: 'post',
                         processData: false,
@@ -296,7 +328,8 @@
                                     text: data.message,
                                     icon: "success",
                                 }).then(() => {
-                                    location.href = '{{ route('pemeriksaan') }}';
+                                    cetak(data.id);
+                                    location.href = '{{ route('pembayaran') }}';
                                 })
                             } else if (data.status == 2) {
                                 Swal.fire({

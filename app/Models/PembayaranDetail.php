@@ -14,6 +14,7 @@ class PembayaranDetail extends Model
         'pembayaran_id',
         'id',
         'item_id',
+        'qty',
         'total',
         'created_at',
         'updated_at'

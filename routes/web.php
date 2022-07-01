@@ -114,8 +114,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/status', 'status')->name('status-pembayaran');
             Route::get('/item-generate', 'itemGenerate')->name('item-generate-pembayaran');
             Route::post('/store', 'store')->name('store-pembayaran');
+            Route::post('/update', 'update')->name('update-pembayaran');
             Route::post('/delete', 'delete')->name('delete-pembayaran');
             Route::get('/generate-kode', 'generateKode')->name('generate-kode-pembayaran');
+            Route::get('/print', 'print')->name('print-pembayaran');
+            Route::get('/laporan', 'laporan')->name('laporan-pembayaran');
         });
     });
 

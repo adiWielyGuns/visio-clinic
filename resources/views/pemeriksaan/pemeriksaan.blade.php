@@ -165,7 +165,7 @@
     <script>
         var table;
         (function() {
-            var table = $('#table-pemeriksaan').DataTable({
+           table = $('#table-pemeriksaan').DataTable({
                 // searching: false,
                 processing: true,
                 serverSide: true,

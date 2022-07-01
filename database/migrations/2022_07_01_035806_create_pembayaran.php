@@ -20,8 +20,6 @@ return new class extends Migration
             $table->integer('pasien_id');
             $table->string('metode_pembayaran');
             $table->double('total', 20, 2);
-            $table->text('diagnosa');
-            $table->text('keterangan');
             $table->string('bank')->nullable();
             $table->string('no_rekening')->nullable();
             $table->string('no_transaksi')->nullable();
