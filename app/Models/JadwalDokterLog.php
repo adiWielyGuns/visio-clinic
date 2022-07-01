@@ -21,6 +21,7 @@ class JadwalDokterLog extends Model
         'telp',
         'alamat',
         'status',
+        'status_pembayaran',
         'created_at',
         'updated_at'
     ];
