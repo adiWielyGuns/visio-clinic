@@ -24,6 +24,7 @@ class HomePasienController extends Controller
         $antrian = JadwalDokterLog::where('tanggal', '>=', Carbon::now()->subDay(-7)->startOfWeek()->format('Y-m-d'))
             ->where('tanggal', '<=', Carbon::now()->subDay(-7)->endOfWeek()->format('Y-m-d'))
             ->where('pasien_id', Auth::guard('pasien')->user()->id)
+            ->where('status', 'Reserved')
             ->get();
 
         foreach ($antrian as $key => $value) {
