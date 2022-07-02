@@ -57,6 +57,24 @@ class HomePasienController extends Controller
                 unset($value);
             } else {
                 $value->sisa_kuota = $value->kuota - $kuota;
+
+                $weekStart = Carbon::now()->subDay(-7)->startOfWeek()->format('Y-m-d');
+                $weekEnd = Carbon::now()->subDay(-7)->endOfWeek()->format('Y-m-d');
+                $jumlahHari = (strtotime($weekEnd) - strtotime($weekStart)) / 86400;
+                $dateArray = [];
+
+                for ($i1 = 0; $i1 < $jumlahHari + 1; $i1++) {
+                    $day = Carbon::parse($weekStart)->subDay(-$i1)->format('d');
+                    $month = Carbon::parse($weekStart)->subDay(-$i1)->format('m');
+                    $year = Carbon::parse($weekStart)->subDay(-$i1)->format('Y');
+                    $date = $year . '-' . $month  . '-' . str_pad($day, 2, '0', STR_PAD_LEFT);
+                    array_push($dateArray, $date);
+                }
+                foreach ($dateArray as $d) {
+                    if (CarbonParse($d, 'l') == convertHariToDay($value->hari)) {
+                        $value->tanggal = CarbonParse($d, 'd/m/Y');
+                    }
+                }
             }
         }
 

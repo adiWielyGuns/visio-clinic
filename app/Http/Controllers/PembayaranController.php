@@ -112,7 +112,7 @@ class PembayaranController extends Controller
     public function create(Request $req)
     {
         $item = Item::where('status', 'true')->get();
-        $rekamMedis = PasienRekamMedis::where('status_pembayaran', 'Released')->get();
+        $rekamMedis = PasienRekamMedis::where('status_pembayaran', null)->get();
         return view('pembayaran/create_pembayaran', compact('item', 'rekamMedis'));
     }
 

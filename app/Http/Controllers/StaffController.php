@@ -22,7 +22,7 @@ class StaffController extends Controller
 
     public function datatable(Request $req)
     {
-        $data = User::all();
+        $data = User::where('role_id', '!=', 3)->get();
 
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {

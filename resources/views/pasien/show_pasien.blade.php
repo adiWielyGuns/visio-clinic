@@ -106,7 +106,6 @@
                                     <th><span>Dokter</span></th>
                                     <th><span>Tindakan</span></th>
                                     <th><span>Keterangan</span></th>
-                                    <th class="has-edit text-right"><span class="sr-only"></span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -163,9 +162,6 @@
                 }, {
                     data: 'keterangan',
                     name: 'keterangan'
-                }, {
-                    data: 'aksi',
-                    class: 'text-center',
                 }, ]
             });
         }())

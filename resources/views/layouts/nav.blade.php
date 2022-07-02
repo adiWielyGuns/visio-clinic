@@ -1,6 +1,32 @@
 <header class="header" id="page_header">
     <div class="header__wrap"><a class="header__logo" href="{{ url('/dashboard') }}"><img
-                src="{{ asset('images/logo-vmm.png') }}" alt="Mekari Design" width="147" height="48" /></a></div>
+                src="{{ asset('images/logo-vmm.png') }}" alt="Mekari Design" width="147" height="48" /></a>
+        <div class="header__right">
+            <div class="user-snapshot dropdown">
+                <div class="user-snapshot__toggle" data-toggle="dropdown">
+                    <div class="user-snapshot__avatar"><img src="{{ asset('images/ic-more.svg') }}" alt="Avatar"
+                            width="32" height="32" /></div>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" style="width: 500px">
+                    @forelse (Auth::user()->unreadNotifications as $item)
+                        <a class="dropdown-item" href="{{ $item['data']['url'] }}" style="white-space: normal">
+                            <small>
+                                <b> {{ $item['data']['jenis'] }}
+                                    {{ CarbonParse($item->created_at, 'd/m/Y H:i') }}</b>
+                            </small>
+                            <br>
+
+                            <p>{{ $item['data']['message'] }}</p>
+                        </a>
+                    @empty
+                        <a class="dropdown-item" href="javascript:;" style="white-space: normal">
+                            <p class="tidak-ada-notifikasi collapse" style="text-align: center">Tidak ada notifikasi</p>
+                        </a>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 <nav class="sidebar">
     <div class="sidebar__wrap">

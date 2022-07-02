@@ -91,6 +91,7 @@
             });
         }
 
+
         function store() {
             var validation = 0;
             $('#form-data .required').each(function() {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JadwalDokterController;
+use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PemeriksaanController;
@@ -24,12 +25,25 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('layouts/home-pasien');
 // });
+Route::controller(NotifyController::class)->group(function () {
+    Route::group(['prefix' => 'broadcasting'], function () {
+        Route::post('auth', 'authenticate')->name('broadcastingAuth');
+        Route::post('open-notification', 'openNotification')->name('openNotification');
+        Route::get('see-all-notification', 'seeAllNotification')->name('seeAllNotification');
+        Route::post('validasi-notifikasi', 'validasiNotifikasi')->name('validasiNotifikasi');
+        Route::get('parse-tanggal-notification', 'parseTanggalNotification')->name('parseTanggalNotification');
+        Route::get('broadcast-pendaftaran', 'monitoringPendaftaran')->name('monitoringPendaftaran');
+        Route::get('notify-pembayaran', 'notifyPembayaran')->name('notify-pembayaran');
+    });
+});
 
 
 Route::middleware('auth')->group(function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
     });
+
+
     Route::controller(StaffController::class)->group(function () {
         Route::group(['prefix' => 'staff'], function () {
             Route::get('/index', 'index')->name('staff');

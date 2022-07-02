@@ -35,7 +35,8 @@
     <table style="width: 100%">
         <tr>
             <td>
-                <img width="100" src="https://user-images.githubusercontent.com/56387755/176904318-20fdfb9d-aa19-4112-b681-5a3b0db332fb.png">
+                <img width="100"
+                    src="https://user-images.githubusercontent.com/56387755/176904318-20fdfb9d-aa19-4112-b681-5a3b0db332fb.png">
             </td>
             <td style="text-align: right;font-size: 24px">
 
@@ -81,7 +82,8 @@
                 <br>
                 Visio Mandiri Medika<br>
                 Alamat :<br>
-                Jalan Kedung Rukem<br>
+                Jl. Raya Jelidro No.52, Sambikerep, Kec. Sambikerep, Kota SBY, Jawa Timur 60217
+                <br>
                 Telpon :<br>
                 089898989<br>
             </td>
@@ -108,7 +110,7 @@
         <tbody>
             @foreach ($data->pembayaran_detail as $i => $d)
                 <tr>
-                    <td  style="width: 5%;text-align: center">{{ $i + 1 }}</td>
+                    <td style="width: 5%;text-align: center">{{ $i + 1 }}</td>
                     <td>{{ $d->item->name }}</td>
                     <td style="text-align: right">{{ number_format($d->total) }}</td>
                 </tr>

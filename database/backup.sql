@@ -35,6 +35,30 @@ DELETE FROM `failed_jobs`;
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 
+-- membuang struktur untuk table visio.item
+CREATE TABLE IF NOT EXISTS `item` (
+  `id` int(11) NOT NULL,
+  `kode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis` enum('Tindakan','Obat') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `harga` double(20,2) NOT NULL,
+  `keterangan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `updated_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel visio.item: ~3 rows (lebih kurang)
+DELETE FROM `item`;
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` (`id`, `kode`, `name`, `jenis`, `harga`, `keterangan`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(1, 'I0001', 'Pijat', 'Tindakan', 57000.00, '-', 'true', 'superuser', 'superuser', '2022-07-01 12:17:40', '2022-07-01 12:17:40'),
+	(2, 'I0002', 'Mixagrip', 'Obat', 15000.00, '-', 'true', 'superuser', 'superuser', '2022-07-01 12:17:56', '2022-07-01 12:17:56'),
+	(3, 'I0003', 'Redoxon', 'Obat', 50000.00, '-', 'true', 'superuser', 'superuser', '2022-07-01 12:18:10', '2022-07-01 12:18:10');
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+
 -- membuang struktur untuk table visio.jadwal_dokter
 CREATE TABLE IF NOT EXISTS `jadwal_dokter` (
   `id` int(11) NOT NULL,
@@ -75,16 +99,17 @@ CREATE TABLE IF NOT EXISTS `jadwal_dokter_log` (
   `alamat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jenis` enum('On Site','Panggilan') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status_pembayaran` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ref` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`jadwal_dokter_id`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel visio.jadwal_dokter_log: ~4 rows (lebih kurang)
 DELETE FROM `jadwal_dokter_log`;
 /*!40000 ALTER TABLE `jadwal_dokter_log` DISABLE KEYS */;
-INSERT INTO `jadwal_dokter_log` (`jadwal_dokter_id`, `id`, `hari`, `tanggal`, `created_at`, `updated_at`, `pasien_id`, `status`, `no_reservasi`, `telp`, `alamat`, `jenis`, `status_pembayaran`) VALUES
-	(2, 1, 'rabu', '2022-07-06', '2022-06-30 17:18:16', '2022-06-30 18:10:04', 1, 'Done', 'R0001', '32323', '23443434', 'On Site', NULL),
-	(3, 1, 'selasa', '2022-07-05', '2022-06-30 17:19:36', '2022-06-30 17:19:36', 1, 'Reserved', 'PR0001', '32323', '23443434', 'Panggilan', NULL),
-	(4, 1, 'jumat', '2022-07-08', '2022-06-30 17:19:36', '2022-06-30 17:19:36', 1, 'Reserved', 'PR0001', '32323', '23443434', 'Panggilan', NULL);
+INSERT INTO `jadwal_dokter_log` (`jadwal_dokter_id`, `id`, `hari`, `tanggal`, `created_at`, `updated_at`, `pasien_id`, `status`, `no_reservasi`, `telp`, `alamat`, `jenis`, `status_pembayaran`, `ref`) VALUES
+	(2, 1, 'rabu', '2022-07-06', '2022-06-30 17:18:16', '2022-06-30 18:10:04', 1, 'Done', 'R0001', '32323', '23443434', 'On Site', NULL, 'PE0001'),
+	(3, 1, 'selasa', '2022-07-05', '2022-06-30 17:19:36', '2022-06-30 17:19:36', 1, 'Reserved', 'PR0001', '32323', '23443434', 'Panggilan', NULL, NULL),
+	(4, 1, 'jumat', '2022-07-08', '2022-06-30 17:19:36', '2022-06-30 17:19:36', 1, 'Reserved', 'PR0001', '32323', '23443434', 'Panggilan', NULL, NULL);
 /*!40000 ALTER TABLE `jadwal_dokter_log` ENABLE KEYS */;
 
 -- membuang struktur untuk table visio.migrations
@@ -93,9 +118,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel visio.migrations: ~21 rows (lebih kurang)
+-- Membuang data untuk tabel visio.migrations: ~28 rows (lebih kurang)
 DELETE FROM `migrations`;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -120,7 +145,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(30, '2022_07_01_035806_create_pembayaran', 12),
 	(31, '2022_07_01_040047_add_status_pembayaran_to_jadwal_dokter_log', 12),
 	(32, '2022_07_01_041325_create_pembayaran_detail', 13),
-	(33, '2022_07_01_044714_create_item', 14);
+	(34, '2022_07_01_065259_add_status_pembeyaran_to_pasien_rekam_medis', 15),
+	(35, '2022_07_01_044714_create_item', 16),
+	(36, '2022_07_01_122007_add_qty_to_pembayaran_detail', 17),
+	(37, '2022_07_01_121958_add_qty_to_item', 18),
+	(38, '2022_07_01_130131_add_ref_to_pembayaran', 18),
+	(39, '2022_07_01_144625_add_ref_to_jadwal_dokter_log', 19),
+	(40, '2022_07_01_152028_add_password_change_date_to_users', 20);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- membuang struktur untuk table visio.pasien
@@ -159,14 +190,15 @@ CREATE TABLE IF NOT EXISTS `pasien_rekam_medis` (
   `updated_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `status_pembayaran` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`pasien_id`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel visio.pasien_rekam_medis: ~1 rows (lebih kurang)
+-- Membuang data untuk tabel visio.pasien_rekam_medis: ~0 rows (lebih kurang)
 DELETE FROM `pasien_rekam_medis`;
 /*!40000 ALTER TABLE `pasien_rekam_medis` DISABLE KEYS */;
-INSERT INTO `pasien_rekam_medis` (`pasien_id`, `id`, `id_rekam_medis`, `tanggal`, `dokter_id`, `tindakan`, `keterangan`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 1, 'PE0001', '2022-06-30', 5, '23', '23232', 'superuser', 'superuser', '2022-06-30 18:10:04', '2022-06-30 18:10:04');
+INSERT INTO `pasien_rekam_medis` (`pasien_id`, `id`, `id_rekam_medis`, `tanggal`, `dokter_id`, `tindakan`, `keterangan`, `created_by`, `updated_by`, `created_at`, `updated_at`, `status_pembayaran`) VALUES
+	(1, 1, 'PE0001', '2022-07-01', 5, '23', '23232', 'superuser', 'superuser', '2022-06-30 18:10:04', '2022-07-01 13:41:29', 'Done');
 /*!40000 ALTER TABLE `pasien_rekam_medis` ENABLE KEYS */;
 
 -- membuang struktur untuk table visio.password_resets
@@ -190,8 +222,6 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   `pasien_id` int(11) NOT NULL,
   `metode_pembayaran` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `total` double(20,2) NOT NULL,
-  `diagnosa` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keterangan` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `bank` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `no_rekening` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `no_transaksi` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -199,12 +229,15 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   `created_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `updated_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `ref` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel visio.pembayaran: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel visio.pembayaran: ~1 rows (lebih kurang)
 DELETE FROM `pembayaran`;
 /*!40000 ALTER TABLE `pembayaran` DISABLE KEYS */;
+INSERT INTO `pembayaran` (`id`, `nomor_invoice`, `tanggal`, `pasien_id`, `metode_pembayaran`, `total`, `bank`, `no_rekening`, `no_transaksi`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`, `ref`) VALUES
+	(1, 'INV/072022/0001', '2022-07-01', 1, 'Non Tunai', 122000.00, 'Bank Transfer (BRI)', '91839089', '234798435493543', 'Released', 'superuser', 'superuser', '2022-07-01 13:41:29', '2022-07-01 14:14:06', 'PE0001');
 /*!40000 ALTER TABLE `pembayaran` ENABLE KEYS */;
 
 -- membuang struktur untuk table visio.pembayaran_detail
@@ -215,12 +248,17 @@ CREATE TABLE IF NOT EXISTS `pembayaran_detail` (
   `total` double(20,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `qty` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`pembayaran_id`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel visio.pembayaran_detail: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel visio.pembayaran_detail: ~3 rows (lebih kurang)
 DELETE FROM `pembayaran_detail`;
 /*!40000 ALTER TABLE `pembayaran_detail` DISABLE KEYS */;
+INSERT INTO `pembayaran_detail` (`pembayaran_id`, `id`, `item_id`, `total`, `created_at`, `updated_at`, `qty`) VALUES
+	(1, 1, 1, 57000.00, '2022-07-01 14:14:06', '2022-07-01 14:14:06', 1),
+	(1, 2, 2, 15000.00, '2022-07-01 14:14:06', '2022-07-01 14:14:06', 1),
+	(1, 3, 3, 50000.00, '2022-07-01 14:14:06', '2022-07-01 14:14:06', 1);
 /*!40000 ALTER TABLE `pembayaran_detail` ENABLE KEYS */;
 
 -- membuang struktur untuk table visio.personal_access_tokens
@@ -298,6 +336,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `alamat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_lahir` date DEFAULT NULL,
+  `password_change_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -305,12 +344,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Membuang data untuk tabel visio.users: ~5 rows (lebih kurang)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `username`, `role_id`, `telp`, `alamat`, `user_id`, `tanggal_lahir`) VALUES
-	(1, 'superuser', 'dewa17a@gmail.com', NULL, '$2y$10$5OIakeeAS./56pYgK0pO8.1FzUZW3k6M71OS3cFlgJbRRTirJfsQy', '2', '2022-06-29 13:16:09', '2022-06-29 13:18:58', '', 3, NULL, NULL, NULL, NULL),
-	(2, 'superuser', 'superuser@gmail.com', NULL, '$2y$10$X3RVXw5Cv2tqrMdeaRLtSOUqvbt.ZqJuE.fXWqqWJ1x5YiWAnc9Vu', NULL, '2022-06-29 14:28:31', '2022-06-29 14:28:31', 'superuser', 3, NULL, NULL, NULL, NULL),
-	(3, 'tes', 'tes@gmail.com', NULL, '$2y$10$HJFFui4Cqe3JpaZ1F8ys/eODG2l2wZrwnb/i9na6EqoT9Hy.MVzbG', NULL, '2022-06-29 17:13:10', '2022-06-29 17:13:10', 'P0001', 2, '2323', '23232', 'P0001', '2022-06-21'),
-	(4, 'deni', 'deni@gmail.com', NULL, '$2y$10$1jaFzmUWwSRwqtn3v2nbOOO.7y1xdA7xWINh7L8OBu0udwHarGEoC', NULL, '2022-06-29 17:14:05', '2022-06-29 17:14:05', 'P0002', 2, '23232', '323232', 'P0002', '2022-06-16'),
-	(5, 'faisal', 'faisal@gmail.com', NULL, '$2y$10$wXmWwLqRdw6B4tBBmfnsN.zznDDH7.7ikXw/q2Qfd2kdq5Egi8J3W', NULL, '2022-06-29 17:14:19', '2022-06-29 18:39:08', 'T0001', 1, '2312', '312321321', 'T0001', '2022-06-21');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `username`, `role_id`, `telp`, `alamat`, `user_id`, `tanggal_lahir`, `password_change_date`) VALUES
+	(1, 'superuser', 'dewa17a@gmail.com', NULL, '$2y$10$5OIakeeAS./56pYgK0pO8.1FzUZW3k6M71OS3cFlgJbRRTirJfsQy', '2', '2022-06-29 13:16:09', '2022-06-29 13:18:58', '', 3, NULL, NULL, NULL, NULL, NULL),
+	(2, 'Adi Wielijarni', 'superuser@gmail.com', NULL, '$2y$10$QedHDa5LaQZZd7LS5RUwFuJigTlJtpPa3ui2AA0wpECFFJWccURxa', NULL, '2022-06-29 14:28:31', '2022-07-01 15:22:31', 'superuser', 3, '123123', '12312312', NULL, '2022-07-01', '2022-07-01 15:22:31'),
+	(3, 'tes', 'tes@gmail.com', NULL, '$2y$10$HJFFui4Cqe3JpaZ1F8ys/eODG2l2wZrwnb/i9na6EqoT9Hy.MVzbG', NULL, '2022-06-29 17:13:10', '2022-06-29 17:13:10', 'P0001', 2, '2323', '23232', 'P0001', '2022-06-21', NULL),
+	(4, 'deni', 'deni@gmail.com', NULL, '$2y$10$1jaFzmUWwSRwqtn3v2nbOOO.7y1xdA7xWINh7L8OBu0udwHarGEoC', NULL, '2022-06-29 17:14:05', '2022-06-29 17:14:05', 'P0002', 2, '23232', '323232', 'P0002', '2022-06-16', NULL),
+	(5, 'faisal', 'faisal@gmail.com', NULL, '$2y$10$wXmWwLqRdw6B4tBBmfnsN.zznDDH7.7ikXw/q2Qfd2kdq5Egi8J3W', NULL, '2022-06-29 17:14:19', '2022-06-29 18:39:08', 'T0001', 1, '2312', '312321321', 'T0001', '2022-06-21', NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

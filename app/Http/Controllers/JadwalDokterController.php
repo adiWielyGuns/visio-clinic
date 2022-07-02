@@ -22,7 +22,11 @@ class JadwalDokterController extends Controller
 
     public function datatable(Request $req)
     {
-        $data = JadwalDokter::all();
+        if (Auth::user()->role->name == 'Terapis') {
+            $data = JadwalDokter::where('users_id', Auth::user()->id)->get();
+        } else {
+            $data = JadwalDokter::get();
+        }
 
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {

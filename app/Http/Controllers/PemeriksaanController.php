@@ -15,6 +15,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PemeriksaanController extends Controller
 {
+    public $notify;
+    public function __construct()
+    {
+        $this->notify = new NotifyController();
+    }
+
     public function index(Request $req)
     {
         $onSite = JadwalDokterLog::where('status', 'Reserved')
@@ -123,18 +129,6 @@ class PemeriksaanController extends Controller
         return view('pemeriksaan/create_pemeriksaan', compact('data'));
     }
 
-    public function edit(Request $req)
-    {
-        $data = User::findOrFail($req->id);
-        return view('pemeriksaan/edit_pemeriksaan', compact('data'));
-    }
-
-    public function show(Request $req)
-    {
-        $data = User::findOrFail($req->id);
-        return view('pemeriksaan/show_pemeriksaan', compact('data'));
-    }
-
     public function store(Request $req)
     {
         return DB::transaction(function () use ($req) {
@@ -144,57 +138,30 @@ class PemeriksaanController extends Controller
                 ->where('id', $req->id)
                 ->where('jadwal_dokter_id', $req->jadwal_dokter_id)
                 ->first();
+            $id_rekam_medis = $this->generatekode($req)->getData()->kode;
             JadwalDokterLog::where('status', 'Reserved')
                 ->where('id', $req->id)
                 ->where('jadwal_dokter_id', $req->jadwal_dokter_id)
                 ->update([
                     'status' => 'Done',
+                    'ref'   => $id_rekam_medis,
                 ]);
-
             $input['created_by'] = me();
             $input['updated_by'] = me();
             $input['tanggal'] = dateStore();
             $input['dokter_id'] = $check->jadwal_dokter->users_id;
             $input['pasien_id'] = $check->pasien_id;
+            $input['id_rekam_medis'] =  $id_rekam_medis;
             $input['id'] = PasienRekamMedis::where('pasien_id', $check->pasien_id)->max('id') + 1;
 
+            $req->request->add([
+                'id_rekam_medis' => $id_rekam_medis
+            ]);
             PasienRekamMedis::create($input);
+
+            $this->notify->notifyPembayaran($req);
+
             return Response()->json(['status' => 1, 'message' => 'Berhasil melakukan pemeriksaan']);
         });
-    }
-
-    public function update(Request $req)
-    {
-        return DB::transaction(function () use ($req) {
-
-            $input = $req->all();
-            $validator = Validator::make(
-                $input,
-                [
-                    'email'       => 'required|unique:users' . ($req->id == 'undefined' ? '' : ",email,$req->id"),
-                ],
-                [
-                    'email.email'        => 'Format Email Salah',
-                    'email.unique'        => 'Email sudah ada',
-                ]
-            );
-
-            if ($validator->fails()) {
-                return response()->json($validator->getMessageBag(), Response::HTTP_BAD_REQUEST);
-            }
-
-            $input['updated_by'] = me();
-            $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
-            $input['password'] = Hash::make(str_replace('/', '', $req->tanggal_lahir));
-
-            User::find($req->id)->update($input);
-            return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
-        });
-    }
-
-    public function delete(Request $req)
-    {
-        User::findOrFail($req->id)->delete();
-        return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
     }
 }

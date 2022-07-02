@@ -1,7 +1,7 @@
 @extends('../layouts/base')
 
 @section('body')
-
+    @include('../layouts/pusher')
     <body class="py-5">
         <div class="loading style-2" id="loading">
             <div class="loading-wheel"></div>

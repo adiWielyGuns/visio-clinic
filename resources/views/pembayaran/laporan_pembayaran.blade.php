@@ -353,9 +353,9 @@
                         <td style="width: 50%; text-align: center;vertical-align: top;padding-top: 1rem">
                             <h2 style="margin-bottom: 0px;padding: 0px ;margin: 0px"><b>VISIO MANDIRI MEDIKA</b></h2>
                             <span style="font-size: 15px;text-align: center">
-                                Jl. Kedung Rukem 1.<br>
-                                Belakang Tunjungan<br>
-                                Surabaya<br>
+                                Jl. Raya Jelidro No.52, Sambikerep, <br> Kec. Sambikerep, Kota SBY, <br> Jawa Timur
+                                60217
+                                <br>
                             </span>
                         </td>
                         <td style="width: 25%;padding-top: 1rem">

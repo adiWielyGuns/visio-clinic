@@ -283,6 +283,10 @@
             $('#hari_reservasi').val($(par).find('option:selected').data('hari'));
         }
 
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
         function getJadwalDokter(param) {
             $.ajax({
                 url: '{{ route('get-jadwal-dokter') }}',
@@ -309,8 +313,11 @@
                             $('#jadwal_dokter_id_reservasi_div').removeClass('collapse')
                             data.data.forEach((d, i) => {
                                 var option = '<option data-hari="' + d.hari + '" value="' + d.id +
-                                    '">' + d
-                                    .hari + '(' + d.sisa_kuota + ')' + '</option>';
+                                    '">' + d.tanggal +
+                                    ' | ' +
+                                    capitalizeFirstLetter(d.hari) +
+                                    ' (' + d.sisa_kuota + ')' +
+                                    '</option>';
 
                                 $('#jadwal_dokter_id_reservasi').append(option);
 
@@ -323,8 +330,11 @@
                             $('#jadwal_dokter_id_panggilan_div').removeClass('collapse')
                             data.data.forEach((d, i) => {
                                 var option = '<option data-hari="' + d.hari + '" value="' + d.id +
-                                    '">' + d
-                                    .hari + '(' + d.sisa_kuota + ')' + '</option>';
+                                    '">' + d.tanggal +
+                                    ' | ' +
+                                    capitalizeFirstLetter(d.hari) +
+                                    ' (' + d.sisa_kuota + ')' +
+                                    '</option>';
 
                                 $('#jadwal_dokter_id_panggilan').append(option);
 
