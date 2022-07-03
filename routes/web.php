@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('layouts/home-pasien');
 // });
 Route::controller(HomePasienController::class)->group(function () {
-    Route::post('reset-password', 'resetPassword')->name('resetPassword');
+    Route::get('reset-password', 'resetPassword')->name('resetPassword');
 });
 
 Route::controller(NotifyController::class)->group(function () {
