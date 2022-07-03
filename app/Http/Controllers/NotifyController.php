@@ -40,8 +40,8 @@ class NotifyController extends Controller
     {
         $data = PasienRekamMedis::where('id_rekam_medis', $req->id_rekam_medis)
             ->first();
+        dd($data->pasien);
         $message = 'Terdapat notifikasi pembayaran dari ' . $data->dokter->name . ' dengan no pemeriksaan ' . $data->id_rekam_medis . ' dan nama pasien ' . $data->pasien->name;
-        dd($message);
 
         $user = [];
         $user = User::whereHas('role', function ($q) {
