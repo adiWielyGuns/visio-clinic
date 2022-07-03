@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomePasienController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JadwalDokterController;
 use App\Http\Controllers\NotifyController;
@@ -25,6 +26,10 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('layouts/home-pasien');
 // });
+Route::controller(HomePasienController::class)->group(function () {
+    Route::get('reset-password', 'resetPassword')->name('resetPassword');
+});
+
 Route::controller(NotifyController::class)->group(function () {
     Route::group(['prefix' => 'broadcasting'], function () {
         Route::post('auth', 'authenticate')->name('broadcastingAuth');
