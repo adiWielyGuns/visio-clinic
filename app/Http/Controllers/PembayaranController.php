@@ -256,7 +256,7 @@ class PembayaranController extends Controller
             $data = Pembayaran::findOrFail($req->id);
 
             PasienRekamMedis::where('id_rekam_medis', $data->ref)
-                ->update(['status_pembayaran' => 'Released']);
+                ->update(['status_pembayaran' => null]);
 
             Pembayaran::findOrFail($req->id)->delete();
             PembayaranDetail::where('pembayaran_id', $req->id)->delete();
