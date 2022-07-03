@@ -36,7 +36,7 @@ class PasienController extends Controller
                     return '<button class="btn btn--danger" onclick="gantiStatus(true,\'' . $data->id . '\')">Tidak Aktif</button>';
                 }
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi','status'])
             ->addIndexColumn()
             ->make(true);
     }
