@@ -23,7 +23,7 @@
                         </div>
                         <div class="form-group">
                             <label>Dokter</label>
-                            <select class="select select-contact-group disabled" disabled id="users_id" name="users_id"
+                            <select class="select select-contact-group " disabled id="users_id" name="users_id"
                                 title="Pilih Dokter">
                                 @foreach ($dokter as $item)
                                     <option {{ $data->users_id == $item->id ? 'selected' : '' }}
@@ -77,6 +77,9 @@
                 todayHighlight: true
             });
             $('#users_id').val('{{ $data->users_id }}');
+            @if (!$data->dokter)
+                $('#users_id').prop('disabled', false);
+            @endif
             $('#jenis').val('{{ $data->jenis }}');
         })
 

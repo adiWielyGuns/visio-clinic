@@ -104,17 +104,18 @@ class JadwalDokterController extends Controller
     public function update(Request $req)
     {
         return DB::transaction(function () use ($req) {
-
+            $data = JadwalDokter::find($req->id);
             $check = JadwalDokter::where('hari', $req->hari)
-                ->where('users_id', $req->users_id)
+                ->where('users_id', $data->users_id)
                 ->where('id', '!=', $req->id)
                 ->first();
 
             if ($check) {
                 return Response()->json(['status' => 2, 'message' => 'Data untuk hari ' . $req->hari . ' untuk dokter ini sudah ada.']);
             }
-            $input = $req->all();
 
+            $input = $req->all();
+            unset($input['users_id']);
             $input['updated_by'] = me();
             JadwalDokter::find($req->id)->update($input);
             return Response()->json(['status' => 1, 'message' => 'Data berhasil diupdate']);
