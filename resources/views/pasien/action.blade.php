@@ -4,6 +4,8 @@
         src="{{ asset('images/ic-edit.svg') }}" /></a>
 
 
-<a class="btn-edit" onclick="hapus('{{ $data->id }}')" data-toggle="modal"><img class="svg"
-        src="{{ asset('images/ic-delete.svg') }}" />
-</a>
+@if (count(Auth::user()->jadwal_dokter_log) == 0)
+    <a class="btn-edit" onclick="hapus('{{ $data->id }}')" data-toggle="modal"><img class="svg"
+            src="{{ asset('images/ic-delete.svg') }}" />
+    </a>
+@endif
