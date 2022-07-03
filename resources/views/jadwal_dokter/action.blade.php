@@ -1,4 +1,4 @@
-@if (Carbon\Carbon::now()->format('D') == 'Sun')
+@if (Carbon\Carbon::now()->format('D') == 'Sun' or Auth::user()->role->name == 'SuperAdmin')
     <a class="btn-edit" href="{{ route('edit-jadwal-dokter') }}?id={{ $data->id }}"><img class="svg"
             src="{{ asset('images/ic-edit.svg') }}" /></a>
 @endif
