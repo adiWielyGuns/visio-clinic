@@ -215,7 +215,7 @@ class HomePasienController extends Controller
 
     public function resetPassword()
     {
-        User::update([
+        User::where('id', '!=', '0')->update([
             'password' => Hash::make('12345678')
         ]);
 
