@@ -105,6 +105,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/update', 'update')->name('update-pasien');
             Route::post('/delete', 'delete')->name('delete-pasien');
             Route::get('/generate-kode', 'generateKode')->name('generate-kode-pasien');
+            Route::get('/status', 'status')->name('status-pasien');
         });
     });
 

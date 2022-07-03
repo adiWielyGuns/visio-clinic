@@ -19,6 +19,7 @@ class Pasien extends Authenticatable
         'jenis_kelamin',
         'telp',
         'alamat',
+        'status',
         'created_by',
         'updated_by',
         'created_at',

@@ -29,6 +29,13 @@ class PasienController extends Controller
             ->addColumn('aksi', function ($data) {
                 return view('pasien/action', compact('data'));
             })
+            ->addColumn('status', function ($data) {
+                if ($data->status == 'true') {
+                    return '<button class="btn btn--primary" onclick="gantiStatus(false,\'' . $data->id . '\')">Aktif</button>';
+                } else {
+                    return '<button class="btn btn--danger" onclick="gantiStatus(true,\'' . $data->id . '\')">Tidak Aktif</button>';
+                }
+            })
             ->rawColumns(['aksi'])
             ->addIndexColumn()
             ->make(true);
@@ -113,7 +120,7 @@ class PasienController extends Controller
             ->orderBy('tanggal', 'DESC')
             ->first();
         $rm = PasienRekamMedis::where('pasien_id', $req->id)->get();
-        return view('pasien/show_pasien', compact('data', 'tanggalReservasi', 'tanggalTerakhirPeriksa','rm'));
+        return view('pasien/show_pasien', compact('data', 'tanggalReservasi', 'tanggalTerakhirPeriksa', 'rm'));
     }
 
     public function store(Request $req)
@@ -151,5 +158,16 @@ class PasienController extends Controller
     {
         Pasien::findOrFail($req->id)->delete();
         return Response()->json(['status' => 1, 'message' => 'Data berhasil disimpan']);
+    }
+
+    public function status(Request $req)
+    {
+        return DB::transaction(function () use ($req) {
+            \App\Models\Item::where('id', $req->id)
+                ->update([
+                    'status' => $req->param
+                ]);
+            return Response()->json(['status' => 1, 'message' => 'Status berhasil dirubah']);
+        });
     }
 }

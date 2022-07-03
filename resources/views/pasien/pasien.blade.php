@@ -38,7 +38,7 @@
     <script>
         var table;
         (function() {
-           table = $('#table-pasien').DataTable({
+            table = $('#table-pasien').DataTable({
                 // searching: false,
                 processing: true,
                 serverSide: true,
@@ -125,6 +125,38 @@
                     });
                 }
             })
+        }
+
+        function gantiStatus(param, id) {
+            $.ajax({
+                url: "{{ route('status-pasien') }}",
+                data: {
+                    id,
+                    param
+                },
+                type: 'get',
+                success: function(data) {
+                    table.ajax.reload(null, false);
+                    Swal.fire({
+                        title: data.message,
+                        icon: "success",
+                    });
+
+                },
+                error: function(data) {
+                    var html = '';
+                    Object.keys(data.responseJSON).forEach(element => {
+                        html += data.responseJSON[element][0] + '<br>';
+                    });
+                    Swal.fire({
+                        title: 'Oops Something Wrong!',
+                        text: data.responseJSON.message == undefined ? html : data
+                            .responseJSON.message,
+                        type: "error",
+                        html: true,
+                    });
+                }
+            });
         }
     </script>
 @endsection
