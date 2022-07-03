@@ -27,7 +27,7 @@ class PasienRekamMedis extends Model
 
     public function pasien()
     {
-        return $this->belongsTo(Pasien::class);
+        return $this->belongsTo(Pasien::class, 'pasien_id', 'id');
     }
 
     public function jadwal_dokter_log()
