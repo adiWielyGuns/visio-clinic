@@ -115,7 +115,9 @@ class JadwalDokterController extends Controller
             }
 
             $input = $req->all();
-            unset($input['users_id']);
+            if ($data->dokter) {
+                unset($input['users_id']);
+            }
             $input['updated_by'] = me();
             JadwalDokter::find($req->id)->update($input);
             return Response()->json(['status' => 1, 'message' => 'Data berhasil diupdate']);
