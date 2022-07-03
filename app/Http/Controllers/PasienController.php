@@ -163,7 +163,7 @@ class PasienController extends Controller
     public function status(Request $req)
     {
         return DB::transaction(function () use ($req) {
-            \App\Models\Item::where('id', $req->id)
+            \App\Models\Pasien::where('id', $req->id)
                 ->update([
                     'status' => $req->param
                 ]);
