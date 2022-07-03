@@ -4,16 +4,20 @@
         <div class="header__right">
             <div class="user-snapshot dropdown">
                 <div class="user-snapshot__toggle" data-toggle="dropdown">
-                    <div class="user-snapshot__avatar"><img src="{{ asset('images/ic-more.svg') }}" alt="Avatar"
+                    <div class="user-snapshot__avatar"><img src="{{ asset('images/icon-notif.svg') }}" alt="Avatar"
                             width="32" height="32" /></div>
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu" style="width: 500px">
                     @forelse (Auth::user()->unreadNotifications as $item)
                         <a class="dropdown-item" href="{{ $item['data']['url'] }}" style="white-space: normal">
-                            <small>
-                                <b> {{ $item['data']['jenis'] }}
-                                    {{ CarbonParse($item->created_at, 'd/m/Y H:i') }}</b>
-                            </small>
+                            <span>
+                                <b> {{ $item['data']['jenis'] }} </b>
+                                <small>
+                                    {{ CarbonParse($item->created_at, 'd/m/Y H:i') }}
+
+                                </small>
+                            </span>
+
                             <br>
 
                             <p>{{ $item['data']['message'] }}</p>
@@ -67,7 +71,7 @@
             @if (Auth::user()->role->name == 'SuperAdmin' or Auth::user()->role->name == 'Terapis')
                 <li class="main-menu__item {{ Request::segment(1) == 'pemeriksaan' ? 'active' : '' }}"><a
                         class="main-menu__link" href="{{ route('pemeriksaan') }}">
-                        <div class="icon"><img src="{{ asset('images/ic-payment.svg') }}" /></div>
+                        <div class="icon"><img src="{{ asset('images/ic-pages.svg') }}" /></div>
                         <span>Pemeriksaan</span>
                     </a>
                 </li>
@@ -84,7 +88,7 @@
             @if (Auth::user()->role->name == 'SuperAdmin' or Auth::user()->role->name == 'Perawat')
                 <li class="main-menu__item {{ Request::segment(1) == 'item' ? 'active' : '' }}"><a
                         class="main-menu__link" href="{{ route('item') }}">
-                        <div class="icon"><img src="{{ asset('images/ic-subscribers.svg') }}" /></div>
+                        <div class="icon"><img src="{{ asset('images/ic-item.svg') }}" /></div>
                         <span>Item</span>
                     </a>
                 </li>

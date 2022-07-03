@@ -8,31 +8,33 @@
         <div id="wrap">
             <div class="web-wrapper" id="page">
                 <main>
-                    <div class="container-fluid auth-page pasien-daftar">
+                    <div class="container-fluid auth-page pasien-daftar logged">
                         <div class="row">
-                            <div class="col-lg-8 left-wrap">
+                            <div class="col-lg-4 left-wrap">
                                 <div class="image" style="background-image: url(images/masthead-home.jpg)"></div>
-                                <div class="description">
+                                <!-- <div class="description">
                                     <div class="feature1">
-                                        <h3>Fitur Rekam Medis</h3>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus dolor maxime
-                                            id magni laborum officiis, maiores minus quo quam corporis laboriosam inventore,
-                                            suscipit nostrum deleniti alias deserunt saepe voluptatibus vel?</p>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus dolor maxime
-                                            id magni laborum officiis, maiores minus quo quam corporis laboriosam inventore,
-                                            suscipit nostrum deleniti alias deserunt saepe voluptatibus vel?p Lorem ipsum
-                                            dolor sit amet consectetur adipisicing elit. Temporibus dolor maxime id magni
-                                            laborum officiis, maiores minus quo quam corporis laboriosam inventore, suscipit
-                                            nostrum deleniti alias deserunt saepe voluptatibus vel?</p>
+                                        <h3>Menangani</h3>
+                                        <ul>
+                                        <li>Sakit punggung</li>
+                                        <li>Sakit lutut</li>
+                                        <li>Sakit persendian</li>
+                                        <li>Pemuliah Stroke</li>
+                                        <li>Cedera Olahraga</li>
+                                        </ul>
                                     </div>
                                 </div>
+                                <div class="address">
+                                    <p>Jl. Jelidro No. 52 Sambikerep Sby - 081332000593</p>
+                                </div> -->
                             </div>
-                            <div class="col-lg-4 right-wrap">
+                            <div class="col-lg-8 right-wrap">
                                 <div class="form-wrap">
                                     <form action="{{ route('logout-pasien') }}" method="POST" id="logout">
                                         {{ csrf_field() }}</form>
                                     <div class="box">
-                                        <h1 class="logo">Visio Mandiri Medika</h1>
+                                        <div class="imglogo"><img src="images/logo-vmm.png"/></div>
+                                        <h1 class="logo">Fisio Mandiri Medika</h1>
                                         <div class="akun"><span>Selamat Datang,
                                                 {{ Auth::guard('pasien')->user()->name }}.</span><a class="btn btn--link"
                                                 onclick="$('#logout').submit()">Keluar</a></div>

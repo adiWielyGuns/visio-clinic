@@ -2,7 +2,7 @@
 
 @section('body')
     @include('../layouts/pusher')
-    <body class="py-5">
+    <body class="">
         <div class="loading style-2" id="loading">
             <div class="loading-wheel"></div>
         </div>
