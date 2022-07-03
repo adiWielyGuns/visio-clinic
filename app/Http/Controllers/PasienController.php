@@ -36,7 +36,7 @@ class PasienController extends Controller
                     return '<button class="btn btn--danger" onclick="gantiStatus(true,\'' . $data->id . '\')">Tidak Aktif</button>';
                 }
             })
-            ->rawColumns(['aksi','status'])
+            ->rawColumns(['aksi', 'status'])
             ->addIndexColumn()
             ->make(true);
     }
@@ -133,6 +133,7 @@ class PasienController extends Controller
             $input['id'] = Pasien::max('id') + 1;
             $input['created_by'] = me();
             $input['updated_by'] = me();
+            $input['status'] = 'true';
             $input['tanggal_lahir'] = dateStore($req->tanggal_lahir);
 
             Pasien::create($input);
