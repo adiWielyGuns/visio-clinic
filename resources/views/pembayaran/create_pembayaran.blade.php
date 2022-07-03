@@ -243,7 +243,7 @@
                             '<input type="hidden" name="item[]" class="item" value="' +
                             d.id + '">' +
                             '</label>';
-                        total += d.harga;
+                        total += d.harga * 1;
                         $('#item').append(item);
                     });
 
@@ -253,7 +253,7 @@
                         '<b class="price">' + accounting.formatNumber(total, {
                             precision: 0
                         }) + '</b>' +
-                        '<input type="hidden" name="total" class="item" value="' + total + '">' +
+                        '<input type="hidden" name="total" class="item" value="' + total * 1 + '">' +
                         '</label>';
                     $('#item').append(item);
 
