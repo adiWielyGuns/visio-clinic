@@ -23,6 +23,7 @@ class LoginPasienController extends Controller
     {
         $check = Pasien::where('id_pasien', $req->id_pasien)
             ->where('tanggal_lahir', $req->tanggal_lahir)
+            ->where('status', 'true')
             ->first();
         if ($check) {
             Auth::guard('pasien')->attempt(['id_pasien' => $req->id_pasien, 'password' => $req->tanggal_lahir]);
