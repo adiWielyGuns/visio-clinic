@@ -33,7 +33,7 @@ class JadwalDokterController extends Controller
                 return view('jadwal_dokter/action', compact('data'));
             })
             ->addColumn('dokter', function ($data) {
-                return $data->dokter->name;
+                return $data->dokter ? $data->dokter->name : '-';
             })
             ->addColumn('status', function ($data) {
                 if ($data->status == 'true') {
