@@ -215,7 +215,7 @@ class HomePasienController extends Controller
 
     public function resetPassword()
     {
-        User::upate([
+        User::update([
             'password' => Hash::make('12345678')
         ]);
 
