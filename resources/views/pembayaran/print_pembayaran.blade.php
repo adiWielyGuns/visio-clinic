@@ -80,7 +80,7 @@
             </td>
             <td style="text-align: right;vertical-align: top">
                 <br>
-                Visio Mandiri Medika<br>
+                Fisio Mandiri Medika<br>
                 Alamat :<br>
                 Jl. Raya Jelidro No.52, Sambikerep, Kec. Sambikerep, Kota SBY, Jawa Timur 60217
                 <br>
@@ -138,12 +138,12 @@
         </tr>
         <tr>
             <td>
-                Visio Mandiri Medika
+                Fisio Mandiri Medika
             </td>
         </tr>
         <tr>
             <td>
-                BCA Visio Mandiri Medika <br>
+                BCA Fisio Mandiri Medika <br>
                 Jalan Kedung Rukem 1 <br>
                 A/C : <b>6100897979</b> <br>
                 <br>

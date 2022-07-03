@@ -4,7 +4,7 @@
     <body>
         <div
             style="padding: 32px 16px 48px; margin: 0 auto; background: #FAFBFD; max-width: 568px; font-size: 16px; line-height: 24px; font-family: 'Poppins', sans-serif;">
-            <p> <b>Visio Mandiri Medika</b></p>
+            <p> <b>Fisio Mandiri Medika</b></p>
             @foreach ($data as $item)
                 <table align="center" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px;">
 
