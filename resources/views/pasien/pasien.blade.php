@@ -23,6 +23,7 @@
                             <th><span>Jenis Kelamin</span></th>
                             <th><span>Mobile No.</span></th>
                             <th>Alamat</th>
+                            <th>Status</th>
                             <th class="has-edit">Aksi</th>
                         </tr>
                     </thead>
@@ -67,6 +68,9 @@
                 }, {
                     data: 'alamat',
                     name: 'alamat'
+                }, {
+                    data: 'status',
+                    name: 'status'
                 }, {
                     data: 'aksi',
                     class: 'text-center',
