@@ -41,6 +41,6 @@ class Pasien extends Authenticatable
 
     public function jadwal_dokter_log()
     {
-        return $this->hasMany(JadwalDokterLog::class);
+        return $this->hasMany(JadwalDokterLog::class, 'pasien_id', '');
     }
 }
