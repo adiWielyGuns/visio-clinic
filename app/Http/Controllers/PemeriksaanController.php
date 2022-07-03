@@ -153,7 +153,7 @@ class PemeriksaanController extends Controller
             $input['pasien_id'] = $check->pasien_id;
             $input['id_rekam_medis'] =  $id_rekam_medis;
             $input['id'] = PasienRekamMedis::where('pasien_id', $check->pasien_id)->max('id') + 1;
-
+            dd($check->jadwal_dokter->users_id);
             $req->request->add([
                 'id_rekam_medis' => $id_rekam_medis
             ]);
