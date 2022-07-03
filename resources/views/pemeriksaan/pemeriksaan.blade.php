@@ -75,6 +75,7 @@
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>
+                                            {{ dd(dateStore(), $item->tanggal) }}
                                             @if (dateStore() == $item->tanggal)
                                                 <a class="btn btn--primary"
                                                     href="{{ route('create-pemeriksaan', ['id' => $item->id, 'jadwal_dokter_id' => $item->jadwal_dokter_id]) }}">Periksa
@@ -140,7 +141,7 @@
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>
-                                            @if (dateStore() != $item->tanggal)
+                                            @if (dateStore() == $item->tanggal)
                                                 <a class="btn btn--primary"
                                                     href="{{ route('create-pemeriksaan', ['id' => $item->id, 'jadwal_dokter_id' => $item->jadwal_dokter_id]) }}">Periksa
                                                     Pasien</a>
@@ -286,7 +287,6 @@
                     .val() + '&tab=panggilan';
             });
         })
-
 
 
         function hapus(id) {
