@@ -9,7 +9,8 @@
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu" style="width: 500px">
                     @forelse (Auth::user()->unreadNotifications as $item)
-                        <a class="dropdown-item" href="{{ $item['data']['url'] }}" style="white-space: normal">
+                        <a class="dropdown-item" href="{{ $item['data']['url'] }}?notification_id={{ $item->id }}"
+                            style="white-space: normal">
                             <span>
                                 <b> {{ $item['data']['jenis'] }} </b>
                                 <small>
