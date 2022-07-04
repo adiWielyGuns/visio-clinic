@@ -25,7 +25,8 @@
                         </a>
                     @empty
                         <a class="dropdown-item" href="javascript:;" style="white-space: normal">
-                            <p class="tidak-ada-notifikasi collapse show" style="text-align: center">Tidak ada notifikasi</p>
+                            <p class="tidak-ada-notifikasi collapse show" style="text-align: center">Tidak ada
+                                notifikasi</p>
                         </a>
                     @endforelse
                 </div>
@@ -94,6 +95,13 @@
                     </a>
                 </li>
             @endif
+
+            <li class="main-menu__item {{ Request::segment(1) == 'laporan' ? 'active' : '' }}"><a
+                    class="main-menu__link" href="{{ route('laporan') }}">
+                    <div class="icon"><img src="{{ asset('images/ic-settings.svg') }}" /></div>
+                    <span>Laporan</span>
+                </a>
+            </li>
 
             <li class="main-menu__item {{ Request::segment(1) == 'setting' ? 'active' : '' }}"><a
                     class="main-menu__link" href="{{ route('setting') }}">

@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomePasienController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JadwalDokterController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PembayaranController;
@@ -138,6 +139,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/generate-kode', 'generateKode')->name('generate-kode-pembayaran');
             Route::get('/print', 'print')->name('print-pembayaran');
             Route::get('/laporan', 'laporan')->name('laporan-pembayaran');
+        });
+    });
+
+    Route::controller(LaporanController::class)->group(function () {
+        Route::group(['prefix' => 'laporan'], function () {
+            Route::get('/index', 'index')->name('laporan');
         });
     });
 

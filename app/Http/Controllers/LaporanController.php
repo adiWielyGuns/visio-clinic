@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\JadwalDokterLog;
 use App\Models\Pasien;
 use App\Models\PasienRekamMedis;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
-class PasienController extends Controller
+class LaporanController extends Controller
 {
     public function index()
     {
-        return view('pasien/pasien');
+        return view('laporan/laporan');
     }
 
     public function datatable(Request $req)
