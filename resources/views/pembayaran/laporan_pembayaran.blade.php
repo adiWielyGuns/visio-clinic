@@ -323,7 +323,7 @@
                 <nav class="navbar navbar-light" style="width: 100%">
                     <div class="col-md-4">
                         <a class="navbar-brand" href="{{ url('/') }}" style="color: white !important">
-                            VISIO MANDIRI MEDIKA
+                            FISIO MANDIRI MEDIKA
                         </a>
                     </div>
                     <div class="col-md-4 d-flex btn-group">
@@ -351,7 +351,7 @@
                                 style="width: 40%">
                         </td>
                         <td style="width: 50%; text-align: center;vertical-align: top;padding-top: 1rem">
-                            <h2 style="margin-bottom: 0px;padding: 0px ;margin: 0px"><b>VISIO MANDIRI MEDIKA</b></h2>
+                            <h2 style="margin-bottom: 0px;padding: 0px ;margin: 0px"><b>FISIO MANDIRI MEDIKA</b></h2>
                             <span style="font-size: 15px;text-align: center">
                                 Jl. Raya Jelidro No.52, Sambikerep, <br> Kec. Sambikerep, Kota SBY, <br> Jawa Timur
                                 60217
