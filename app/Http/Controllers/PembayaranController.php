@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PembayaranController extends Controller
@@ -111,6 +112,9 @@ class PembayaranController extends Controller
 
     public function create(Request $req)
     {
+        if (isset($req->notification_id)) {
+            Auth::user()->unreadNotifications->where('id', $req->notification_id)->markAsRead();
+        }
         $item = Item::where('status', 'true')->get();
         $rekamMedis = PasienRekamMedis::where('status_pembayaran', null)->get();
         return view('pembayaran/create_pembayaran', compact('item', 'rekamMedis'));
