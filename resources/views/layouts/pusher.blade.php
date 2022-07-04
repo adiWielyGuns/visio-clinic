@@ -29,7 +29,7 @@
             '<p></p>' +
             '</a>';
 
-        $('.tidak-ada-notifikasi').addClass('show');
+        $('.tidak-ada-notifikasi').removeClass('show');
         $('#dropdown-menu').prepend(html);
 
 

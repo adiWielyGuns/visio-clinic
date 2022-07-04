@@ -25,7 +25,7 @@
                         </a>
                     @empty
                         <a class="dropdown-item" href="javascript:;" style="white-space: normal">
-                            <p class="tidak-ada-notifikasi collapse" style="text-align: center">Tidak ada notifikasi</p>
+                            <p class="tidak-ada-notifikasi collapse show" style="text-align: center">Tidak ada notifikasi</p>
                         </a>
                     @endforelse
                 </div>
