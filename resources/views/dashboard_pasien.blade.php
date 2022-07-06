@@ -277,7 +277,8 @@
                                                                                 onclick="modalVerifikasi('{{ $item->id }}')"
                                                                                 data-toggle="modal">Bayar Ulang</a>
                                                                         @elseif($item->status == 'Waiting')
-                                                                            <span style="color: #e9b414">Menunggu Verifikasi</span>
+                                                                            <span style="color: #e9b414">Menunggu
+                                                                                Verifikasi</span>
                                                                         @elseif($item->status == 'Done')
                                                                             <span style="color: #34cc69">Terbayar</span>
                                                                         @endif
@@ -304,7 +305,7 @@
             <div class="modal-dialog modal-dialog--centered modal-dialog--sm">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <h2>Verifikasi Pembayaran</h2>
+                        <h2>Upload Bukti Pembayaran</h2>
                         <form id="form-data" method="POST" enctype="multipart/form-data"
                             action="{{ route('verifikasi-pembayaran') }}">
                             @csrf
@@ -329,8 +330,8 @@
                             </div>
                             <div class="form-action text-right">
                                 <button class="btn btn--white" type="button" data-dismiss="modal">Cancel</button>
-                                <button class="btn btn--acc" type="button"
-                                    onclick="verifikasiPembayaran()">Verifikasi</button>
+                                <button class="btn btn--acc" type="button" onclick="verifikasiPembayaran()">Upload
+                                    Bukti</button>
                             </div>
                         </form>
                     </div>

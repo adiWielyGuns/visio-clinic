@@ -21,6 +21,12 @@ use Illuminate\Support\Str;
 
 class HomePasienController extends Controller
 {
+    public $notify;
+    public function __construct()
+    {
+        $this->notify = new NotifyController();
+    }
+
     public function index()
     {
         $dokter = \App\Models\User::whereHas('role', function ($q) {
@@ -257,6 +263,9 @@ class HomePasienController extends Controller
                         'upload_bukti_transfer' => $foto,
                         'status' => 'Waiting',
                     ]);
+
+
+                $this->notify->notifyVerifikasiPembayaran($req);
                 Session::flash('message', 'Sukses upload bukti pembayaran');
                 return back();
             } else {

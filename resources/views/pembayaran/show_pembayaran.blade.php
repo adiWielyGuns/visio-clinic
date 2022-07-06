@@ -90,7 +90,7 @@
                     @endif
 
                 </div>
-                @if ($data->metode_pembayaran == 'Tunai')
+                @if ($data->metode_pembayaran != 'Tunai')
                     <div class="col-lg-6 col-md-6">
                         <div class="panel">
                             <div class="panel-body">

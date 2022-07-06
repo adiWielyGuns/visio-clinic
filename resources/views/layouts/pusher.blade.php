@@ -17,21 +17,27 @@
 
     channel.bind('Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', function(data) {
 
-        var html = '<a class="dropdown-item" href="" style="white-space: normal">' +
+        console.log(data);
+        if (data.url.includes("?")) {
+            var url = data.url + '&notification_id=' + data.id;
+        } else {
+            var url = data.url + '?notification_id=' + data.id;
+        }
+
+        var html =
+            '<a class="dropdown-item" href="' + url + '"' +
+            'style="white-space: normal">' +
+            '<span>' +
+            '<b> ' + data.jenis + '</b>' +
             '<small>' +
-            '<b>' +
-            data.jenis +
             data.created_at +
-            '</b>' +
             '</small>' +
+            '</span>' +
             '<br>' +
-            data.message +
-            '<p></p>' +
+            '<p>' + data.message + '</p>' +
             '</a>';
 
         $('.tidak-ada-notifikasi').removeClass('show');
         $('#dropdown-menu').prepend(html);
-
-
     });
 </script>

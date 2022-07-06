@@ -123,6 +123,9 @@ class PembayaranController extends Controller
 
     public function show(Request $req)
     {
+        if (isset($req->notification_id)) {
+            Auth::user()->unreadNotifications->where('id', $req->notification_id)->markAsRead();
+        }
         $data = Pembayaran::findOrFail($req->id);
         return view('pembayaran/show_pembayaran', compact('data'));
     }
@@ -152,12 +155,13 @@ class PembayaranController extends Controller
                 'bank'  => $req->bank,
                 'no_rekening'   => $req->no_rekening,
                 'no_transaksi'  => $req->no_transaksi,
-                'status'    => 'Released',
+                'status'    => $req->metode_pembayaran == 'Tunai' ? 'Done' : 'Released',
                 'created_by'    => me(),
                 'updated_by'    => me(),
             ]);
 
             PembayaranDetail::where('pembayaran_id', $idPembayaran)->delete();
+
             foreach ($req->item as $key => $value) {
                 $item = Item::find($value);
                 PembayaranDetail::create([
@@ -190,7 +194,7 @@ class PembayaranController extends Controller
                 'bank'  => $req->bank,
                 'no_rekening'   => $req->no_rekening,
                 'no_transaksi'  => $req->no_transaksi,
-                'status'    => 'Released',
+                'status'    => $req->metode_pembayaran == 'Tunai' ? 'Done' : 'Released',
                 'updated_by'    => me(),
             ]);
 

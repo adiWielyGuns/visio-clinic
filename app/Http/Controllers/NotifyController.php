@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Modeler;
 use App\Models\Pasien;
 use App\Models\PasienRekamMedis;
+use App\Models\Pembayaran;
 use App\Models\User;
 use App\Notifications\AntrianApotek;
 use App\Notifications\AntrianKasir;
 use App\Notifications\NotifyPembayaran;
+use App\Notifications\NotifyUploadBuktiPembayaran;
 use App\Notifications\ObatSelesai;
 use App\Notifications\PendaftaranNotification;
 use App\Notifications\RawatInap;
@@ -34,7 +36,23 @@ class NotifyController extends Controller
         return $pusher->socket_auth($req->channel_name, $req->socket_id);
     }
 
+    public function notifyVerifikasiPembayaran(Request $req)
+    {
+        $data = Pembayaran::where('id', $req->pembayaran_id)
+            ->first();
+        $message = 'Terdapat pembayaran dari pasien ' . $data->pasien->name . '. Segera untuk diverifikasi.';
 
+        $user = [];
+        $user = User::whereHas('role', function ($q) {
+            $q->whereIn('name', ['Perawat', 'SuperAdmin']);
+        })->get();
+
+        foreach ($user as $item) {
+            $item->notify(new NotifyUploadBuktiPembayaran($item, $message, $data));
+        }
+
+        return Response()->json(['status' => 1, 'message' => 'Sukses mengirim notifikasi ke perawat']);
+    }
 
     public function notifyPembayaran(Request $req)
     {
