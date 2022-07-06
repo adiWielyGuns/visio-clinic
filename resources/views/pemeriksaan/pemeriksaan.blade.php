@@ -61,16 +61,24 @@
                                     <th class="check-all" width="5%"><span>No.</span></th>
                                     <th><span>Tgl. Antrian</span></th>
                                     <th><span>Nama Pasien</span></th>
+                                    @if (Auth::user()->role->id != 1)
+                                        <th><span>Dokter</span></th>
+                                    @endif
                                     <th><span>No. Antrian</span></th>
                                     <td class="has-action"></td>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @forelse ($onSite->sortBy('tanggal') as $i => $item)
                                     <tr>
-                                        <td class="index-antrian">{{ $i + 1 }}</td>
+
+                                        <td class="index-antrian"> {{ $i + 1 }}</td>
                                         <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
-                                        <td>{{ $item->pasien->name }}</td>
+                                        <td>{{ $item->pasien ? $item->pasien->name : '-' }}</td>
+                                        @if (Auth::user()->role->id != 1)
+                                            <td>{{ $item->jadwal_dokter->dokter->name }}</td>
+                                        @endif
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>
                                             @if (dateStore() == $item->tanggal)
@@ -85,7 +93,8 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" style="text-align: center">Tidak ada reservasi</td>
+                                        <td colspan="{{ Auth::user()->role->id != 1 ? '6' : '5' }}"
+                                            style="text-align: center">Tidak ada reservasi</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -124,7 +133,9 @@
                                     <th class="check-all" width="5%"><span>No.</span></th>
                                     <th><span>Tgl. Antrian</span></th>
                                     <th><span>Nama Pasien</span></th>
-                                    <th><span>Antrian Saat Ini</span></th>
+                                    @if (Auth::user()->role->id != 1)
+                                        <th><span>Dokter</span></th>
+                                    @endif
                                     <th><span>No. Antrian</span></th>
                                     <td class="has-action"></td>
                                 </tr>
@@ -134,8 +145,10 @@
                                     <tr>
                                         <td class="index-antrian">{{ $i + 1 }}</td>
                                         <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
-                                        <td>{{ $item->jadwal_dokter->dokter->name }}</td>
-                                        <td>{{ $item->no_reservasi }}</td>
+                                        <td>{{ $item->pasien ? $item->pasien->name : '-' }}</td>
+                                        @if (Auth::user()->role->id != 1)
+                                            <td>{{ $item->jadwal_dokter->dokter->name }}</td>
+                                        @endif
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>
                                             @if (dateStore() >= $item->tanggal)
@@ -150,7 +163,8 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" style="text-align: center">Tidak ada reservasi</td>
+                                        <td colspan="{{ Auth::user()->role->id != 1 ? '6' : '5' }}"
+                                            style="text-align: center">Tidak ada reservasi</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -190,11 +204,13 @@
                                     <th class="check-all"><span>No.</span></th>
                                     <th><span>No. Rekam Medis</span></th>
                                     <th><span>Tgl. Berobat</span></th>
+                                    <th><span>Pasien</span></th>
                                     @if (Auth::user()->role->id != 1)
                                         <th><span>Dokter</span></th>
                                     @endif
                                     <th><span>Tindakan</span></th>
                                     <th><span>Keterangan</span></th>
+                                    <th><span>Lama Waktu Terapi</span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -206,6 +222,9 @@
                                         </td>
                                         <td>{{ CarbonParse($item->pasien_rekam_medis ? $item->pasien_rekam_medis->tanggal : now(), 'd/m/Y') }}
                                         </td>
+                                        <td>
+                                            {{ $item->pasien ? $item->pasien->name : '-' }}
+                                        </td>
                                         @if (Auth::user()->role->id != 1)
                                             <td>{{ $item->pasien_rekam_medis ? $item->pasien_rekam_medis->dokter->name : '' }}
                                             </td>
@@ -213,6 +232,8 @@
                                         <td>{{ $item->pasien_rekam_medis ? $item->pasien_rekam_medis->tindakan : '' }}
                                         </td>
                                         <td>{{ $item->pasien_rekam_medis ? $item->pasien_rekam_medis->keterangan : '' }}
+                                        </td>
+                                        <td>{{ $item->pasien_rekam_medis ? $item->pasien_rekam_medis->lama_terapi : '' }}
                                         </td>
                                     </tr>
                                 @empty
