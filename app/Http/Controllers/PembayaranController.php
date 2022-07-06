@@ -126,6 +126,7 @@ class PembayaranController extends Controller
         if (isset($req->notification_id)) {
             Auth::user()->unreadNotifications->where('id', $req->notification_id)->markAsRead();
         }
+
         $data = Pembayaran::findOrFail($req->id);
         return view('pembayaran/show_pembayaran', compact('data'));
     }

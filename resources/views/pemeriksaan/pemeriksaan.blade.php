@@ -1,6 +1,6 @@
 @extends('../layouts/main')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.css" />  
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.css" />
 @endsection
 @section('content')
     <main>
@@ -61,7 +61,6 @@
                                     <th class="check-all" width="5%"><span>No.</span></th>
                                     <th><span>Tgl. Antrian</span></th>
                                     <th><span>Nama Pasien</span></th>
-                                    <th><span>Antrian Saat Ini</span></th>
                                     <th><span>No. Antrian</span></th>
                                     <td class="has-action"></td>
                                 </tr>
@@ -71,8 +70,7 @@
                                     <tr>
                                         <td class="index-antrian">{{ $i + 1 }}</td>
                                         <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
-                                        <td>{{ $item->jadwal_dokter->dokter->name }}</td>
-                                        <td>{{ $item->no_reservasi }}</td>
+                                        <td>{{ $item->pasien->name }}</td>
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>
                                             @if (dateStore() == $item->tanggal)
@@ -87,7 +85,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" style="text-align: center">Tidak ada reservasi</td>
+                                        <td colspan="5" style="text-align: center">Tidak ada reservasi</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -232,7 +230,7 @@
 @endsection
 @section('script_content')
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
-    
+
     <script>
         var table;
         (function() {
