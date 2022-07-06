@@ -41,6 +41,11 @@
                             </div>
                             <div class="inpt-apend"></div>
                         </div>
+                        <div class="form-group dp">
+                            <label>Lama Waktu Terapi</label>
+                            <input class="form-control tanggal" id="lama_terapi" name="lama_terapi" type="text"
+                                value="" placeholder="XX:XX" />
+                        </div>
                         <div class="form-group">
                             <label>Nama Dokter</label>
                             <input type="text" disabled class="form-control"

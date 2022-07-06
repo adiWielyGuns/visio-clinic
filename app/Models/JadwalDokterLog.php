@@ -32,6 +32,12 @@ class JadwalDokterLog extends Model
         return $this->belongsTo(JadwalDokter::class);
     }
 
+
+    public function pasien()
+    {
+        return $this->belongsTo(Pasien::class);
+    }
+
     public function pasien_rekam_medis()
     {
         return $this->hasOne(PasienRekamMedis::class, 'id_rekam_medis', 'ref');
