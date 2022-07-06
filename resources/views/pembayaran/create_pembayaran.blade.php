@@ -87,25 +87,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group metode_pembayaran_div collapse">
-                            <label>Bank</label>
-                            <select class="select select-contact-group metode_pembayaran" id="bank" name="bank"
-                                title="Pilih Bank">
-                                @foreach (\App\Models\Pembayaran::$enumBank as $item)
-                                    <option value="{{ $item }}">{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group metode_pembayaran_div collapse">
-                            <label>No. Rekening</label>
-                            <input class="form-control required metode_pembayaran" type="text" name="no_rekening"
-                                id="no_rekening" />
-                        </div>
-                        <div class="form-group metode_pembayaran_div collapse">
-                            <label>No. Transaksi</label>
-                            <input class="form-control required metode_pembayaran" type="text" name="no_transaksi"
-                                id="no_transaksi" />
-                        </div>
+                     
                         <div class="form-action text-right">
                             <button class="btn btn--primary btn--next btn--submit" type="button"
                                 onclick="store()">Simpan</button>
@@ -164,7 +146,7 @@
 
         $('#metode_pembayaran').change(function() {
             var metodePembayaran = $(this).val();
-            if (metodePembayaran == 'Non Tunai') {
+            if (metodePembayaran == 'Transfer Bank') {
                 $('.metode_pembayaran_div').addClass('show');
             } else {
                 $('.metode_pembayaran_div').removeClass('show');

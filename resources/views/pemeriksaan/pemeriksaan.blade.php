@@ -1,6 +1,6 @@
 @extends('../layouts/main')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.css" />  
 @endsection
 @section('content')
     <main>
@@ -140,7 +140,7 @@
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>{{ $item->no_reservasi }}</td>
                                         <td>
-                                            @if (dateStore() == $item->tanggal)
+                                            @if (dateStore() >= $item->tanggal)
                                                 <a class="btn btn--primary"
                                                     href="{{ route('create-pemeriksaan', ['id' => $item->id, 'jadwal_dokter_id' => $item->jadwal_dokter_id]) }}">Periksa
                                                     Pasien</a>
@@ -204,13 +204,18 @@
                                 @forelse ($history as $i => $item)
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
-                                        <td>{{ $item->pasien_rekam_medis->id_rekam_medis }}</td>
-                                        <td>{{ CarbonParse($item->pasien_rekam_medis->tanggal, 'd/m/Y') }}</td>
+                                        <td>{{ $item->pasien_rekam_medis ? $item->pasien_rekam_medis->id_rekam_medis : '' }}
+                                        </td>
+                                        <td>{{ CarbonParse($item->pasien_rekam_medis ? $item->pasien_rekam_medis->tanggal : now(), 'd/m/Y') }}
+                                        </td>
                                         @if (Auth::user()->role->id != 1)
-                                            <td>{{ $item->pasien_rekam_medis->dokter->name }}</td>
+                                            <td>{{ $item->pasien_rekam_medis ? $item->pasien_rekam_medis->dokter->name : '' }}
+                                            </td>
                                         @endif
-                                        <td>{{ $item->pasien_rekam_medis->tindakan }}</td>
-                                        <td>{{ $item->pasien_rekam_medis->keterangan }}</td>
+                                        <td>{{ $item->pasien_rekam_medis ? $item->pasien_rekam_medis->tindakan : '' }}
+                                        </td>
+                                        <td>{{ $item->pasien_rekam_medis ? $item->pasien_rekam_medis->keterangan : '' }}
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -227,7 +232,7 @@
 @endsection
 @section('script_content')
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
-
+    
     <script>
         var table;
         (function() {

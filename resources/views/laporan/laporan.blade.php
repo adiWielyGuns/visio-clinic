@@ -287,7 +287,6 @@
             });
         })
 
-
         function hapus(id) {
             var previousWindowKeyDown = window.onkeydown;
             Swal.fire({

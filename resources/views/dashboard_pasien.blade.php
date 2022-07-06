@@ -1,5 +1,8 @@
 @extends('../layouts/base')
 @section('body')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css"
+        integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <body>
         <div class="loading style-2" id="loading">
@@ -12,28 +15,28 @@
                         <div class="row">
                             <div class="col-lg-4 left-wrap">
                                 <div class="image" style="background-image: url(images/masthead-home.jpg)"></div>
-                                <!-- <div class="description">
+                                {{-- <div class="description">
                                     <div class="feature1">
                                         <h3>Menangani</h3>
                                         <ul>
-                                        <li>Sakit punggung</li>
-                                        <li>Sakit lutut</li>
-                                        <li>Sakit persendian</li>
-                                        <li>Pemuliah Stroke</li>
-                                        <li>Cedera Olahraga</li>
+                                            <li>Sakit punggung</li>
+                                            <li>Sakit lutut</li>
+                                            <li>Sakit persendian</li>
+                                            <li>Pemuliah Stroke</li>
+                                            <li>Cedera Olahraga</li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="address">
                                     <p>Jl. Jelidro No. 52 Sambikerep Sby - 081332000593</p>
-                                </div> -->
+                                </div> --}}
                             </div>
                             <div class="col-lg-8 right-wrap">
                                 <div class="form-wrap">
                                     <form action="{{ route('logout-pasien') }}" method="POST" id="logout">
                                         {{ csrf_field() }}</form>
                                     <div class="box">
-                                        <div class="imglogo"><img src="images/logo-vmm.png"/></div>
+                                        <div class="imglogo"><img src="images/logo-vmm.png" /></div>
                                         <h1 class="logo">Fisio Mandiri Medika</h1>
                                         <div class="akun"><span>Selamat Datang,
                                                 {{ Auth::guard('pasien')->user()->name }}.</span><a class="btn btn--link"
@@ -48,7 +51,15 @@
                                                         data-toggle="tab">Antrian</a></li>
                                                 <li class="nav__item"><a class="nav__link" href="#rekam_medis"
                                                         data-toggle="tab">Rekam Medis</a></li>
+                                                <li class="nav__item"><a class="nav__link" href="#pembayaran"
+                                                        data-toggle="tab">Pembayaran</a></li>
                                             </ul>
+                                            @if (Session::has('message'))
+                                                <p style="max-width: 450px;color: #34cc69;margin: 1rem auto;">
+                                                    Berhasil upload bukti pembayaran
+                                                </p>
+                                            @endif
+
                                         </div>
                                         <div class="tab-content">
                                             <div class="tab-pane fade active show" id="reservasi">
@@ -237,35 +248,47 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            {{-- <div class="tab-pane fade" id="pembayaran">
+                                            <div class="tab-pane fade" id="pembayaran">
                                                 <div class="table">
                                                     <table>
                                                         <thead>
                                                             <tr>
                                                                 <th class="check-all" width="5%"><span>No.</span></th>
                                                                 <th><span>No. Invoice</span></th>
-                                                                <th><span>Total Tagian</span></th>
+                                                                <th><span>Tgl</span></th>
+                                                                <th><span>Total Tagihan</span></th>
                                                                 <td class="has-action"></td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>202012-00023</td>
-                                                                <td>200.000</td>
-                                                                <td><a class="btn btn--primary" href="#modalDelete"
-                                                                        data-toggle="modal">Bayar</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>2</td>
-                                                                <td>202012-00024</td>
-                                                                <td>100.000</td>
-                                                                <td><span>Terbayar</span></td>
-                                                            </tr>
+                                                            @foreach ($invoice as $i => $item)
+                                                                <tr>
+                                                                    <td>{{ $i + 1 }}</td>
+                                                                    <td>{{ $item->nomor_invoice }}</td>
+                                                                    <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
+                                                                    <td>{{ number_format($item->total) }}</td>
+                                                                    <td>
+                                                                        @if ($item->status == 'Released' and $item->metode_pembayaran == 'Transfer Bank')
+                                                                            <a class="btn btn--primary" href="#modalVerif"
+                                                                                onclick="modalVerifikasi('{{ $item->id }}')"
+                                                                                data-toggle="modal">Bayar</a>
+                                                                        @elseif($item->status == 'Rejected')
+                                                                            <a class="btn btn--danger" href="#modalVerif"
+                                                                                onclick="modalVerifikasi('{{ $item->id }}')"
+                                                                                data-toggle="modal">Bayar Ulang</a>
+                                                                        @elseif($item->status == 'Waiting')
+                                                                            <span style="color: #e9b414">Menunggu Verifikasi</span>
+                                                                        @elseif($item->status == 'Done')
+                                                                            <span style="color: #34cc69">Terbayar</span>
+                                                                        @endif
+
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            </div> --}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -276,11 +299,56 @@
                 <div class="back-to-top"></div>
             </div>
         </div>
+
+        <div class="modal" id="modalVerif" tabindex="-1">
+            <div class="modal-dialog modal-dialog--centered modal-dialog--sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h2>Verifikasi Pembayaran</h2>
+                        <form id="form-data" method="POST" enctype="multipart/form-data"
+                            action="{{ route('verifikasi-pembayaran') }}">
+                            @csrf
+                            <div class="form-group">
+                                <div class="form-group metode_pembayaran_div">
+                                    <label>Nama Rekening</label>
+                                    <input class="form-control required metode_pembayaran" type="text"
+                                        name="no_transaksi" id="no_transaksi" />
+                                    <input type="hidden" id="pembayaran_id" name="pembayaran_id" class="required">
+                                    <input type="hidden" id="param" name="param" value="input_pembayaran">
+                                </div>
+                                <div class="form-group metode_pembayaran_div">
+                                    <label>No. Rekening</label>
+                                    <input class="form-control required metode_pembayaran" type="text"
+                                        name="no_rekening" id="no_rekening" />
+                                </div>
+                                <div class="form-group metode_pembayaran_div">
+                                    <label>Bukti Transfer</label>
+                                    <input type="file" class="dropify" id="upload_bukti_transfer"
+                                        name="upload_bukti_transfer" data-allowed-file-extensions="jpeg jpg png">
+                                </div>
+                            </div>
+                            <div class="form-action text-right">
+                                <button class="btn btn--white" type="button" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn--acc" type="button"
+                                    onclick="verifikasiPembayaran()">Verifikasi</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 @endsection
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"
+        integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        (function() {
+            $('.dropify').dropify();
+        }())
+
         function changeJadwalDokter(par) {
             $('#hari_reservasi').val($(par).find('option:selected').data('hari'));
         }
@@ -478,6 +546,60 @@
                             });
                         }
                     });
+                }
+            })
+        }
+
+        function modalVerifikasi(id) {
+            $('#pembayaran_id').val(id);
+        }
+
+        function verifikasiPembayaran() {
+            var validation = 0;
+            $('#form-data .required').each(function() {
+                var par = $(this).parents('.form-group');
+                if ($(this).val() == '' || $(this).val() == null) {
+                    console.log($(this));
+                    $(this).addClass('is-invalid');
+                    validation++
+                }
+            })
+
+            $('.dropify').each(function(i) {
+                var parDrop = $(this).parents('.form-group');
+                if ($(this)[0].files[0] == undefined) {
+                    validation++;
+                    $(parDrop).find('.dropify-wrapper').addClass('is-invalid');
+                } else {
+                    $(parDrop).find('.dropify-wrapper').removeClass('is-invalid');
+                }
+            });
+
+            if (validation != 0) {
+                Swal.fire({
+                    title: 'Oops Something Wrong',
+                    html: 'Semua data harus diisi',
+                    icon: "warning",
+                });
+                return false;
+            }
+
+            var previousWindowKeyDown = window.onkeydown;
+            Swal.fire({
+                title: 'Proses Aksi Ini?',
+                text: "Proses ini tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya lanjutkan!',
+                cancelButtonText: 'Tidak!',
+                showLoaderOnConfirm: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.onkeydown = previousWindowKeyDown;
+                    overlay(true);
+                    $('#form-data').submit();
                 }
             })
         }

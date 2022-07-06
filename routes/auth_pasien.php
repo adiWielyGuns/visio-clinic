@@ -15,6 +15,7 @@ Route::middleware('pasien')->group(function () {
         Route::get('/antrian', 'antrian')->name('antrian');
         Route::post('/store', 'store')->name('store-reservasi');
         Route::post('/delete', 'delete')->name('delete-reservasi');
+        Route::post('/verifikasi-pembayaran', 'verifikasiPembayaran')->name('verifikasi-pembayaran');
     });
 
     Route::controller(LoginPasienController::class)->group(function () {

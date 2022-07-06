@@ -22,6 +22,7 @@ class Pembayaran extends Model
         'no_rekening',
         'no_transaksi',
         'status',
+        'upload_bukti_transfer',
         'created_by',
         'updated_by',
         'created_at',
@@ -30,7 +31,8 @@ class Pembayaran extends Model
 
     public static $enumMetodePembayaran = [
         'Tunai',
-        'Non Tunai',
+        // 'Non Tunai',
+        'Transfer Bank',
     ];
 
     public static $enumBank = [

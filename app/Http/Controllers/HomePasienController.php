@@ -6,6 +6,7 @@ use App\Models\JadwalDokter;
 use App\Models\JadwalDokterLog;
 use App\Models\Pasien;
 use App\Models\PasienRekamMedis;
+use App\Models\Pembayaran;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,7 +14,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class HomePasienController extends Controller
 {
@@ -38,7 +42,8 @@ class HomePasienController extends Controller
         }
 
         $rm = PasienRekamMedis::where('pasien_id', Auth::guard('pasien')->user()->id)->get();
-        return view('dashboard_pasien', compact('dokter', 'antrian', 'rm'));
+        $invoice = Pembayaran::where('pasien_id', Auth::guard('pasien')->user()->id)->get();
+        return view('dashboard_pasien', compact('dokter', 'antrian', 'rm', 'invoice'));
     }
 
     public function getJadwalDokter(Request $req)
@@ -59,7 +64,6 @@ class HomePasienController extends Controller
                 unset($value);
             } else {
                 $value->sisa_kuota = $value->kuota - $kuota;
-
                 $weekStart = Carbon::now()->subDay(-7)->startOfWeek()->format('Y-m-d');
                 $weekEnd = Carbon::now()->subDay(-7)->endOfWeek()->format('Y-m-d');
                 $jumlahHari = (strtotime($weekEnd) - strtotime($weekStart)) / 86400;
@@ -220,5 +224,55 @@ class HomePasienController extends Controller
         ]);
 
         return Response()->json(['status' => 1, 'message' => 'Berhasil reset password menjadi 12345678 untuk semua user']);
+    }
+
+    public function verifikasiPembayaran(Request $req)
+    {
+        return DB::transaction(function ($q) use ($req) {
+
+            if ($req->param == 'input_pembayaran') {
+                $invoice = Pembayaran::find($req->pembayaran_id);
+                $file = $req->file('upload_bukti_transfer');
+                $path = 'image/bukti_transfer';
+                $uuid =  Str::uuid($invoice->nomor_invoice)->toString();
+                $name = $uuid . '.' . str_replace("application/", "", $file->getClientOriginalExtension());
+                $foto = $path . '/' . $name;
+                if (is_file($foto)) {
+                    unlink($foto);
+                }
+
+                if (!file_exists($path)) {
+                    $oldmask = umask(0);
+                    mkdir($path, 0777, true);
+                    umask($oldmask);
+                }
+
+                Storage::disk('public')->put($foto, file_get_contents($file));
+
+                $foto = url('/') . '/storage/' . $foto;
+                Pembayaran::find($req->pembayaran_id)
+                    ->update([
+                        'no_transaksi' => $req->no_transaksi,
+                        'no_rekening' => $req->no_rekening,
+                        'upload_bukti_transfer' => $foto,
+                        'status' => 'Waiting',
+                    ]);
+                Session::flash('message', 'Sukses upload bukti pembayaran');
+                return back();
+            } else {
+                if ($req->status == 'Done') {
+                    Pembayaran::find($req->pembayaran_id)
+                        ->update([
+                            'status' => 'Done',
+                        ]);
+                } else {
+                    Pembayaran::find($req->pembayaran_id)
+                        ->update([
+                            'status' => 'Rejected',
+                        ]);
+                }
+                return Response()->json(['status' => 1, 'message' => 'Berhasil melakukan validasi']);
+            }
+        });
     }
 }

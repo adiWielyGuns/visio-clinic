@@ -133,6 +133,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit', 'edit')->name('edit-pembayaran');
             Route::get('/status', 'status')->name('status-pembayaran');
             Route::get('/item-generate', 'itemGenerate')->name('item-generate-pembayaran');
+            Route::get('/show', 'show')->name('show-pembayaran');
             Route::post('/store', 'store')->name('store-pembayaran');
             Route::post('/update', 'update')->name('update-pembayaran');
             Route::post('/delete', 'delete')->name('delete-pembayaran');

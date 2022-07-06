@@ -50,8 +50,7 @@
                                 </div>
                                 <div class="col-1">
                                     <label>&nbsp;</label>
-                                    <a class="btn btn--primary"
-                                        href="{{ route('laporan-pembayaran') }}">
+                                    <a class="btn btn--primary" href="{{ route('laporan-pembayaran') }}">
                                         Cetak Laporan
                                     </a>
                                 </div>
@@ -68,7 +67,7 @@
                                     <th><span>Tgl. Pembayaran</span></th>
                                     <th><span>Terima Dari</span></th>
                                     <th class="text-right" width><span>Jumlah Uang (Rp)</span></th>
-                                    {{-- <th><span>Status</span></th> --}}
+                                    <th class="text-right" width><span>Status</span></th>
                                     <th class="has-edit">Aksi</th>
                                 </tr>
                             </thead>
@@ -128,11 +127,11 @@
                         name: 'total',
                         class: 'text-right'
                     },
-                    //  {
-                    //     data: 'status',
-                    //     name: 'status',
-                    //     class: 'text-center'
-                    // },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        class: 'text-center'
+                    },
                     {
                         data: 'aksi',
                         class: 'text-center',

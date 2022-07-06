@@ -5,16 +5,15 @@
 @section('content')
     <main>
         <div class="page-title">
-            <div class="page-title__left"><a class="btn btn--icon btn--back" href="{{ route('staff') }}">
+            <div class="page-title__left"><a class="btn btn--icon btn--back" href="{{ route('pembayaran') }}">
                     <div class="btn--wrap">
                         <div class="icon"><img class="svg" src="{{ asset('images/ic-left.svg') }}" /></div>
-                        <span>Kembali ke Daftar
-                            Staff</span>
+                        <span>Kembali ke Pembayaran</span>
                     </div>
                 </a></div>
         </div>
         <div class="page-main">
-            <h1>Detail Pasien</h1>
+            <h1>Detail Pembayaran</h1>
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div class="panel">
@@ -24,41 +23,111 @@
                                     <div class="detail-wrap">
                                         <div class="row">
                                             <div class="col-4">
-                                                <label>ID Staff</label>
+                                                <label>No Inv</label>
                                             </div>
-                                            <div class="col-8"><span>{{ $data->user_id }}</span></div>
+                                            <div class="col-8"><span>{{ $data->nomor_invoice }}</span></div>
                                         </div>
                                         <div class="row">
                                             <div class="col-4">
-                                                <label>Nama</label>
+                                                <label>Tanggal</label>
                                             </div>
-                                            <div class="col-8"><span>{{ $data->name }}</span></div>
+                                            <div class="col-8"><span>{{ CarbonParse($data->tanggal, 'd/m/Y') }}</span>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-4">
-                                                <label>Tgl. Lahir</label>
+                                                <label>Total</label>
                                             </div>
                                             <div class="col-8">
-                                                <span>{{ CarbonParse($data->tanggal_lahir, 'd F Y') }}</span></div>
+                                                <span>{{ number_format($data->total) }}</span>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-4">
-                                                <label>Mobile No.</label>
+                                                <label>Metode Pembayaran</label>
                                             </div>
-                                            <div class="col-8"><span>{{ $data->telp }}</span></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <label>Alamat</label>
-                                            </div>
-                                            <div class="col-8"><span>{{ $data->alamat }}</span></div>
+                                            <div class="col-8"><span>{{ $data->metode_pembayaran }}</span></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <h1>Detail Item</h1>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="detail-wrap">
+                                        <div class="row">
+                                            @foreach ($data->pembayaran_detail as $item)
+                                                <div class="col-sm-12">
+                                                    <b>{{ $item->item->name }}</b>
+                                                    &nbsp;&nbsp;&nbsp;<span>{{ number_format($item->total) }}</span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if ($data->status == 'Waiting')
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="detail-wrap">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <button class="btn btn--primary btn--next btn--submit" style="display: inline"
+                                                type="button" onclick="store('Done')">Setujui Pembayaran</button>
+                                            <button class="btn btn--danger btn--next btn--submit" style="display: inline"
+                                                type="button" onclick="store('Rejected')">Tolak Pembayaran</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
+                @if ($data->metode_pembayaran == 'Tunai')
+                    <div class="col-lg-6 col-md-6">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="detail-wrap">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label>Bukti Transfer</label>
+                                                    <img style="width: 100%" src="{{ $data->upload_bukti_transfer }}"
+                                                        alt="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <label>Nama Rekening</label>
+                                                </div>
+                                                <div class="col-8">
+                                                    <span>{{ $data->no_transaksi }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <label>No Rekening</label>
+                                                </div>
+                                                <div class="col-8">
+                                                    <span>{{ $data->no_rekening }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
         </div>
     </main>
@@ -93,39 +162,18 @@
             });
         }
 
-        function store() {
-            var validation = 0;
-            if ($('#role_id').val() == null || $('#role_id').val() == '') {
-                $('#role_id').addClass('is-invalid');
-                validation++
-            }
-
-            $('#form-data .required').each(function() {
-                var par = $(this).parents('.form-group');
-                if ($(this).val() == '' || $(this).val() == null) {
-                    console.log($(this));
-                    $(this).addClass('is-invalid');
-                    validation++
-                }
-            })
-
-            if (validation != 0) {
-                Swal.fire({
-                    title: 'Oops Something Wrong',
-                    html: 'Semua data harus diisi',
-                    icon: "warning",
-                });
-                return false;
-            }
+        function store(param) {
 
             var formData = new FormData();
 
             var data = $('#form-data').serializeArray();
 
 
-            data.forEach((d, i) => {
-                formData.append(d.name, d.value);
-            })
+
+            formData.append('status', param);
+            formData.append('pembayaran_id', '{{ $data->id }}');
+            formData.append('param', 'validasi');
+            formData.append('_token', '{{ csrf_token() }}');
 
             var previousWindowKeyDown = window.onkeydown;
             Swal.fire({
@@ -143,7 +191,7 @@
                     window.onkeydown = previousWindowKeyDown;
                     overlay(true);
                     $.ajax({
-                        url: '{{ route('store-staff') }}',
+                        url: '{{ route('verifikasi-pembayaran') }}',
                         data: formData,
                         type: 'post',
                         processData: false,
@@ -155,7 +203,7 @@
                                     text: data.message,
                                     icon: "success",
                                 }).then(() => {
-                                    location.href = '{{ route('staff') }}';
+                                    location.href = '{{ route('pembayaran') }}';
                                 })
                             } else if (data.status == 2) {
                                 Swal.fire({

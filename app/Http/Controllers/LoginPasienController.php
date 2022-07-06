@@ -21,6 +21,7 @@ class LoginPasienController extends Controller
 
     public function store(Request $req)
     {
+
         $check = Pasien::where('id_pasien', $req->id_pasien)
             ->where('tanggal_lahir', $req->tanggal_lahir)
             ->where('status', 'true')
