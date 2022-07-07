@@ -6,14 +6,54 @@ use Illuminate\Http\Request;
 use App\Models\JadwalDokterLog;
 use App\Models\Pasien;
 use App\Models\PasienRekamMedis;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class LaporanController extends Controller
 {
-    public function index()
+    public function index(Request $req)
     {
-        return view('laporan/laporan');
+        if (!isset($req->tanggal_awal)) {
+            $req->query->add([
+                'tanggal_awal' => Carbon::now()->startOfMonth()->format('d/m/Y'),
+            ]);
+        }
+
+        if (!isset($req->tanggal_akhir)) {
+            $req->query->add([
+                'tanggal_akhir' => Carbon::now()->endOfMonth()->format('d/m/Y'),
+            ]);
+        }
+
+        if (!isset($req->jenis_laporan)) {
+            $req->query->add([
+                'jenis_laporan' => 'laporan_jumlah_pasien'
+            ]);
+        }
+
+        if (!isset($req->jenis_laporan)) {
+            $req->query->add([
+                'jenis_laporan' => 'laporan_jumlah_pasien'
+            ]);
+        }
+
+        if ($req->jenis_laporan == 'laporan_jumlah_pasien') {
+            $data = JadwalDokterLog::where(function ($q) use ($req) {
+                $q->where('tanggal', '>=', dateStore($req->tanggal_awal));
+                $q->where('tanggal', '<=', dateStore($req->tanggal_akhir));
+            })->whereHas('pasien_rekam_medis')->get();
+        } else {
+            $data = JadwalDokterLog::where('status', 'Reserved')->where(function ($q) use ($req) {
+                $q->where('tanggal', '>=', dateStore($req->tanggal_awal));
+                $q->where('tanggal', '<=', dateStore($req->tanggal_akhir));
+            })->get();
+        }
+
+
+
+        return view('laporan/laporan', compact('req', 'data'));
     }
 
     public function datatable(Request $req)
