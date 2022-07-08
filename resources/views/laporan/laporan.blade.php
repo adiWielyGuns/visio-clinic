@@ -2,6 +2,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.12.1/datatables.min.css" />
 @endsection
+
 @section('content')
     <main>
         <div class="page-title">
