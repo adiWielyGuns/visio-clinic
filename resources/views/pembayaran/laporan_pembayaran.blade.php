@@ -322,7 +322,7 @@
             <div class="row">
                 <nav class="navbar navbar-light" style="width: 100%">
                     <div class="col-md-4">
-                        <a class="navbar-brand" href="{{ url('/') }}" style="color: white !important">
+                        <a class="navbar-brand" href="{{ url('/dashboard') }}" style="color: white !important">
                             FISIO MANDIRI MEDIKA
                         </a>
                     </div>
@@ -383,6 +383,7 @@
                         <th>NOMOR INVOICE</th>
                         <th>TANGGAL</th>
                         <th>METODE PEMBAYARAN</th>
+                        <th>STATUS</th>
                         <th class="text-right">TOTAL</th>
                     </thead>
                     <tbody>
@@ -398,13 +399,14 @@
                                 <td>{{ $item->nomor_invoice }}</td>
                                 <td>{{ CarbonParse($item->tanggal, 'd/m/Y') }}</td>
                                 <td>{{ $item->metode_pembayaran }}</td>
+                                <td>{{ $item->status }}</td>
                                 <td class="text-right">{{ number_format($item->total) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4" class="text-right"><b>TOTAL</b></td>
+                            <td colspan="5" class="text-right"><b>TOTAL</b></td>
                             <td colspan="1" class="text-right">
                                 <div style="float:left;width:10%;">
                                     Rp.
