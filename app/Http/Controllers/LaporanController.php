@@ -51,8 +51,6 @@ class LaporanController extends Controller
             })->get();
         }
 
-
-
         return view('laporan/laporan', compact('req', 'data'));
     }
 
